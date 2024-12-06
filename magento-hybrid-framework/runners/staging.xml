@@ -12,7 +12,7 @@
 	<test name="Run on Chrome">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.Register" />
+			<class name="com.magento.user.CreateAnAccount" />
 		</classes>
 	</test>
 

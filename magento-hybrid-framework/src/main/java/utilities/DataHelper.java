@@ -21,12 +21,16 @@ public class DataHelper {
 		return faker.address().lastName();
 	}
 
+	public String getEmailDomain() {
+		return faker.internet().domainName();
+	}
+
 	public String getEmailAddress() {
 		return faker.internet().emailAddress();
 	}
 
 	public String getPassword() {
-		return faker.internet().password(6, 10, true, true);
+		return faker.internet().password(8, 12, true, true, true);
 	}
 
 	public String getPhoneNumber() {
