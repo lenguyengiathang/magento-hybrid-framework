@@ -2,8 +2,9 @@ package commons;
 
 import org.openqa.selenium.WebDriver;
 
-import pageObjects.CreateAnAccountPageObject;
+import pageObjects.CreateNewCustomerAccountPageObject;
 import pageObjects.HomepageObject;
+import pageObjects.MyAccountPageObject;
 
 public class PageGeneratorManager {
 
@@ -11,7 +12,11 @@ public class PageGeneratorManager {
 		return new HomepageObject(driver);
 	}
 
-	public static CreateAnAccountPageObject getCreateAnAccountPage(WebDriver driver) {
-		return new CreateAnAccountPageObject(driver);
+	public static CreateNewCustomerAccountPageObject getCreateAnAccountPage(WebDriver driver) {
+		return new CreateNewCustomerAccountPageObject(driver);
+	}
+
+	public static MyAccountPageObject getMyAccountPage(WebDriver driver) {
+		return new MyAccountPageObject(driver);
 	}
 }

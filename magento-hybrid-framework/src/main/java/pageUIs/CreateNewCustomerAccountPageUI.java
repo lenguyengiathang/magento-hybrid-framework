@@ -1,6 +1,6 @@
 package pageUIs;
 
-public class CreateAnAccountPageUI {
+public class CreateNewCustomerAccountPageUI {
 	public static final String FIRST_NAME_TEXTBOX = "id=firstname";
 	public static final String LAST_NAME_TEXTBOX = "id=lastname";
 	public static final String EMAIL_TEXTBOX = "id=email_address";

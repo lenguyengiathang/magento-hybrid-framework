@@ -9,11 +9,12 @@ import org.testng.annotations.Test;
 
 import commons.BaseTest;
 import commons.PageGeneratorManager;
-import pageObjects.CreateAnAccountPageObject;
+import pageObjects.CreateNewCustomerAccountPageObject;
 import pageObjects.HomepageObject;
+import pageObjects.MyAccountPageObject;
 import utilities.DataHelper;
 
-public class CreateAnAccount extends BaseTest {
+public class CreateNewCustomerAccount extends BaseTest {
 	@Parameters("browser")
 	@BeforeClass
 	public void beforeClass(String browser) {
@@ -109,33 +110,61 @@ public class CreateAnAccount extends BaseTest {
 	}
 
 	@Test
-	public void Create_Valid_Weak_Password() {
+	public void Create_Weak_Password() {
+		createAnAccountPage.sendKeysToConfirmPasswordTextbox("abc");
 
+		Assert.assertEquals(createAnAccountPage.getPasswordStrengthMessage(), "Password Strength: Weak");
 	}
 
 	@Test
-	public void Create_Valid_Medium_Password() {
+	public void Create_Medium_Password() {
+		createAnAccountPage.sendKeysToConfirmPasswordTextbox("abc1234*");
 
+		Assert.assertEquals(createAnAccountPage.getPasswordStrengthMessage(), "Password Strength: Medium");
 	}
 
 	@Test
-	public void Create_Valid_Strong_Password() {
+	public void Create_Strong_Password() {
+		createAnAccountPage.sendKeysToConfirmPasswordTextbox("abcd1234*");
 
+		Assert.assertEquals(createAnAccountPage.getPasswordStrengthMessage(), "Password Strength: Strong");
 	}
 
 	@Test
 	public void Create_Valid_Very_Strong_Password() {
+		createAnAccountPage.sendKeysToConfirmPasswordTextbox("Abcd1234@!*&%");
 
+		Assert.assertEquals(createAnAccountPage.getPasswordStrengthMessage(), "Password Strength: Very Strong");
 	}
 
 	@Test
 	public void Create_An_Account_Valid_Data() {
+		createAnAccountPage.sendKeysToFirstNameTextbox(firstName);
+		createAnAccountPage.sendKeysToLastNameTextbox(lastName);
+		createAnAccountPage.sendKeysToEmailTextbox(email);
+		createAnAccountPage.sendKeysToPasswordTextbox(password);
+		createAnAccountPage.sendKeysToConfirmPasswordTextbox(password);
+		myAccountPage = createAnAccountPage.clickCreateAnAccountButton();
 
+		Assert.assertEquals(myAccountPage.getRegisterSuccessfulMessage(),
+				"Thank you for registering with Main Website Store.");
+		Assert.assertEquals(myAccountPage.getUserFullName(), firstName.concat(lastName));
+		Assert.assertEquals(myAccountPage.getUserEmail(), email);
 	}
 
 	@Test
 	public void Create_An_Account_Existing_Email() {
+		homepage = myAccountPage.clickSignOutDropdownLink();
+		createAnAccountPage = homepage.clickCreateAnAccountLink();
+		createAnAccountPage.sendKeysToFirstNameTextbox(data.getFirstName());
+		createAnAccountPage.sendKeysToLastNameTextbox(data.getLastName());
+		createAnAccountPage.sendKeysToEmailTextbox(email);
+		createAnAccountPage.sendKeysToPasswordTextbox(password);
+		createAnAccountPage.sendKeysToConfirmPasswordTextbox(password);
+		myAccountPage = createAnAccountPage.clickCreateAnAccountButton();
 
+		Assert.assertEquals(createAnAccountPage.getExistingEmailErrorMessage(),
+				"There is already an account with this email address. If you are sure that it is your email address, click here to get your password and access your account.");
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -147,6 +176,6 @@ public class CreateAnAccount extends BaseTest {
 	private DataHelper data;
 	private String firstName, lastName, email, password;
 	private HomepageObject homepage;
-	private CreateAnAccountPageObject createAnAccountPage;
-
+	private CreateNewCustomerAccountPageObject createAnAccountPage;
+	private MyAccountPageObject myAccountPage;
 }

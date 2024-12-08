@@ -13,7 +13,7 @@ public class HomepageObject extends BasePage {
 		this.driver = driver;
 	}
 
-	public CreateAnAccountPageObject clickCreateAnAccountLink() {
+	public CreateNewCustomerAccountPageObject clickCreateAnAccountLink() {
 		waitForElementClickable(driver, HomepageUI.CREATE_AN_ACCOUNT_LINK);
 		clickElement(driver, HomepageUI.CREATE_AN_ACCOUNT_LINK);
 		return PageGeneratorManager.getCreateAnAccountPage(driver);
