@@ -16,11 +16,13 @@ public class HomepageObject extends BasePage {
 	public CreateNewCustomerAccountPageObject clickCreateAnAccountLink() {
 		waitForElementClickable(driver, HomepageUI.CREATE_AN_ACCOUNT_LINK);
 		clickElement(driver, HomepageUI.CREATE_AN_ACCOUNT_LINK);
-		return PageGeneratorManager.getCreateAnAccountPage(driver);
+		return PageGeneratorManager.getCreateNewCustomerAccountPage(driver);
 	}
 
-	public void clickSignInLink() {
+	public CustomerLoginPageObject clickSignInLink() {
 		waitForElementClickable(driver, HomepageUI.SIGN_IN_LINK);
 		clickElement(driver, HomepageUI.SIGN_IN_LINK);
+		return PageGeneratorManager.getCustomerLoginPage(driver);
+
 	}
 }

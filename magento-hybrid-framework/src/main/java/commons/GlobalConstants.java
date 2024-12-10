@@ -1,7 +1,7 @@
 package commons;
 
 public class GlobalConstants {
-	public static final String PORTAL_PAGE_URL = "https://parabank.parasoft.com/parabank/index.htm";
+	public static final String PORTAL_PAGE_URL = "https://magento.softwaretestingboard.com/";
 
 	public static final long SHORT_TIMEOUT = 5;
 	public static final long LONG_TIMEOUT = 30;

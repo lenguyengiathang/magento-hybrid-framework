@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<suite name="NopCommerce">
+<suite name="Magento Luma" parallel="none">
 
 	<listeners>
 		<listener class-name="commons.MethodListener" />
@@ -9,10 +9,10 @@
 	
 	<parameter name="url" value="https://magento.softwaretestingboard.com/"/>
 
-	<test name="Run on Chrome">
+	<test name="Run on Chrome" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.CreateAnAccount" />
+			<class name="com.magento.user.CreateNewCustomerAccount" />
 		</classes>
 	</test>
 

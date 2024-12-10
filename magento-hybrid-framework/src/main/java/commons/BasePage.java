@@ -19,7 +19,9 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
+import pageObjects.HomepageObject;
 import pageUIs.BasePageUI;
 
 public class BasePage {
@@ -525,5 +527,41 @@ public class BasePage {
 			e.printStackTrace();
 		}
 	}
+
+	public HomepageObject clickLumaLogo(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.LUMA_LOGO);
+		clickElement(driver, BasePageUI.LUMA_LOGO);
+		return PageGeneratorManager.getHomepage(driver);
+	}
+
+	public void isPageTitleDisplayedCorrectly(WebDriver driver, String expectedPageTitle) {
+		waitForElementVisible(driver, BasePageUI.PAGE_TITLE);
+		Assert.assertEquals(getElementText(driver, BasePageUI.PAGE_TITLE), expectedPageTitle);
+	}
+
+	public void sendKeysToSearchBar(WebDriver driver, String searchValue) {
+		waitForElementVisible(driver, BasePageUI.SEARCH_BAR);
+		sendKeysToElement(driver, BasePageUI.SEARCH_BAR, searchValue);
+	}
+
+	public void clickMyAccountSidebarLinkByLabel() {
+
+	}
+
+	/*
+	 * public void clickFooterLinkByLabel(WebDriver driver, String label) {
+	 * waitForElementClickable(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
+	 * clickElement(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label); switch (label) {
+	 * case "Search Terms": return
+	 * PageGeneratorManager.getPopularSearchTermsPage(driver); case
+	 * "Privacy and Cookie Policy": return
+	 * PageGeneratorManager.getPrivacyPolicyPage(driver); case "Advanced Search":
+	 * return PageGeneratorManager.getAdvancedSearchPage(driver); case
+	 * "Orders and Returns": return
+	 * PageGeneratorManager.getOrdersAndReturnsPage(driver); default: throw new
+	 * RuntimeException("The lable does not exist."); }
+	 * 
+	 * }
+	 */
 
 }

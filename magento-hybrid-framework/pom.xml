@@ -161,7 +161,7 @@
 				<version>2.22.2</version>
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>src/test/resources/runNopCommerceUser.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/staging.xml</suiteXmlFile>
 					</suiteXmlFiles>
 
 					<argLine>
