@@ -6,13 +6,14 @@
 		<listener class-name="commons.MethodListener" />
 		<listener class-name="reportConfig.AllureTestListener" />
 	</listeners>
-	
-	<parameter name="url" value="https://magento.softwaretestingboard.com/"/>
+
+	<parameter name="url"
+		value="https://magento.softwaretestingboard.com/" />
 
 	<test name="Run on Chrome" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.CreateNewCustomerAccount" />
+			<class name="com.magento.user.CustomerLogin" />
 		</classes>
 	</test>
 

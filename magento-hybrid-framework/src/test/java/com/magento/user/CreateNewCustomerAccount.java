@@ -35,7 +35,7 @@ public class CreateNewCustomerAccount extends BaseTest {
 	public void Register_01_Verify_Create_New_Customer_Account_Page_Navigation() {
 		createNewCustomerAccountPage = homepage.clickCreateAnAccountLink();
 
-		basePage.isPageTitleDisplayedCorrectly(driver, "Create New Customer Account");
+		Assert.assertEquals(basePage.getPageHeader(driver), "Create New Customer Account");
 	}
 
 	@Test(priority = 2)
@@ -44,7 +44,7 @@ public class CreateNewCustomerAccount extends BaseTest {
 		customerLoginPage = homepage.clickSignInLink();
 		createNewCustomerAccountPage = customerLoginPage.clickCreateNewAccountButton();
 
-		basePage.isPageTitleDisplayedCorrectly(driver, "Create New Customer Account");
+		Assert.assertEquals(basePage.getPageHeader(driver), "Create New Customer Account");
 	}
 
 	@Test(priority = 3)

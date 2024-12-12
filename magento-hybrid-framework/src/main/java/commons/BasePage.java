@@ -19,7 +19,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import pageObjects.HomepageObject;
 import pageUIs.BasePageUI;
@@ -534,9 +533,9 @@ public class BasePage {
 		return PageGeneratorManager.getHomepage(driver);
 	}
 
-	public void isPageTitleDisplayedCorrectly(WebDriver driver, String expectedPageTitle) {
-		waitForElementVisible(driver, BasePageUI.PAGE_TITLE);
-		Assert.assertEquals(getElementText(driver, BasePageUI.PAGE_TITLE), expectedPageTitle);
+	public String getPageHeader(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.PAGE_HEADER);
+		return getElementText(driver, BasePageUI.PAGE_HEADER);
 	}
 
 	public void sendKeysToSearchBar(WebDriver driver, String searchValue) {
