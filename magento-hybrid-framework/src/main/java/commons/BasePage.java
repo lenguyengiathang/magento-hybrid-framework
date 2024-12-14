@@ -21,6 +21,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import pageObjects.HomepageObject;
+import pageObjects.ProductListingPageObject;
 import pageUIs.BasePageUI;
 
 public class BasePage {
@@ -250,11 +251,11 @@ public class BasePage {
 	}
 
 	public String getElementText(WebDriver driver, String locatorType) {
-		return getWebElement(driver, locatorType).getText();
+		return getWebElement(driver, locatorType).getText().trim();
 	}
 
 	public String getElementText(WebDriver driver, String locatorType, String... dynamicValues) {
-		return getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)).getText();
+		return getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)).getText().trim();
 	}
 
 	public String getElementAttribute(WebDriver driver, String locatorType, String attributeValue) {
@@ -538,29 +539,31 @@ public class BasePage {
 		return getElementText(driver, BasePageUI.PAGE_HEADER);
 	}
 
-	public void sendKeysToSearchBar(WebDriver driver, String searchValue) {
+	public ProductListingPageObject sendKeysToSearchBarAndPressEnter(WebDriver driver, String searchValue) {
 		waitForElementVisible(driver, BasePageUI.SEARCH_BAR);
 		sendKeysToElement(driver, BasePageUI.SEARCH_BAR, searchValue);
+		pressKeyOnElement(driver, BasePageUI.SEARCH_BAR, Keys.ENTER);
+		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 
 	public void clickMyAccountSidebarLinkByLabel() {
 
 	}
 
-	/*
-	 * public void clickFooterLinkByLabel(WebDriver driver, String label) {
-	 * waitForElementClickable(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
-	 * clickElement(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label); switch (label) {
-	 * case "Search Terms": return
-	 * PageGeneratorManager.getPopularSearchTermsPage(driver); case
-	 * "Privacy and Cookie Policy": return
-	 * PageGeneratorManager.getPrivacyPolicyPage(driver); case "Advanced Search":
-	 * return PageGeneratorManager.getAdvancedSearchPage(driver); case
-	 * "Orders and Returns": return
-	 * PageGeneratorManager.getOrdersAndReturnsPage(driver); default: throw new
-	 * RuntimeException("The lable does not exist."); }
-	 * 
-	 * }
-	 */
+	public BasePage clickFooterLinkByLabel(WebDriver driver, String label) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
+		clickElement(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
+		switch (label) {
+		case "Search Terms":
+			return PageGeneratorManager.getPopularSearchTermsPage(driver);
+		case "Advanced Search":
+			return PageGeneratorManager.getAdvancedSearchPage(driver);
+		case "Orders and Returns":
+			return PageGeneratorManager.getOrdersAndReturnsPage(driver);
+		default:
+			throw new RuntimeException("The lable does not exist.");
+		}
+
+	}
 
 }
