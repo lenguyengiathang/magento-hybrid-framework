@@ -13,7 +13,10 @@
 	<test name="Run on Chrome" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.SearchProducts" />
+			<class name="com.magento.user.Register" />			
+			<class name="com.magento.commons.Register" />
+			<class name="com.magento.user.Login" />
+			<!-- <class name="com.magento.user.SearchProducts" /> -->
 		</classes>
 	</test>
 

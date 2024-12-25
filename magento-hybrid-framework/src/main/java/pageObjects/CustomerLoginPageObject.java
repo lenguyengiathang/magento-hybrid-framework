@@ -31,6 +31,13 @@ public class CustomerLoginPageObject extends BasePage {
 		return PageGeneratorManager.getMyAccountPage(driver);
 	}
 
+	public MyAccountPageObject logInAsRegisteredUser(String email, String password) {
+		sendKeysToEmailTextbox(email);
+		sendKeysToPasswordTextbox(password);
+		clickSignInButton();
+		return PageGeneratorManager.getMyAccountPage(driver);
+	}
+
 	public CreateNewCustomerAccountPageObject clickCreateNewAccountButton() {
 		waitForElementClickable(driver, CustomerLoginPageUI.CREATE_AN_ACCOUNT_BUTTON);
 		clickElement(driver, CustomerLoginPageUI.CREATE_AN_ACCOUNT_BUTTON);

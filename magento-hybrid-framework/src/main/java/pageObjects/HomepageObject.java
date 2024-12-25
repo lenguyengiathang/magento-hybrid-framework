@@ -25,4 +25,10 @@ public class HomepageObject extends BasePage {
 		return PageGeneratorManager.getCustomerLoginPage(driver);
 
 	}
+
+	public HomepageObject getSignedOutMessage() {
+		waitForElementVisible(driver, HomepageUI.SIGNED_OUT_MESSAGE);
+		getElementText(driver, HomepageUI.SIGNED_OUT_MESSAGE);
+		return PageGeneratorManager.getHomepage(driver);
+	}
 }

@@ -1,6 +1,8 @@
 package commons;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -23,6 +25,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObjects.HomepageObject;
 import pageObjects.ProductListingPageObject;
 import pageUIs.BasePageUI;
+import pageUIs.MyAccountPageUI;
+import pageUIs.ProductListingPageUI;
 
 public class BasePage {
 
@@ -386,6 +390,11 @@ public class BasePage {
 		action.moveToElement(getWebElement(driver, locatorType)).perform();
 	}
 
+	public void hoverOverElement(WebDriver driver, String locatorType, String... dynamicValues) {
+		Actions action = new Actions(driver);
+		action.moveToElement(getWebElement(driver, getDynamicXpath(locatorType, dynamicValues))).perform();
+	}
+
 	public void pressKeyOnElement(WebDriver driver, String locatorType, Keys key) {
 		Actions action = new Actions(driver);
 		action.sendKeys(getWebElement(driver, locatorType), key).perform();
@@ -414,6 +423,42 @@ public class BasePage {
 		}
 		return (String) jsExecutor.executeScript("return $(document.evaluate(\"" + xpathLocator
 				+ "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).val()");
+	}
+
+	public boolean isDataSortedAscending(WebDriver driver, String locator) {
+		List<String> list = new ArrayList<String>();
+		List<WebElement> elements = getWebElements(driver, locator);
+
+		for (WebElement element : elements) {
+			list.add(element.getText());
+		}
+
+		List<String> sortedList = new ArrayList<String>();
+
+		for (String element : list) {
+			sortedList.add(element);
+		}
+
+		Collections.sort(sortedList);
+		return list.equals(sortedList);
+	}
+
+	public boolean isDataSortedDescending(WebDriver driver, String locator) {
+		List<String> list = new ArrayList<String>();
+		List<WebElement> elements = getWebElements(driver, locator);
+
+		for (WebElement element : elements) {
+			list.add(element.getText());
+		}
+
+		List<String> sortedList = new ArrayList<String>();
+
+		for (String element : list) {
+			sortedList.add(element);
+		}
+
+		Collections.reverse(sortedList);
+		return list.equals(sortedList);
 	}
 
 	public void scrollToBottom(WebDriver driver) {
@@ -539,6 +584,53 @@ public class BasePage {
 		return getElementText(driver, BasePageUI.PAGE_HEADER);
 	}
 
+	public String getSearchBarPlaceholder(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.SEARCH_BAR);
+		return getElementAttribute(driver, BasePageUI.SEARCH_BAR, "placeholder");
+	}
+
+	public void sendKeysToSearchBar(WebDriver driver, String searchValue) {
+		waitForElementVisible(driver, BasePageUI.SEARCH_BAR);
+		sendKeysToElement(driver, BasePageUI.SEARCH_BAR, searchValue);
+	}
+
+	public boolean areSearchSuggestionsDisplayedCorrectly(WebDriver driver, String searchValue) {
+		waitForAllElementsVisible(driver, BasePageUI.SEARCH_SUGGESTION_TEXT);
+		List<WebElement> suggestionTexts = getWebElements(driver, BasePageUI.SEARCH_SUGGESTION_TEXT);
+
+		for (WebElement suggestionText : suggestionTexts) {
+			if (!suggestionText.getText().toLowerCase().contains(searchValue)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isSuggestionCountMatchingProductCount(WebDriver driver, String searchValue) {
+		sendKeysToSearchBar(driver, searchValue);
+		waitForAllElementsVisible(driver, BasePageUI.SEARCH_SUGGESTION);
+
+		List<WebElement> suggestions = getWebElements(driver, BasePageUI.SEARCH_SUGGESTION);
+		List<WebElement> suggestionNumbers = getWebElements(driver, BasePageUI.SEARCH_SUGGESTION_NUMBER);
+
+		for (int i = 0; i < suggestions.size(); i++) {
+			String suggestionNumber = suggestionNumbers.get(i).getText();
+			suggestions.get(i).click();
+			waitForElementVisible(driver, ProductListingPageUI.TOTAL_NUMBER_OF_ITEMS);
+			String totalProducts = getElementText(driver, ProductListingPageUI.TOTAL_NUMBER_OF_ITEMS);
+
+			if (!suggestionNumber.equals(totalProducts)) {
+				return false;
+			}
+			sendKeysToSearchBar(driver, searchValue);
+			waitForAllElementsVisible(driver, BasePageUI.SEARCH_SUGGESTION);
+			suggestions = getWebElements(driver, BasePageUI.SEARCH_SUGGESTION);
+			suggestionNumbers = getWebElements(driver, BasePageUI.SEARCH_SUGGESTION_NUMBER);
+		}
+
+		return true;
+	}
+
 	public ProductListingPageObject sendKeysToSearchBarAndPressEnter(WebDriver driver, String searchValue) {
 		waitForElementVisible(driver, BasePageUI.SEARCH_BAR);
 		sendKeysToElement(driver, BasePageUI.SEARCH_BAR, searchValue);
@@ -546,13 +638,61 @@ public class BasePage {
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 
-	public void clickMyAccountSidebarLinkByLabel() {
+	public ProductListingPageObject clickNavigationBarDropdownLinkByLabel(WebDriver driver, String dropdownLabel,
+			String itemLabel) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
+		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_FIRST_LEVEL_ITEM_BY_LABEL,
+				itemLabel);
+		clickElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_FIRST_LEVEL_ITEM_BY_LABEL, itemLabel);
+		return PageGeneratorManager.getProductListingPageObject(driver);
+	}
 
+	public ProductListingPageObject clickNavigationBarDropdownLinkByLabel(WebDriver driver, String dropdownLabel,
+			String firstLevelItemLabel, String secondLevelItemLabel) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
+		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_FIRST_LEVEL_ITEM_BY_LABEL,
+				firstLevelItemLabel);
+		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_FIRST_LEVEL_ITEM_BY_LABEL,
+				firstLevelItemLabel);
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_SECOND_LEVEL_ITEM_BY_LABEL,
+				secondLevelItemLabel);
+		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_SECOND_LEVEL_ITEM_BY_LABEL,
+				secondLevelItemLabel);
+		return PageGeneratorManager.getProductListingPageObject(driver);
+	}
+
+	public BasePage clickMyAccountSidebarLinkByLabel(WebDriver driver, String label) {
+		waitForElementClickable(driver, MyAccountPageUI.DYNAMIC_SIDEBAR_LINK_BY_LABEL, label);
+		clickElement(driver, MyAccountPageUI.DYNAMIC_SIDEBAR_LINK_BY_LABEL, label);
+
+		switch (label) {
+		case "My Account":
+			return PageGeneratorManager.getMyAccountPage(driver);
+		case "My Orders":
+			return PageGeneratorManager.getMyOrdersPage(driver);
+		case "My Downloadable Products":
+			return PageGeneratorManager.getMyDownloadableProductsPage(driver);
+		case "My Wish List":
+			return PageGeneratorManager.getMyWishlistPage(driver);
+		case "Address Book":
+			return PageGeneratorManager.getAddressBookPage(driver);
+		case "Account Information":
+			return PageGeneratorManager.getAccountInformationPage(driver);
+		case "Stored Payment Methods":
+			return PageGeneratorManager.getStoredPaymentMethodsPage(driver);
+		case "My Product Reviews":
+			return PageGeneratorManager.getMyProductReviewsPage(driver);
+		default:
+			throw new RuntimeException("Page name is invalid");
+		}
 	}
 
 	public BasePage clickFooterLinkByLabel(WebDriver driver, String label) {
 		waitForElementClickable(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
 		clickElement(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
+
 		switch (label) {
 		case "Search Terms":
 			return PageGeneratorManager.getPopularSearchTermsPage(driver);
@@ -561,7 +701,7 @@ public class BasePage {
 		case "Orders and Returns":
 			return PageGeneratorManager.getOrdersAndReturnsPage(driver);
 		default:
-			throw new RuntimeException("The lable does not exist.");
+			throw new RuntimeException("Page name is invalid");
 		}
 
 	}

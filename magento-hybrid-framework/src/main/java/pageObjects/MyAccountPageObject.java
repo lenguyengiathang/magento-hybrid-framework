@@ -19,9 +19,14 @@ public class MyAccountPageObject extends BasePage {
 		return getElementText(driver, BasePageUI.MESSAGE);
 	}
 
+	public String getAccountInformationSavedSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MESSAGE);
+		return getElementText(driver, BasePageUI.MESSAGE);
+	}
+
 	public void clickCustomerNameDropdown() {
-		waitForElementClickable(driver, MyAccountPageUI.CUSTOMER_NAME_DROPDOWN);
-		clickElement(driver, MyAccountPageUI.CUSTOMER_NAME_DROPDOWN);
+		waitForElementClickable(driver, MyAccountPageUI.ACCOUNT_NAME_DROPDOWN);
+		clickElement(driver, MyAccountPageUI.ACCOUNT_NAME_DROPDOWN);
 	}
 
 	public HomepageObject clickMyAccountDropdownLink() {
@@ -43,19 +48,22 @@ public class MyAccountPageObject extends BasePage {
 		return PageGeneratorManager.getHomepage(driver);
 	}
 
-	public String getUserFullName() {
+	public String getFullName() {
 		waitForElementVisible(driver, MyAccountPageUI.FULL_NAME_AND_EMAIL);
 		String fullNameAndEmail = getElementText(driver, MyAccountPageUI.FULL_NAME_AND_EMAIL);
 		return fullNameAndEmail.split("\n")[0];
 	}
 
-	public String getUserEmail() {
+	public String getEmail() {
 		waitForElementVisible(driver, MyAccountPageUI.FULL_NAME_AND_EMAIL);
 		String fullNameAndEmail = getElementText(driver, MyAccountPageUI.FULL_NAME_AND_EMAIL);
 		return fullNameAndEmail.split("\n")[1];
 	}
 
-	public void clickEditContactInformationLink() {
-
+	public AccountInformationPageObject clickEditContactInformationLink() {
+		waitForElementClickable(driver, MyAccountPageUI.EDIT_CONTACT_INFORMARION_LINK);
+		clickElement(driver, MyAccountPageUI.EDIT_CONTACT_INFORMARION_LINK);
+		return new AccountInformationPageObject(driver);
 	}
+
 }

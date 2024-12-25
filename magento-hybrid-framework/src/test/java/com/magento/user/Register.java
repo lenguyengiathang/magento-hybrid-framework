@@ -16,7 +16,7 @@ import pageObjects.HomepageObject;
 import pageObjects.MyAccountPageObject;
 import utilities.DataHelper;
 
-public class CreateNewCustomerAccount extends BaseTest {
+public class Register extends BaseTest {
 	@Parameters("browser")
 	@BeforeClass
 	public void beforeClass(String browser) {
@@ -32,14 +32,14 @@ public class CreateNewCustomerAccount extends BaseTest {
 	}
 
 	@Test(priority = 1)
-	public void Register_01_Verify_Create_New_Customer_Account_Page_Navigation() {
+	public void Register_01_Create_New_Customer_Account_Page_Navigation() {
 		createNewCustomerAccountPage = homepage.clickCreateAnAccountLink();
 
 		Assert.assertEquals(basePage.getPageHeader(driver), "Create New Customer Account");
 	}
 
 	@Test(priority = 2)
-	public void Register_02_Verify_Create_New_Customer_Account_Page_Navigation() {
+	public void Register_02_Create_New_Customer_Account_Page_Navigation() {
 		homepage = createNewCustomerAccountPage.clickLumaLogo(driver);
 		customerLoginPage = homepage.clickSignInLink();
 		createNewCustomerAccountPage = customerLoginPage.clickCreateNewAccountButton();
@@ -48,7 +48,7 @@ public class CreateNewCustomerAccount extends BaseTest {
 	}
 
 	@Test(priority = 3)
-	public void Register_03_Create_An_Account_Empty_Data() {
+	public void Register_03_Error_Message_Empty_Data() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox("");
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox("");
 		createNewCustomerAccountPage.sendKeysToEmailTextbox("");
@@ -64,7 +64,7 @@ public class CreateNewCustomerAccount extends BaseTest {
 	}
 
 	@Test(priority = 4)
-	public void Register_04_Create_An_Account_Invalid_Email_Format() {
+	public void Register_04_Error_Message_Invalid_Email_Format() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
 		createNewCustomerAccountPage.sendKeysToEmailTextbox("abcdef");
@@ -77,7 +77,7 @@ public class CreateNewCustomerAccount extends BaseTest {
 	}
 
 	@Test(priority = 5)
-	public void Register_05_Create_An_Account_Incorrect_Confirmation_Password() {
+	public void Register_05_Error_Message_Incorrect_Confirmation_Password() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
 		createNewCustomerAccountPage.sendKeysToEmailTextbox(email);
@@ -90,7 +90,7 @@ public class CreateNewCustomerAccount extends BaseTest {
 	}
 
 	@Test(priority = 6)
-	public void Register_06_Create_An_Account_Password_Less_Than_Minimum_Length() {
+	public void Register_06_Error_Message_Password_Less_Than_Minimum_Length() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
 		createNewCustomerAccountPage.sendKeysToEmailTextbox(email);
@@ -103,7 +103,7 @@ public class CreateNewCustomerAccount extends BaseTest {
 	}
 
 	@Test(priority = 7)
-	public void Register_07_Create_An_Account_Password_Meets_Minimum_Length_And_Two_Character_Classes() {
+	public void Register_07_Error_Message_Password_Meets_Minimum_Length_And_Two_Character_Classes() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
 		createNewCustomerAccountPage.sendKeysToEmailTextbox(email);
@@ -116,7 +116,7 @@ public class CreateNewCustomerAccount extends BaseTest {
 	}
 
 	@Test(priority = 8)
-	public void Register_08_Create_An_Account_Password_Less_Than_Minimum_Length_And_Three_Character_Classes() {
+	public void Register_08_Error_Message_Password_Less_Than_Minimum_Length_And_Three_Character_Classes() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
 		createNewCustomerAccountPage.sendKeysToEmailTextbox(email);
@@ -129,35 +129,48 @@ public class CreateNewCustomerAccount extends BaseTest {
 	}
 
 	@Test(priority = 9)
-	public void Register_09_Create_Weak_Password() {
+	public void Register_09_Error_Message_Password_Matches_Email_Address() {
+		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
+		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
+		createNewCustomerAccountPage.sendKeysToEmailTextbox(email);
+		createNewCustomerAccountPage.sendKeysToPasswordTextbox(email);
+		createNewCustomerAccountPage.sendKeysToConfirmPasswordTextbox(email);
+		createNewCustomerAccountPage.clickCreateAnAccountButton();
+
+		Assert.assertEquals(createNewCustomerAccountPage.getPasswordErrorMessage(),
+				"The password can't be the same as the email address. Create a new password and try again.");
+	}
+
+	@Test(priority = 10)
+	public void Register_10_Weak_Password_Strength_Message() {
 		createNewCustomerAccountPage.sendKeysToPasswordTextbox("abc");
 
 		Assert.assertEquals(createNewCustomerAccountPage.getPasswordStrengthMessage(), "Weak");
 	}
 
-	@Test(priority = 10)
-	public void Register_10_Create_Medium_Password() {
+	@Test(priority = 11)
+	public void Register_11_Medium_Password_Strength_Message() {
 		createNewCustomerAccountPage.sendKeysToPasswordTextbox("abc1234*");
 
 		Assert.assertEquals(createNewCustomerAccountPage.getPasswordStrengthMessage(), "Medium");
 	}
 
-	@Test(priority = 11)
-	public void Register_11_Create_Strong_Password() {
+	@Test(priority = 12)
+	public void Register_12_Strong_Password_Strength_Message() {
 		createNewCustomerAccountPage.sendKeysToPasswordTextbox("abcd1234*");
 
 		Assert.assertEquals(createNewCustomerAccountPage.getPasswordStrengthMessage(), "Strong");
 	}
 
-	@Test(priority = 12)
-	public void Register_12_Create_Very_Strong_Password() {
+	@Test(priority = 13)
+	public void Register_13_Very_Strong_Password_Strength_Message() {
 		createNewCustomerAccountPage.sendKeysToPasswordTextbox("Abcd1234@!*&%");
 
 		Assert.assertEquals(createNewCustomerAccountPage.getPasswordStrengthMessage(), "Very Strong");
 	}
 
-	@Test(priority = 13)
-	public void Register_13_Create_An_Account_Valid_Data() {
+	@Test(priority = 14)
+	public void Register_14_Create_An_Account_Valid_Data() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
 		createNewCustomerAccountPage.sendKeysToEmailTextbox(email);
@@ -167,12 +180,12 @@ public class CreateNewCustomerAccount extends BaseTest {
 
 		Assert.assertEquals(myAccountPage.getRegisterSuccessfulMessage(),
 				"Thank you for registering with Main Website Store.");
-		Assert.assertEquals(myAccountPage.getUserFullName(), firstName + " " + lastName);
-		Assert.assertEquals(myAccountPage.getUserEmail(), email);
+		Assert.assertEquals(myAccountPage.getFullName(), firstName + " " + lastName);
+		Assert.assertEquals(myAccountPage.getEmail(), email);
 	}
 
-	@Test(dependsOnMethods = "Register_13_Create_An_Account_Valid_Data")
-	public void Register_14_Create_An_Account_Existing_Email() {
+	@Test(dependsOnMethods = "Register_14_Create_An_Account_Valid_Data")
+	public void Register_15_Create_An_Account_Existing_Email() {
 		myAccountPage.clickCustomerNameDropdown();
 		homepage = myAccountPage.clickSignOutDropdownLink();
 		createNewCustomerAccountPage = homepage.clickCreateAnAccountLink();
@@ -181,7 +194,7 @@ public class CreateNewCustomerAccount extends BaseTest {
 		createNewCustomerAccountPage.sendKeysToEmailTextbox(email);
 		createNewCustomerAccountPage.sendKeysToPasswordTextbox(password);
 		createNewCustomerAccountPage.sendKeysToConfirmPasswordTextbox(password);
-		myAccountPage = createNewCustomerAccountPage.clickCreateAnAccountButton();
+		createNewCustomerAccountPage.clickCreateAnAccountButton();
 
 		Assert.assertEquals(createNewCustomerAccountPage.getExistingEmailErrorMessage(),
 				"There is already an account with this email address. If you are sure that it is your email address, click here to get your password and access your account.");
