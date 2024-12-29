@@ -3,6 +3,7 @@ package pageObjects;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import commons.GlobalConstants;
 import pageUIs.BasePageUI;
 import pageUIs.ProductDetailsPageUI;
 
@@ -13,14 +14,34 @@ public class ProductDetailsPageObject extends BasePage {
 		this.driver = driver;
 	}
 
+	public Float getProductFinalPrice() {
+		waitForElementVisible(driver, ProductDetailsPageUI.PRODUCT_FINAL_PRICE);
+		return Float.parseFloat(getElementText(driver, ProductDetailsPageUI.PRODUCT_FINAL_PRICE).replace("$", ""));
+	}
+
+	public Float getProductRegularPrice() {
+		waitForElementVisible(driver, ProductDetailsPageUI.PRODUCT_REGULAR_PRICE);
+		return Float.parseFloat(getElementText(driver, ProductDetailsPageUI.PRODUCT_REGULAR_PRICE).replace("$", ""));
+	}
+
+	public void clickSizeButtonByLabel(String label) {
+		waitForElementClickable(driver, ProductDetailsPageUI.DYNAMIC_PRODUCT_SIZE_BUTTON_BY_LABEL, label);
+		clickElementByJS(driver, ProductDetailsPageUI.DYNAMIC_PRODUCT_SIZE_BUTTON_BY_LABEL, label);
+	}
+
+	public void clickColorButtonByLabel(String label) {
+		waitForElementClickable(driver, ProductDetailsPageUI.DYNAMIC_PRODUCT_COLOR_BUTTON_BY_LABEL, label);
+		clickElementByJS(driver, ProductDetailsPageUI.DYNAMIC_PRODUCT_COLOR_BUTTON_BY_LABEL, label);
+	}
+
 	public void clickAddReviewLink() {
 		waitForElementClickable(driver, ProductDetailsPageUI.ADD_REVIEW_LINK);
-		clickElement(driver, ProductDetailsPageUI.ADD_REVIEW_LINK);
+		clickElementByJS(driver, ProductDetailsPageUI.ADD_REVIEW_LINK);
 	}
 
 	public void clickViewReviewsLink() {
 		waitForElementClickable(driver, ProductDetailsPageUI.VIEW_REVIEWS_LINK);
-		clickElement(driver, ProductDetailsPageUI.VIEW_REVIEWS_LINK);
+		clickElementByJS(driver, ProductDetailsPageUI.VIEW_REVIEWS_LINK);
 	}
 
 	public void sendKeysToQuantityTextbox(String quantity) {
@@ -30,17 +51,18 @@ public class ProductDetailsPageObject extends BasePage {
 
 	public void clickAddToCartButton() {
 		waitForElementClickable(driver, ProductDetailsPageUI.ADD_TO_CART_BUTTON);
-		clickElement(driver, ProductDetailsPageUI.ADD_TO_CART_BUTTON);
+		clickElementByJS(driver, ProductDetailsPageUI.ADD_TO_CART_BUTTON);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	public void clickAddToWishlistLink() {
 		waitForElementClickable(driver, ProductDetailsPageUI.ADD_TO_WISHLIST_LINK);
-		clickElement(driver, ProductDetailsPageUI.ADD_TO_WISHLIST_LINK);
+		clickElementByJS(driver, ProductDetailsPageUI.ADD_TO_WISHLIST_LINK);
 	}
 
 	public void clickAddToCompareLink() {
 		waitForElementClickable(driver, ProductDetailsPageUI.ADD_TO_COMPARE_LINK);
-		clickElement(driver, ProductDetailsPageUI.ADD_TO_COMPARE_LINK);
+		clickElementByJS(driver, ProductDetailsPageUI.ADD_TO_COMPARE_LINK);
 	}
 
 	public String getProductName() {
@@ -60,7 +82,7 @@ public class ProductDetailsPageObject extends BasePage {
 
 	public void clickRatingStar(String number) {
 		waitForElementClickable(driver, ProductDetailsPageUI.DYNAMIC_RATING_STAR, number);
-		clickElement(driver, ProductDetailsPageUI.DYNAMIC_RATING_STAR, number);
+		clickElementByJS(driver, ProductDetailsPageUI.DYNAMIC_RATING_STAR, number);
 	}
 
 	public void sendKeysToNicknameTextbox(String nickname) {

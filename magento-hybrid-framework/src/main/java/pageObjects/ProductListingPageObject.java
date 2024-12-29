@@ -6,7 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import commons.BasePage;
+import commons.GlobalConstants;
 import commons.PageGeneratorManager;
+import pageUIs.BasePageUI;
 import pageUIs.ProductListingPageUI;
 
 public class ProductListingPageObject extends BasePage {
@@ -18,7 +20,7 @@ public class ProductListingPageObject extends BasePage {
 
 	public void clickShoppingFilterDropdownByLabel(String filterTitle) {
 		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_FILTER_TITLE_BY_LABEL, filterTitle);
-		clickElement(driver, ProductListingPageUI.DYNAMIC_FILTER_TITLE_BY_LABEL, filterTitle);
+		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_FILTER_TITLE_BY_LABEL, filterTitle);
 	}
 
 	public String getShoppingFilterOptionProductCount() {
@@ -87,11 +89,11 @@ public class ProductListingPageObject extends BasePage {
 	}
 
 	public boolean areProductSKUsDisplayedCorrectly(String searchValue) {
-		waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_ITEM);
-		int numberOfProducts = getNumberOfElements(driver, ProductListingPageUI.PRODUCT_ITEM);
+		waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_CARD);
+		int numberOfProducts = getNumberOfElements(driver, ProductListingPageUI.PRODUCT_CARD);
 
 		for (int i = 0; i < numberOfProducts; i++) {
-			List<WebElement> products = getWebElements(driver, ProductListingPageUI.PRODUCT_ITEM);
+			List<WebElement> products = getWebElements(driver, ProductListingPageUI.PRODUCT_CARD);
 			WebElement product = products.get(i);
 			product.click();
 			String sku = PageGeneratorManager.getProductDetailsPageObject(driver).getProductSKU();
@@ -99,19 +101,19 @@ public class ProductListingPageObject extends BasePage {
 				return false;
 			}
 			backToPage(driver);
-			waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_ITEM);
+			waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_CARD);
 		}
 		return true;
 	}
 
 	public boolean areProductDescriptionsDisplayedCorrectly(String searchValue) {
-		waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_ITEM);
-		int numberOfProducts = getNumberOfElements(driver, ProductListingPageUI.PRODUCT_ITEM);
+		waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_CARD);
+		int numberOfProducts = getNumberOfElements(driver, ProductListingPageUI.PRODUCT_CARD);
 
 		String[] searchWords = searchValue.toLowerCase().split(" ");
 
 		for (int i = 0; i < numberOfProducts; i++) {
-			List<WebElement> products = getWebElements(driver, ProductListingPageUI.PRODUCT_ITEM);
+			List<WebElement> products = getWebElements(driver, ProductListingPageUI.PRODUCT_CARD);
 			WebElement currentProduct = products.get(i);
 			currentProduct.click();
 			String description = PageGeneratorManager.getProductDetailsPageObject(driver).getProductDescription();
@@ -123,7 +125,7 @@ public class ProductListingPageObject extends BasePage {
 				}
 			}
 			backToPage(driver);
-			waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_ITEM);
+			waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_CARD);
 		}
 		return true;
 	}
@@ -162,6 +164,61 @@ public class ProductListingPageObject extends BasePage {
 		} else {
 			return false;
 		}
+	}
+
+	public void clickAddToCartButtonByProductName(String productName) {
+		waitForElementVisible(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		hoverOverElement(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME, productName);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+	}
+
+	public void clickSizeButtonByProductNameAndLAbel(String productName, String label) {
+		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
+				label);
+		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
+				label);
+	}
+
+	public void clickColorButtonByProductNameAndLAbel(String productName, String label) {
+		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL,
+				productName, label);
+		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
+				label);
+	}
+
+	public void addProductWithOptionsToCart(String productName, String sizeLabel, String colorLabel) {
+		clickSizeButtonByProductNameAndLAbel(productName, sizeLabel);
+		clickColorButtonByProductNameAndLAbel(productName, colorLabel);
+		clickAddToCartButtonByProductName(productName);
+	}
+
+	public void addProductWithNoOptionsToCart(String productName) {
+		clickAddToCartButtonByProductName(productName);
+	}
+
+	public String getAddedToCartSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MESSAGE);
+		return getElementText(driver, BasePageUI.MESSAGE);
+	}
+
+	public ShoppingCartPageObject clickViewAndEditCartLink() {
+		waitForElementClickable(driver, BasePageUI.VIEW_AND_EDIT_CART_LINK);
+		clickElementByJS(driver, BasePageUI.VIEW_AND_EDIT_CART_LINK);
+		return PageGeneratorManager.getShoppingCartPageObject(driver);
+	}
+
+	public ShoppingCartPageObject clickShoppingCartLink() {
+		waitForElementClickable(driver, ProductListingPageUI.SHOPPING_CART_LINK);
+		clickElementByJS(driver, ProductListingPageUI.SHOPPING_CART_LINK);
+		return PageGeneratorManager.getShoppingCartPageObject(driver);
+	}
+
+	public ProductDetailsPageObject clickProductLinkByName(String productName) {
+		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		return PageGeneratorManager.getProductDetailsPageObject(driver);
 	}
 
 }

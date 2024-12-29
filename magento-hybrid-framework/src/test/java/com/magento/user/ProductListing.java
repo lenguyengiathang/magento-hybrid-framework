@@ -7,7 +7,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import commons.BasePage;
 import commons.BaseTest;
 import commons.PageGeneratorManager;
 import pageObjects.HomepageObject;
@@ -18,13 +17,13 @@ public class ProductListing extends BaseTest {
 	@BeforeClass
 	public void beforeClass(String browser) {
 		driver = getBrowserDriver(browser);
-		basePage = BasePage.getBasePageObject();
 		homepage = PageGeneratorManager.getHomepage(driver);
 	}
 
 	@Test
 	public void Product_Listing_01_Filter_With_Shopping_Options() {
-		productListingPage = basePage.clickNavigationBarDropdownLinkByLabel(driver, "Women", "Tops", "Tees");
+		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", "Tops",
+				"Jackets");
 		productListingPage.clickShoppingFilterDropdownByLabel("Style");
 		String teeProducts = productListingPage.getShoppingFilterOptionProductCount();
 		productListingPage.clickShoppingFilterOptionByLabel("Tee");
@@ -38,7 +37,6 @@ public class ProductListing extends BaseTest {
 	}
 
 	private WebDriver driver;
-	private BasePage basePage;
 	private HomepageObject homepage;
 	private ProductListingPageObject productListingPage;
 }

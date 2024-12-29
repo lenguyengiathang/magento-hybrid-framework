@@ -7,7 +7,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import commons.BasePage;
 import commons.BaseTest;
 import commons.PageGeneratorManager;
 import pageObjects.CreateNewCustomerAccountPageObject;
@@ -21,7 +20,6 @@ public class Register extends BaseTest {
 	@BeforeClass
 	public void beforeClass(String browser) {
 		driver = getBrowserDriver(browser);
-		basePage = BasePage.getBasePageObject();
 		homepage = PageGeneratorManager.getHomepage(driver);
 
 		data = DataHelper.getDataHelper();
@@ -35,7 +33,7 @@ public class Register extends BaseTest {
 	public void Register_01_Create_New_Customer_Account_Page_Navigation() {
 		createNewCustomerAccountPage = homepage.clickCreateAnAccountLink();
 
-		Assert.assertEquals(basePage.getPageHeader(driver), "Create New Customer Account");
+		Assert.assertEquals(createNewCustomerAccountPage.getPageHeader(driver), "Create New Customer Account");
 	}
 
 	@Test(priority = 2)
@@ -44,7 +42,7 @@ public class Register extends BaseTest {
 		customerLoginPage = homepage.clickSignInLink();
 		createNewCustomerAccountPage = customerLoginPage.clickCreateNewAccountButton();
 
-		Assert.assertEquals(basePage.getPageHeader(driver), "Create New Customer Account");
+		Assert.assertEquals(createNewCustomerAccountPage.getPageHeader(driver), "Create New Customer Account");
 	}
 
 	@Test(priority = 3)
@@ -186,8 +184,8 @@ public class Register extends BaseTest {
 
 	@Test(dependsOnMethods = "Register_14_Create_An_Account_Valid_Data")
 	public void Register_15_Create_An_Account_Existing_Email() {
-		myAccountPage.clickCustomerNameDropdown();
-		homepage = myAccountPage.clickSignOutDropdownLink();
+		myAccountPage.clickCustomerNameDropdown(driver);
+		homepage = myAccountPage.clickSignOutDropdownLink(driver);
 		createNewCustomerAccountPage = homepage.clickCreateAnAccountLink();
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(data.getFirstName());
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(data.getLastName());
@@ -208,7 +206,6 @@ public class Register extends BaseTest {
 	private WebDriver driver;
 	private DataHelper data;
 	private String firstName, lastName, email, password;
-	private BasePage basePage;
 	private HomepageObject homepage;
 	private CreateNewCustomerAccountPageObject createNewCustomerAccountPage;
 	private CustomerLoginPageObject customerLoginPage;

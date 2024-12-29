@@ -313,23 +313,23 @@ public class BasePage {
 		return getWebElement(driver, locatorType).isEnabled();
 	}
 
-	public void selectItemDefaultDropdown(WebDriver driver, String locatorType, String textItem) {
+	public void selectOptionDefaultDropdown(WebDriver driver, String locatorType, String optionLabel) {
 		Select select = new Select(getWebElement(driver, locatorType));
-		select.selectByVisibleText(textItem);
+		select.selectByVisibleText(optionLabel);
 	}
 
-	public void selectItemDefaultDropdown(WebDriver driver, String locatorType, String textItem,
+	public void selectOptionDefaultDropdown(WebDriver driver, String locatorType, String optionLabel,
 			String... dynamicValues) {
 		Select select = new Select(getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)));
-		select.selectByVisibleText(textItem);
+		select.selectByVisibleText(optionLabel);
 	}
 
-	public void getSelectedItemDefaultDropdown(WebDriver driver, String locatorType) {
+	public void getSelectedOptionDefaultDropdown(WebDriver driver, String locatorType) {
 		Select select = new Select(getWebElement(driver, locatorType));
 		select.getFirstSelectedOption();
 	}
 
-	public void getSelectedItemDefaultDropdown(WebDriver driver, String locatorType, String... dynamicValues) {
+	public void getSelectedOptionDefaultDropdown(WebDriver driver, String locatorType, String... dynamicValues) {
 		Select select = new Select(getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)));
 		select.getFirstSelectedOption();
 	}
@@ -339,17 +339,17 @@ public class BasePage {
 		return select.isMultiple();
 	}
 
-	public void selectItemCustomDropdown(WebDriver driver, String xpathParentLocator, String xpathItemLocator,
-			String textItem) {
-		getWebElement(driver, xpathParentLocator).click();
+	public void selectOptionCustomDropdown(WebDriver driver, String dropdownLocator, String optionLocator,
+			String optionLabel) {
+		getWebElement(driver, dropdownLocator).click();
 		sleepInSecond(1);
 
 		WebDriverWait explicitWait = new WebDriverWait(driver, longTimeout);
 		List<WebElement> allItems = explicitWait
-				.until(ExpectedConditions.presenceOfAllElementsLocatedBy(getByLocator(xpathItemLocator)));
+				.until(ExpectedConditions.presenceOfAllElementsLocatedBy(getByLocator(optionLocator)));
 
 		for (WebElement item : allItems) {
-			if (item.getText().trim().equals(textItem)) {
+			if (item.getText().trim().equals(optionLabel)) {
 				JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 				jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
 				sleepInSecond(1);
@@ -575,7 +575,7 @@ public class BasePage {
 
 	public HomepageObject clickLumaLogo(WebDriver driver) {
 		waitForElementClickable(driver, BasePageUI.LUMA_LOGO);
-		clickElement(driver, BasePageUI.LUMA_LOGO);
+		clickElementByJS(driver, BasePageUI.LUMA_LOGO);
 		return PageGeneratorManager.getHomepage(driver);
 	}
 
@@ -638,34 +638,95 @@ public class BasePage {
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 
-	public ProductListingPageObject clickNavigationBarDropdownLinkByLabel(WebDriver driver, String dropdownLabel,
-			String itemLabel) {
+	public void clickShoppingCartIcon(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.SHOPPING_CART_ICON);
+		clickElementByJS(driver, BasePageUI.SHOPPING_CART_ICON);
+	}
+
+	public Float getCartSubtotal(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.CART_SUBTOTAL);
+		return Float.parseFloat(getElementText(driver, BasePageUI.CART_SUBTOTAL));
+	}
+
+	public void clickMiniCartCrossIcon(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.MINI_CART_CROSS_ICON);
+		clickElementByJS(driver, BasePageUI.MINI_CART_CROSS_ICON);
+	}
+
+	public boolean isMiniCartNotDisplayed(WebDriver driver) {
+		return isElementNotDisplayed(driver, BasePageUI.MINI_CART_BLOCK);
+	}
+
+	public String getEmptyShoppingCartInfoMessage(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.MINI_CART_EMPTY_SHOPPING_CART_INFO_MESSAGE);
+		return getElementText(driver, BasePageUI.MINI_CART_EMPTY_SHOPPING_CART_INFO_MESSAGE);
+	}
+
+	public void clickSeeDetailsCollapsibleHeaderByProductName(WebDriver driver, String productName) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_SEE_DETAILS_COLLAPSIBLE_HEADER_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, BasePageUI.DYNAMIC_SEE_DETAILS_COLLAPSIBLE_HEADER_BY_PRODUCT_NAME, productName);
+	}
+
+	public String getSizeValueByProductName(WebDriver driver, String productName) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_SIZE_VALUE_BY_PRODUCT_NAME, productName);
+		return getElementText(driver, BasePageUI.DYNAMIC_SIZE_VALUE_BY_PRODUCT_NAME, productName);
+	}
+
+	public String getColorValueByProductName(WebDriver driver, String productName) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_COLOR_VALUE_BY_PRODUCT_NAME, productName);
+		return getElementText(driver, BasePageUI.DYNAMIC_COLOR_VALUE_BY_PRODUCT_NAME, productName);
+	}
+
+	public ProductListingPageObject clickNavigationBarDropdownMultiLevelItemLinkByLabels(WebDriver driver,
+			String dropdownLabel, String firstLevelLabel, String secondLevelLabel) {
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
 		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
-		waitForElementClickable(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_FIRST_LEVEL_ITEM_BY_LABEL,
-				itemLabel);
-		clickElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_FIRST_LEVEL_ITEM_BY_LABEL, itemLabel);
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL,
+				firstLevelLabel);
+		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL, firstLevelLabel);
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL,
+				secondLevelLabel);
+		clickElementByJS(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL,
+				secondLevelLabel);
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 
-	public ProductListingPageObject clickNavigationBarDropdownLinkByLabel(WebDriver driver, String dropdownLabel,
-			String firstLevelItemLabel, String secondLevelItemLabel) {
+	public ProductListingPageObject clickNavigationBarDropdownSingleLevelItemLinkByLabels(WebDriver driver,
+			String dropdownLabel, String label) {
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
 		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
-		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_FIRST_LEVEL_ITEM_BY_LABEL,
-				firstLevelItemLabel);
-		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_FIRST_LEVEL_ITEM_BY_LABEL,
-				firstLevelItemLabel);
-		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_SECOND_LEVEL_ITEM_BY_LABEL,
-				secondLevelItemLabel);
-		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_SECOND_LEVEL_ITEM_BY_LABEL,
-				secondLevelItemLabel);
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_SINGLE_LEVEL_ITEM_BY_LABEL, label);
+		clickElementByJS(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_SINGLE_LEVEL_ITEM_BY_LABEL, label);
 		return PageGeneratorManager.getProductListingPageObject(driver);
+	}
+
+	public void clickCustomerNameDropdown(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.ACCOUNT_NAME_DROPDOWN);
+		clickElementByJS(driver, BasePageUI.ACCOUNT_NAME_DROPDOWN);
+	}
+
+	public HomepageObject clickMyAccountDropdownLink(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.MY_ACCOUNT_DROPDOWN_LINK);
+		clickElementByJS(driver, BasePageUI.MY_ACCOUNT_DROPDOWN_LINK);
+		return PageGeneratorManager.getHomepage(driver);
+	}
+
+	public HomepageObject clickMyWishListDropdownLink(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.MY_WISH_LIST_DROPDOWN_LINK);
+		clickElementByJS(driver, BasePageUI.MY_WISH_LIST_DROPDOWN_LINK);
+		return PageGeneratorManager.getHomepage(driver);
+	}
+
+	public HomepageObject clickSignOutDropdownLink(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.SIGN_OUT_DROPDOWN_LINK);
+		clickElementByJS(driver, BasePageUI.SIGN_OUT_DROPDOWN_LINK);
+		sleepInSecond(5);
+		return PageGeneratorManager.getHomepage(driver);
 	}
 
 	public BasePage clickMyAccountSidebarLinkByLabel(WebDriver driver, String label) {
 		waitForElementClickable(driver, MyAccountPageUI.DYNAMIC_SIDEBAR_LINK_BY_LABEL, label);
-		clickElement(driver, MyAccountPageUI.DYNAMIC_SIDEBAR_LINK_BY_LABEL, label);
+		clickElementByJS(driver, MyAccountPageUI.DYNAMIC_SIDEBAR_LINK_BY_LABEL, label);
 
 		switch (label) {
 		case "My Account":
@@ -691,7 +752,7 @@ public class BasePage {
 
 	public BasePage clickFooterLinkByLabel(WebDriver driver, String label) {
 		waitForElementClickable(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
-		clickElement(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
+		clickElementByJS(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
 
 		switch (label) {
 		case "Search Terms":

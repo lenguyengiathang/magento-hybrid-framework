@@ -42,22 +42,22 @@ public class AccountInformationPageObject extends BasePage {
 		sendKeysToElement(driver, AccountInformationPageUI.CONFIRM_NEW_PASSWORD_TEXTBOX, confirmationPassword);
 	}
 
-	public void selectChangeEmailCheckbox() {
+	public void checkChangeEmailCheckbox() {
 		waitForElementClickable(driver, AccountInformationPageUI.CHANGE_EMAIL_CHECKBOX);
 		checkDefaultCheckboxRadioButton(driver, AccountInformationPageUI.CHANGE_EMAIL_CHECKBOX);
 	}
 
-	public void deselectChangeEmailCheckbox() {
+	public void uncheckChangeEmailCheckbox() {
 		waitForElementClickable(driver, AccountInformationPageUI.CHANGE_EMAIL_CHECKBOX);
 		uncheckDefaultCheckbox(driver, AccountInformationPageUI.CHANGE_EMAIL_CHECKBOX);
 	}
 
-	public void selectChangePasswordCheckbox() {
+	public void checkChangePasswordCheckbox() {
 		waitForElementClickable(driver, AccountInformationPageUI.CHANGE_PASSWORD_CHECKBOX);
 		checkDefaultCheckboxRadioButton(driver, AccountInformationPageUI.CHANGE_PASSWORD_CHECKBOX);
 	}
 
-	public void deselectChangePasswordCheckbox() {
+	public void uncheckChangePasswordCheckbox() {
 		waitForElementClickable(driver, AccountInformationPageUI.CHANGE_PASSWORD_CHECKBOX);
 		uncheckDefaultCheckbox(driver, AccountInformationPageUI.CHANGE_PASSWORD_CHECKBOX);
 	}

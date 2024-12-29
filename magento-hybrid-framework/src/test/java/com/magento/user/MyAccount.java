@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 
 import com.magento.commons.Register;
 
-import commons.BasePage;
 import commons.BaseTest;
 import commons.PageGeneratorManager;
 import pageObjects.AccountInformationPageObject;
@@ -23,7 +22,6 @@ public class MyAccount extends BaseTest {
 	@BeforeClass
 	public void beforeClass(String browser) {
 		driver = getBrowserDriver(browser);
-		basePage = BasePage.getBasePageObject();
 		homepage = PageGeneratorManager.getHomepage(driver);
 
 		data = DataHelper.getDataHelper();
@@ -39,16 +37,16 @@ public class MyAccount extends BaseTest {
 
 	@Test
 	public void My_Account_01_Account_Information_Page_Navigation() {
-		basePage.clickMyAccountSidebarLinkByLabel(driver, "Account Information");
+		myAccountPage.clickMyAccountSidebarLinkByLabel(driver, "Account Information");
 
-		Assert.assertEquals(basePage.getPageHeader(driver), "Edit Account Information");
+		Assert.assertEquals(myAccountPage.getPageHeader(driver), "Edit Account Information");
 	}
 
 	@Test
 	public void My_Account_02_Account_Information_Page_Navigation() {
 		myAccountPage.clickEditContactInformationLink();
 
-		Assert.assertEquals(basePage.getPageHeader(driver), "Edit Account Information");
+		Assert.assertEquals(myAccountPage.getPageHeader(driver), "Edit Account Information");
 	}
 
 	@Test
@@ -67,16 +65,16 @@ public class MyAccount extends BaseTest {
 	@Test
 	public void My_Account_04_Change_Email_And_Password_Section_Header() {
 		accountInformationPage = myAccountPage.clickEditContactInformationLink();
-		accountInformationPage.selectChangeEmailCheckbox();
+		accountInformationPage.checkChangeEmailCheckbox();
 
 		Assert.assertEquals(accountInformationPage.getChangeEmailPasswordSectionHeader(), "Change Email");
 
-		accountInformationPage.deselectChangeEmailCheckbox();
-		accountInformationPage.selectChangePasswordCheckbox();
+		accountInformationPage.uncheckChangeEmailCheckbox();
+		accountInformationPage.checkChangePasswordCheckbox();
 
 		Assert.assertEquals(accountInformationPage.getChangeEmailPasswordSectionHeader(), "Change Password");
 
-		accountInformationPage.selectChangeEmailCheckbox();
+		accountInformationPage.checkChangeEmailCheckbox();
 
 		Assert.assertEquals(accountInformationPage.getChangeEmailPasswordSectionHeader(), "Change Email and Password");
 	}
@@ -104,7 +102,6 @@ public class MyAccount extends BaseTest {
 	private WebDriver driver;
 	private DataHelper data;
 	private String email, password, newFirstName, newLastName, newFullName;
-	private BasePage basePage;
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;
 	private MyAccountPageObject myAccountPage;

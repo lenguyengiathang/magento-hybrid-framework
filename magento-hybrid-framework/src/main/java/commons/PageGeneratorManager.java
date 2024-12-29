@@ -17,6 +17,7 @@ import pageObjects.OrdersAndReturnsPageObject;
 import pageObjects.PopularSearchTermsPageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
+import pageObjects.ShoppingCartPageObject;
 import pageObjects.StoredPaymentMethodsPageObject;
 
 public class PageGeneratorManager {
@@ -35,6 +36,10 @@ public class PageGeneratorManager {
 
 	public static ProductListingPageObject getProductListingPageObject(WebDriver driver) {
 		return new ProductListingPageObject(driver);
+	}
+
+	public static ShoppingCartPageObject getShoppingCartPageObject(WebDriver driver) {
+		return new ShoppingCartPageObject(driver);
 	}
 
 	public static ProductDetailsPageObject getProductDetailsPageObject(WebDriver driver) {
