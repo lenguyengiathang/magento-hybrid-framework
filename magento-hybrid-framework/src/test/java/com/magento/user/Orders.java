@@ -21,6 +21,7 @@ public class Orders extends BaseTest {
 	public void beforeClass(String browser) {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
+		orderActions = new com.magento.commons.Orders(driver);
 
 		productData = ProductDataMapperBasic.loadProductData("MiscProducts.json");
 		productName = productData.getProducts().get(0).getProductName();
@@ -81,7 +82,9 @@ public class Orders extends BaseTest {
 	}
 
 	@Test(priority = 6)
-	public void Orders_Subtotal() {
+	public void Orders_Subtotal_And_Total_Quantity_In_Mini_Cart() {
+		orderActions.clearShoppingCart();
+
 		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Men", "Tops",
 				"Jackets");
 		productDetailsPage = productListingPage.clickProductLinkByName("Proteus Fitness Jackshirt");
@@ -90,8 +93,8 @@ public class Orders extends BaseTest {
 		Float firstProductPrice = productDetailsPage.getProductFinalPrice();
 		productDetailsPage.sendKeysToQuantityTextbox("2");
 		productDetailsPage.clickAddToCartButton();
-		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Men", "Tops",
-				"Jackets");
+		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", "Tops",
+				"Tees");
 		productDetailsPage = productListingPage.clickProductLinkByName("Desiree Fitness Tee");
 		productDetailsPage.clickSizeButtonByLabel("XL");
 		productDetailsPage.clickColorButtonByLabel("Orange");
@@ -99,9 +102,33 @@ public class Orders extends BaseTest {
 		productDetailsPage.sendKeysToQuantityTextbox("3");
 		productDetailsPage.clickAddToCartButton();
 		productDetailsPage.clickShoppingCartIcon(driver);
-		Float subtotal = productDetailsPage.getCartSubtotal(driver);
+		Float subtotal = productDetailsPage.getMiniCartSubtotal(driver);
 
+		Assert.assertTrue(productDetailsPage.getMiniCartQuantity(driver).contains("5"));
 		Assert.assertEquals(subtotal, firstProductPrice * 2 + secondProductPrice * 3);
+	}
+
+	@Test(priority = 7)
+	public void Orders_Change_Quantity_In_Mini_Cart() {
+		productListingPage = productDetailsPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
+				"Bags");
+		productListingPage.addProductWithNoOptionsToCart("Driven Backpack");
+		productListingPage.clickShoppingCartIcon(driver);
+	}
+
+	@Test
+	public void Orders_Click_Pen_Icon() {
+
+	}
+
+	@Test
+	public void Orders_Click_Trashcan_Icon() {
+
+	}
+
+	@Test
+	public void Orders_Click_Proceed_To_Checkout_Button() {
+
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -116,5 +143,5 @@ public class Orders extends BaseTest {
 	private ProductListingPageObject productListingPage;
 	private ProductDetailsPageObject productDetailsPage;
 	private ShoppingCartPageObject shoppingCartPage;
-
+	private com.magento.commons.Orders orderActions;
 }

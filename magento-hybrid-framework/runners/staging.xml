@@ -12,10 +12,26 @@
 
 	<test name="Run on Chrome" preserve-order="true">
 		<parameter name="browser" value="chrome" />
+	</test>
+
+	<test name="Register new user" preserve-order="true">
+		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.Orders" />			
-			<!-- <class name="com.magento.user.SearchProducts" /> -->
+			<class name="com.magento.commons.Register" />
 		</classes>
+	</test>
+	<test name="Login with cookies" preserve-order="true">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="com.magento.commons.Login" />
+		</classes>
+	</test>
+	<test name="Run tests" preserve-order="true">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="com.magento.user.WishList" />
+		</classes>
+
 	</test>
 
 </suite>

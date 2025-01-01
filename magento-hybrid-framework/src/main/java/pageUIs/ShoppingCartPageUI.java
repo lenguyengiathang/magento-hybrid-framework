@@ -1,6 +1,7 @@
 package pageUIs;
 
 public class ShoppingCartPageUI {
+	public static final String TRASHCAN_ICON = "css=.action-delete";
 	public static final String APPLY_DISCOUNT_CODE_HEADER = "id=block-discount-heading";
 	public static final String ENTER_DISCOUNT_CODE_TEXTBOX = "id=coupon_code";
 	public static final String APPLY_DISCOUNT_BUTTON = "css=button[value='Apply Discount']";

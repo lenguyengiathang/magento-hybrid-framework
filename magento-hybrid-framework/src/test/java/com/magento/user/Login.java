@@ -28,7 +28,7 @@ public class Login extends BaseTest {
 	}
 
 	@Test(priority = 1)
-	public void Login_01_Customer_Login_Page_Navigation() {
+	public void Login_01_Click_Sign_In_Link_Header() {
 		customerLoginPage = homepage.clickSignInLink();
 
 		Assert.assertEquals(customerLoginPage.getPageHeader(driver), "Customer Login");
@@ -63,6 +63,11 @@ public class Login extends BaseTest {
 
 		Assert.assertEquals(homepage.getPageHeader(driver), "You are signed out");
 		Assert.assertEquals(homepage.getSignedOutMessage(), "");
+	}
+
+	@Test(dependsOnMethods = "Login_03_Log_In_As_Registered_Customer")
+	public void Login_05_Click_Sign_In_Link_Shopping_Cart_Page() {
+
 	}
 
 	@AfterClass(alwaysRun = true)

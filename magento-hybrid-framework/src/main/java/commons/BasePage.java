@@ -23,7 +23,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import pageObjects.HomepageObject;
+import pageObjects.MyAccountPageObject;
+import pageObjects.MyWishListPageObject;
 import pageObjects.ProductListingPageObject;
+import pageObjects.ShoppingCartPageObject;
 import pageUIs.BasePageUI;
 import pageUIs.MyAccountPageUI;
 import pageUIs.ProductListingPageUI;
@@ -425,6 +428,17 @@ public class BasePage {
 				+ "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).val()");
 	}
 
+	public String getElementValueByJS(WebDriver driver, String xpathLocator, String... dynamicValues) {
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+		xpathLocator = String.format(xpathLocator, (Object[]) dynamicValues);
+		if (xpathLocator.startsWith("xpath=") || xpathLocator.startsWith("Xpath=")
+				|| xpathLocator.startsWith("XPATH=")) {
+			xpathLocator = xpathLocator.substring(0, 6);
+		}
+		return (String) jsExecutor.executeScript("return $(document.evaluate(\"" + xpathLocator
+				+ "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).val()");
+	}
+
 	public boolean isDataSortedAscending(WebDriver driver, String locator) {
 		List<String> list = new ArrayList<String>();
 		List<WebElement> elements = getWebElements(driver, locator);
@@ -643,9 +657,14 @@ public class BasePage {
 		clickElementByJS(driver, BasePageUI.SHOPPING_CART_ICON);
 	}
 
-	public Float getCartSubtotal(WebDriver driver) {
+	public Float getMiniCartSubtotal(WebDriver driver) {
 		waitForElementVisible(driver, BasePageUI.CART_SUBTOTAL);
-		return Float.parseFloat(getElementText(driver, BasePageUI.CART_SUBTOTAL));
+		return Float.parseFloat(getElementText(driver, BasePageUI.CART_SUBTOTAL).replace("$", ""));
+	}
+
+	public String getMiniCartQuantity(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.MINI_CART_QUANTITY);
+		return getElementText(driver, BasePageUI.MINI_CART_QUANTITY);
 	}
 
 	public void clickMiniCartCrossIcon(WebDriver driver) {
@@ -654,7 +673,7 @@ public class BasePage {
 	}
 
 	public boolean isMiniCartNotDisplayed(WebDriver driver) {
-		return isElementNotDisplayed(driver, BasePageUI.MINI_CART_BLOCK);
+		return isElementNotDisplayed(driver, BasePageUI.MINI_CART_MODAL);
 	}
 
 	public String getEmptyShoppingCartInfoMessage(WebDriver driver) {
@@ -677,17 +696,34 @@ public class BasePage {
 		return getElementText(driver, BasePageUI.DYNAMIC_COLOR_VALUE_BY_PRODUCT_NAME, productName);
 	}
 
+	public void sendKeysToQuantityTextboxByProductName(WebDriver driver, String quantity, String productName) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
+		sendKeysToElement(driver, BasePageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName, quantity);
+	}
+
+	public String getQuantityValueByProductName(WebDriver driver, String productName) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
+		return getElementValueByJS(driver, BasePageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
+	}
+
+	public ShoppingCartPageObject clickViewAndEditCartLink(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.VIEW_AND_EDIT_CART_LINK);
+		clickElementByJS(driver, BasePageUI.VIEW_AND_EDIT_CART_LINK);
+		return PageGeneratorManager.getShoppingCartPageObject(driver);
+	}
+
 	public ProductListingPageObject clickNavigationBarDropdownMultiLevelItemLinkByLabels(WebDriver driver,
 			String dropdownLabel, String firstLevelLabel, String secondLevelLabel) {
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
 		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL,
-				firstLevelLabel);
-		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL, firstLevelLabel);
+				firstLevelLabel, dropdownLabel.toLowerCase());
+		hoverOverElement(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL, firstLevelLabel,
+				dropdownLabel.toLowerCase());
 		waitForElementClickable(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL,
-				secondLevelLabel);
-		clickElementByJS(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL,
-				secondLevelLabel);
+				secondLevelLabel, dropdownLabel.toLowerCase());
+		clickElementByJS(driver, BasePageUI.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL, secondLevelLabel,
+				dropdownLabel.toLowerCase());
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 
@@ -705,16 +741,16 @@ public class BasePage {
 		clickElementByJS(driver, BasePageUI.ACCOUNT_NAME_DROPDOWN);
 	}
 
-	public HomepageObject clickMyAccountDropdownLink(WebDriver driver) {
+	public MyAccountPageObject clickMyAccountDropdownLink(WebDriver driver) {
 		waitForElementClickable(driver, BasePageUI.MY_ACCOUNT_DROPDOWN_LINK);
 		clickElementByJS(driver, BasePageUI.MY_ACCOUNT_DROPDOWN_LINK);
-		return PageGeneratorManager.getHomepage(driver);
+		return PageGeneratorManager.getMyAccountPage(driver);
 	}
 
-	public HomepageObject clickMyWishListDropdownLink(WebDriver driver) {
+	public MyWishListPageObject clickMyWishListDropdownLink(WebDriver driver) {
 		waitForElementClickable(driver, BasePageUI.MY_WISH_LIST_DROPDOWN_LINK);
 		clickElementByJS(driver, BasePageUI.MY_WISH_LIST_DROPDOWN_LINK);
-		return PageGeneratorManager.getHomepage(driver);
+		return PageGeneratorManager.getMyWishlistPage(driver);
 	}
 
 	public HomepageObject clickSignOutDropdownLink(WebDriver driver) {
@@ -750,6 +786,17 @@ public class BasePage {
 		}
 	}
 
+	public String getEmptyWishListInfoMessage(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.EMPTY_WISH_LIST_INFO_MESSAGE);
+		return getElementText(driver, BasePageUI.EMPTY_WISH_LIST_INFO_MESSAGE);
+	}
+
+	public MyWishListPageObject clickGoToWishListLink(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.GO_TO_WISH_LIST_LINK);
+		clickElementByJS(driver, BasePageUI.GO_TO_WISH_LIST_LINK);
+		return PageGeneratorManager.getMyWishlistPage(driver);
+	}
+
 	public BasePage clickFooterLinkByLabel(WebDriver driver, String label) {
 		waitForElementClickable(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
 		clickElementByJS(driver, BasePageUI.DYNAMIC_FOOTER_LINK, label);
@@ -765,6 +812,11 @@ public class BasePage {
 			throw new RuntimeException("Page name is invalid");
 		}
 
+	}
+
+	public void clickConfirmationPopupOKButton(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.CONFIRMATION_POPUP_OK_BUTTON);
+		clickElementByJS(driver, BasePageUI.CONFIRMATION_POPUP_OK_BUTTON);
 	}
 
 }

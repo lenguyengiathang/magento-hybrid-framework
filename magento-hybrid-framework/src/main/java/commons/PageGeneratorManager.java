@@ -12,7 +12,7 @@ import pageObjects.MyAccountPageObject;
 import pageObjects.MyDownloadableProductsPageObject;
 import pageObjects.MyOrdersPageObject;
 import pageObjects.MyProductReviewsPageObject;
-import pageObjects.MyWishlistPageObject;
+import pageObjects.MyWishListPageObject;
 import pageObjects.OrdersAndReturnsPageObject;
 import pageObjects.PopularSearchTermsPageObject;
 import pageObjects.ProductDetailsPageObject;
@@ -58,8 +58,8 @@ public class PageGeneratorManager {
 		return new MyDownloadableProductsPageObject(driver);
 	}
 
-	public static MyWishlistPageObject getMyWishlistPage(WebDriver driver) {
-		return new MyWishlistPageObject(driver);
+	public static MyWishListPageObject getMyWishlistPage(WebDriver driver) {
+		return new MyWishListPageObject(driver);
 	}
 
 	public static AddressBookPageObject getAddressBookPage(WebDriver driver) {

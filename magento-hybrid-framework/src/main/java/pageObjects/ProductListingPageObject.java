@@ -221,4 +221,15 @@ public class ProductListingPageObject extends BasePage {
 		return PageGeneratorManager.getProductDetailsPageObject(driver);
 	}
 
+	public MyWishListPageObject clickWishListIconByProductName(String productName) {
+		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME, productName);
+		return PageGeneratorManager.getMyWishlistPage(driver);
+	}
+
+	public void clickCompareIconByProductName(String productName) {
+		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME, productName);
+	}
+
 }

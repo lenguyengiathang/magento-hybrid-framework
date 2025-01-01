@@ -29,15 +29,15 @@ public class Register extends BaseTest {
 		password = data.getPassword();
 	}
 
-	@Test(priority = 1)
-	public void Register_01_Create_New_Customer_Account_Page_Navigation() {
+	@Test(priority = 1, groups = "navigation", description = "Verify that user is directed to 'Create New Customer Account' page when clicking the 'Create an Account' link in the header")
+	public void Register_01_Click_Create_An_Account_Link() {
 		createNewCustomerAccountPage = homepage.clickCreateAnAccountLink();
 
 		Assert.assertEquals(createNewCustomerAccountPage.getPageHeader(driver), "Create New Customer Account");
 	}
 
-	@Test(priority = 2)
-	public void Register_02_Create_New_Customer_Account_Page_Navigation() {
+	@Test(priority = 2, groups = "navigation", description = "Verify that user is directed to 'Create New Customer Account' page when clicking the 'Create an Account' button in the 'Customer Login' page")
+	public void Register_02_Click_Create_An_Account_Button() {
 		homepage = createNewCustomerAccountPage.clickLumaLogo(driver);
 		customerLoginPage = homepage.clickSignInLink();
 		createNewCustomerAccountPage = customerLoginPage.clickCreateNewAccountButton();
@@ -45,7 +45,7 @@ public class Register extends BaseTest {
 		Assert.assertEquals(createNewCustomerAccountPage.getPageHeader(driver), "Create New Customer Account");
 	}
 
-	@Test(priority = 3)
+	@Test(priority = 3, description = "Verify the error messages displayed when the required fields are not filled")
 	public void Register_03_Error_Message_Empty_Data() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox("");
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox("");
@@ -61,7 +61,7 @@ public class Register extends BaseTest {
 		Assert.assertEquals(createNewCustomerAccountPage.getConfirmPasswordErrorMessage(), "This is a required field.");
 	}
 
-	@Test(priority = 4)
+	@Test(priority = 4, description = "Verify the error message displayed when creating an account with an invalid email format")
 	public void Register_04_Error_Message_Invalid_Email_Format() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
@@ -74,7 +74,7 @@ public class Register extends BaseTest {
 				"Please enter a valid email address (Ex: johndoe@domain.com).");
 	}
 
-	@Test(priority = 5)
+	@Test(priority = 5, description = "Verify the error message displayed when creating an account with incorrect confirm password")
 	public void Register_05_Error_Message_Incorrect_Confirmation_Password() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
@@ -87,7 +87,7 @@ public class Register extends BaseTest {
 				"Please enter the same value again.");
 	}
 
-	@Test(priority = 6)
+	@Test(priority = 6, description = "Verify the error message displayed when creating an account with password less than minimum length (8 characters)")
 	public void Register_06_Error_Message_Password_Less_Than_Minimum_Length() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
@@ -100,7 +100,7 @@ public class Register extends BaseTest {
 				"Minimum length of this field must be equal or greater than 8 symbols. Leading and trailing spaces will be ignored.");
 	}
 
-	@Test(priority = 7)
+	@Test(priority = 7, description = "Verify the error message displayed when creating an account with password that meets minimum length (8 characters) and has two character classes")
 	public void Register_07_Error_Message_Password_Meets_Minimum_Length_And_Two_Character_Classes() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
@@ -113,7 +113,7 @@ public class Register extends BaseTest {
 				"Minimum of different classes of characters in password is 3. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.");
 	}
 
-	@Test(priority = 8)
+	@Test(priority = 8, description = "Verify the error message displayed when creating an account with password less than minimum length (8 characters) and has three character classes")
 	public void Register_08_Error_Message_Password_Less_Than_Minimum_Length_And_Three_Character_Classes() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
@@ -126,7 +126,7 @@ public class Register extends BaseTest {
 				"Minimum length of this field must be equal or greater than 8 symbols. Leading and trailing spaces will be ignored.");
 	}
 
-	@Test(priority = 9)
+	@Test(priority = 9, description = "Verify the error message displayed when creating an account with password that matches the email address")
 	public void Register_09_Error_Message_Password_Matches_Email_Address() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
@@ -139,35 +139,35 @@ public class Register extends BaseTest {
 				"The password can't be the same as the email address. Create a new password and try again.");
 	}
 
-	@Test(priority = 10)
+	@Test(priority = 10, description = "Verify the display of password strength message when creating a weak password")
 	public void Register_10_Weak_Password_Strength_Message() {
 		createNewCustomerAccountPage.sendKeysToPasswordTextbox("abc");
 
 		Assert.assertEquals(createNewCustomerAccountPage.getPasswordStrengthMessage(), "Weak");
 	}
 
-	@Test(priority = 11)
+	@Test(priority = 11, description = "Verify the display of password strength message when creating a medium password")
 	public void Register_11_Medium_Password_Strength_Message() {
 		createNewCustomerAccountPage.sendKeysToPasswordTextbox("abc1234*");
 
 		Assert.assertEquals(createNewCustomerAccountPage.getPasswordStrengthMessage(), "Medium");
 	}
 
-	@Test(priority = 12)
+	@Test(priority = 12, description = "Verify the display of password strength message when creating a strong password")
 	public void Register_12_Strong_Password_Strength_Message() {
 		createNewCustomerAccountPage.sendKeysToPasswordTextbox("abcd1234*");
 
 		Assert.assertEquals(createNewCustomerAccountPage.getPasswordStrengthMessage(), "Strong");
 	}
 
-	@Test(priority = 13)
+	@Test(priority = 13, description = "Verify the display of password strength message when creating a very strong password")
 	public void Register_13_Very_Strong_Password_Strength_Message() {
 		createNewCustomerAccountPage.sendKeysToPasswordTextbox("Abcd1234@!*&%");
 
 		Assert.assertEquals(createNewCustomerAccountPage.getPasswordStrengthMessage(), "Very Strong");
 	}
 
-	@Test(priority = 14)
+	@Test(priority = 14, description = "Verify that user can create an account successfully when filling in all mandatory fields with valid information")
 	public void Register_14_Create_An_Account_Valid_Data() {
 		createNewCustomerAccountPage.sendKeysToFirstNameTextbox(firstName);
 		createNewCustomerAccountPage.sendKeysToLastNameTextbox(lastName);
@@ -182,7 +182,7 @@ public class Register extends BaseTest {
 		Assert.assertEquals(myAccountPage.getEmail(), email);
 	}
 
-	@Test(dependsOnMethods = "Register_14_Create_An_Account_Valid_Data")
+	@Test(dependsOnMethods = "Register_14_Create_An_Account_Valid_Data", description = "Verify that user cannot create an account with an email belonging to another account")
 	public void Register_15_Create_An_Account_Existing_Email() {
 		myAccountPage.clickCustomerNameDropdown(driver);
 		homepage = myAccountPage.clickSignOutDropdownLink(driver);
@@ -210,4 +210,5 @@ public class Register extends BaseTest {
 	private CreateNewCustomerAccountPageObject createNewCustomerAccountPage;
 	private CustomerLoginPageObject customerLoginPage;
 	private MyAccountPageObject myAccountPage;
+
 }

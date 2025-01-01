@@ -4,10 +4,10 @@ import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
 
-public class MyWishlistPageObject extends BasePage {
+public class StoredPaymentMethodsPageObject extends BasePage {
 	private WebDriver driver;
 
-	public MyWishlistPageObject(WebDriver driver) {
+	public StoredPaymentMethodsPageObject(WebDriver driver) {
 		this.driver = driver;
 	}
 }

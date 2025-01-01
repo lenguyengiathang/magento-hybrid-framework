@@ -17,6 +17,8 @@ public class ProductListingPageUI {
 
 	public static final String SHOPPING_CART_LINK = "xpath=//a[text()='shopping cart']";
 	public static final String DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]";
+	public static final String DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[3]//a[@class='action towishlist']";
+	public static final String DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[3]//a[@class='action tocompare']";
 	public static final String PRODUCT_CARD = "css=.product-item";
 	public static final String PRODUCT_NAME = "css=.product-item-name>a";
 	public static final String PRODUCT_RATINGS = "css=.rating-summary>div";
@@ -25,8 +27,6 @@ public class ProductListingPageUI {
 	public static final String DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL = "xpath=//li[contains(@class,'product-item')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div/div[contains(@class,'size')]/div/div[text()='%s']";
 	public static final String DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL = "xpath=//li[contains(@class,'product-item')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div/div[contains(@class,'color')]/div/div[@option-label='%s']";
 	public static final String DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME = "xpath=//li[contains(@class,'product-item')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div[@class='product-item-inner']//button";
-	public static final String WISHLIST_ICON = "css=a[title='Add to Wish List']";
-	public static final String COMPARE_ICON = "css=a[title='Add to Compare']";
 	public static final String PAGINATION_LINK = "xpath=(//div[@class='pages'])[1]//ul/li[not(contains(@class,'next'))]";
 	public static final String LIMITER_DROPDOWN = "id=limiter";
 }
