@@ -31,11 +31,11 @@ public class CustomerLoginPageObject extends BasePage {
 		return PageGeneratorManager.getMyAccountPage(driver);
 	}
 
-	public MyAccountPageObject logInAsRegisteredUser(String email, String password) {
+	public HomepageObject logInAsRegisteredUser(String email, String password) {
 		sendKeysToEmailTextbox(email);
 		sendKeysToPasswordTextbox(password);
 		clickSignInButton();
-		return PageGeneratorManager.getMyAccountPage(driver);
+		return PageGeneratorManager.getHomepage(driver);
 	}
 
 	public CreateNewCustomerAccountPageObject clickCreateNewAccountButton() {

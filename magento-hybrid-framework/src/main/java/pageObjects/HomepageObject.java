@@ -26,9 +26,8 @@ public class HomepageObject extends BasePage {
 
 	}
 
-	public HomepageObject getSignedOutMessage() {
+	public String getSignedOutMessage() {
 		waitForElementVisible(driver, HomepageUI.SIGNED_OUT_MESSAGE);
-		getElementText(driver, HomepageUI.SIGNED_OUT_MESSAGE);
-		return PageGeneratorManager.getHomepage(driver);
+		return getElementText(driver, HomepageUI.SIGNED_OUT_MESSAGE);
 	}
 }

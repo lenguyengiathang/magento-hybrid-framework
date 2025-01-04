@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import pageObjects.AccountInformationPageObject;
 import pageObjects.AddressBookPageObject;
 import pageObjects.AdvancedSearchPageObject;
+import pageObjects.CheckoutPageObject;
 import pageObjects.CreateNewCustomerAccountPageObject;
 import pageObjects.CustomerLoginPageObject;
 import pageObjects.HomepageObject;
@@ -88,6 +89,10 @@ public class PageGeneratorManager {
 
 	public static OrdersAndReturnsPageObject getOrdersAndReturnsPage(WebDriver driver) {
 		return new OrdersAndReturnsPageObject(driver);
+	}
+
+	public static CheckoutPageObject getCheckoutPageObject(WebDriver driver) {
+		return new CheckoutPageObject(driver);
 	}
 
 }

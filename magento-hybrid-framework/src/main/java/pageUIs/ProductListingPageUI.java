@@ -17,8 +17,8 @@ public class ProductListingPageUI {
 
 	public static final String SHOPPING_CART_LINK = "xpath=//a[text()='shopping cart']";
 	public static final String DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]";
-	public static final String DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[3]//a[@class='action towishlist']";
-	public static final String DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[3]//a[@class='action tocompare']";
+	public static final String DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[last()]//a[@class='action towishlist']";
+	public static final String DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[last()]//a[@class='action tocompare']";
 	public static final String PRODUCT_CARD = "css=.product-item";
 	public static final String PRODUCT_NAME = "css=.product-item-name>a";
 	public static final String PRODUCT_RATINGS = "css=.rating-summary>div";

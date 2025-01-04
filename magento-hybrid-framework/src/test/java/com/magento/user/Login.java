@@ -11,8 +11,10 @@ import com.magento.commons.Register;
 
 import commons.BaseTest;
 import commons.PageGeneratorManager;
+import pageObjects.CheckoutPageObject;
 import pageObjects.CustomerLoginPageObject;
 import pageObjects.HomepageObject;
+import pageObjects.ProductListingPageObject;
 import utilities.DataHelper;
 
 public class Login extends BaseTest {
@@ -27,15 +29,16 @@ public class Login extends BaseTest {
 		password = Register.password;
 	}
 
-	@Test(priority = 1)
-	public void Login_01_Click_Sign_In_Link_Header() {
+	@Test(priority = 1, groups = "navigation", description = "Verify that user is directed to 'Customer Login' page when clicking the 'Sign In' link in the header")
+	public void Click_Sign_In_Link_Header() {
 		customerLoginPage = homepage.clickSignInLink();
 
 		Assert.assertEquals(customerLoginPage.getPageHeader(driver), "Customer Login");
 	}
 
-	@Test(priority = 2)
-	public void Login_02_Log_In_As_Non_Registered_Customer() {
+	@Test(priority = 2, description = "Verify that non-registered customer cannot log in")
+	public void Log_In_As_Non_Registered_Customer() {
+		customerLoginPage = homepage.clickSignInLink();
 		customerLoginPage.sendKeysToEmailTextbox(data.getEmailAddress());
 		customerLoginPage.sendKeysToPasswordTextbox(data.getPassword());
 		customerLoginPage.clickSignInButton();
@@ -44,30 +47,41 @@ public class Login extends BaseTest {
 				"The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.");
 	}
 
-	@Test(priority = 3)
-	public void Login_03_Log_In_As_Registered_Customer() {
-		System.out.println(email);
-		System.out.println(password);
+	@Test(priority = 3, groups = "smoke", description = "Verify that registered customer can log in with valid credentials")
+	public void Log_In_As_Registered_Customer() {
+		customerLoginPage = homepage.clickSignInLink();
+		homepage = customerLoginPage.logInAsRegisteredUser(email, password);
 
-		customerLoginPage.sendKeysToEmailTextbox(email);
-		customerLoginPage.sendKeysToPasswordTextbox(password);
-		customerLoginPage.clickSignInButton();
-
-		Assert.assertEquals(customerLoginPage.getPageHeader(driver), "My Account");
+		Assert.assertEquals(homepage.getPageHeader(driver), "Home Page");
 	}
 
-	@Test(dependsOnMethods = "Login_03_Log_In_As_Registered_Customer")
-	public void Login_04_Log_Out() {
-		customerLoginPage.clickCustomerNameDropdown(driver);
-		homepage = customerLoginPage.clickSignOutDropdownLink(driver);
+	@Test(priority = 4, description = "Verify that user is directed to the homepage when clicking the 'Sign Out' dropdown link")
+	public void Log_Out() {
+		homepage.clickCustomerNameDropdown(driver);
+		homepage.clickSignOutDropdownLink(driver);
 
 		Assert.assertEquals(homepage.getPageHeader(driver), "You are signed out");
-		Assert.assertEquals(homepage.getSignedOutMessage(), "");
+		Assert.assertEquals(homepage.getSignedOutMessage(),
+				"You have signed out and will go to our homepage in 5 seconds.");
 	}
 
-	@Test(dependsOnMethods = "Login_03_Log_In_As_Registered_Customer")
-	public void Login_05_Click_Sign_In_Link_Shopping_Cart_Page() {
+	@Test(priority = 5, description = "Verify that registered customer can log in with valid credentials by clicking the 'Sign In' hyperlink on the 'Checkout' page")
+	public void Click_Sign_In_Link_Shopping_Cart_Page() {
+		customerLoginPage = homepage.clickSignInLink();
+		homepage = customerLoginPage.logInAsRegisteredUser(email, password);
+		homepage.clickCustomerNameDropdown(driver);
+		homepage.clickSignOutDropdownLink(driver);
+		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Bags");
+		productListingPage.clickAddToCartButtonByProductName("Wayfarer Messenger Bag");
+		productListingPage.clickShoppingCartIcon(driver);
+		checkoutPage = productListingPage.clickProceedToCheckoutButton(driver);
+		checkoutPage.clickSignInLink();
+		checkoutPage.sendKeysToSignInModalEmailAddressTextbox(email);
+		checkoutPage.sendKeysToSignInModalPasswordTextbox(password);
+		checkoutPage.clickSignInModalSignInButton();
+		homepage = checkoutPage.clickLumaLogo(driver);
 
+		Assert.assertTrue(homepage.isWelcomeMessageDisplayed(driver));
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -80,4 +94,6 @@ public class Login extends BaseTest {
 	private String email, password;
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;
+	private ProductListingPageObject productListingPage;
+	private CheckoutPageObject checkoutPage;
 }

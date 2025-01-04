@@ -27,10 +27,13 @@ public class BasePageUI {
 	public static final String NO_ITEMS_IN_CART_INFO_MESSAGE = "css=#minicart-content-wrapper strong.empty";
 	public static final String MINI_CART_CROSS_ICON = "id=btn-minicart-close";
 	public static final String DYNAMIC_SEE_DETAILS_COLLAPSIBLE_HEADER_BY_PRODUCT_NAME = "xpath=//ol[@id='mini-cart']//li[contains(@class,'product')]//strong[@class='product-item-name']/a[contains(text(),'%s')]/parent::strong/following-sibling::div[contains(@class,'product options')]/span";
+	public static final String DYNAMIC_PRODUCT_LINK_BY_NAME = "xpath=//ol[@id='mini-cart']//li[contains(@class,'product')]//strong[@class='product-item-name']/a[contains(text(),'%s')]";
 	public static final String DYNAMIC_SIZE_VALUE_BY_PRODUCT_NAME = "xpath=//ol[@id='mini-cart']//li[contains(@class,'product')]//strong[@class='product-item-name']/a[contains(text(),'%s')]/parent::strong/following-sibling::div[contains(@class,'product options')]/div//dd[1]/span";
 	public static final String DYNAMIC_COLOR_VALUE_BY_PRODUCT_NAME = "xpath=//ol[@id='mini-cart']//li[contains(@class,'product')]//strong[@class='product-item-name']/a[contains(text(),'%s')]/parent::strong/following-sibling::div[contains(@class,'product options')]/div//dd[2]/span";
 	public static final String DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME = "xpath=//ol[@id='mini-cart']//li[contains(@class,'product')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div[contains(@class,'pricing')]/div[contains(@class,'qty')]//input";
-	public static final String TRASHCAN_ICON = "css=#mini-cart .delete";
+	public static final String UPDATE_BUTTON = "css=.update-cart-item";
+	public static final String DYNAMIC_PEN_ICON_BY_PRODUCT_NAME = "xpath=//ol[@id='mini-cart']//li[contains(@class,'product')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div[contains(@class,'actions')]//a[@class='action edit']";
+	public static final String DYNAMIC_TRASHCAN_ICON_BY_PRODUCT_NAME = "xpath=//ol[@id='mini-cart']//li[contains(@class,'product')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div[contains(@class,'actions')]//a[@class='action delete']";
 	public static final String CART_SUBTOTAL = "css=span[data-bind='html: cart().subtotal_excl_tax']>span";
 	public static final String PROCEED_TO_CHECKOUT_BUTTON = "id=top-cart-btn-checkout";
 	public static final String VIEW_AND_EDIT_CART_LINK = "css=.viewcart";

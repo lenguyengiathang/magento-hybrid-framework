@@ -32,11 +32,13 @@ public class MyAccount extends BaseTest {
 		newFullName = newFirstName + ' ' + newLastName;
 
 		customerLoginPage = homepage.clickSignInLink();
-		myAccountPage = customerLoginPage.logInAsRegisteredUser(email, password);
+		homepage = customerLoginPage.logInAsRegisteredUser(email, password);
 	}
 
 	@Test
 	public void My_Account_01_Account_Information_Page_Navigation() {
+		homepage.clickCustomerNameDropdown(driver);
+		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
 		myAccountPage.clickMyAccountSidebarLinkByLabel(driver, "Account Information");
 
 		Assert.assertEquals(myAccountPage.getPageHeader(driver), "Edit Account Information");

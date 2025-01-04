@@ -26,4 +26,10 @@ public class CheckoutPageUI {
 	public static final String PLACE_ORDER_BUTTON = "css=button[title='Place Order']";
 	public static final String ORDER_NUMBER = "css=.checkout-success strong";
 	public static final String CONTINUE_SHOPPING_BUTTON = "css=a.continue";
+
+	public static final String SIGN_IN_LINK = "xpath=//span[text()='Sign In']/parent::button[@class='action action-auth-toggle']";
+	public static final String SIGN_IN_MODAL_EMAIL_ADDRESS_TEXTBOX = "css=.block-customer-login form[data-role='login'] input#login-email";
+	public static final String SIGN_IN_MODAL_PASSWORD_TEXTBOX = "css=.block-customer-login form[data-role='login'] input#login-password";
+	public static final String SIGN_IN_MODAL_SIGN_IN_BUTTON = "css=.block-customer-login form[data-role='login'] button";
+
 }

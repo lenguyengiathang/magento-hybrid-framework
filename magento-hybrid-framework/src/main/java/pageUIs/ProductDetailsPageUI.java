@@ -15,7 +15,8 @@ public class ProductDetailsPageUI {
 	public static final String PRODUCT_QUANTITY_TEXTBOX = "id=qty";
 	public static final String PRODUCT_QUANTITY_ERROR_MESSAGE = "id=qty-error";
 	public static final String ADD_TO_CART_BUTTON = "id=product-addtocart-button";
-	public static final String ADD_TO_WISHLIST_LINK = "css=.product-addto-links>a:nth-of-type(1)";
+	public static final String ADD_TO_WISH_LIST_LINK = "css=.product-addto-links>a:nth-of-type(1)";
+	public static final String UPDATE_WISH_LIST_LINK = "css=.product-addto-links>a:nth-of-type(1)";
 	public static final String ADD_TO_COMPARE_LINK = "css=.product-addto-links>a:nth-of-type(2)";
 	public static final String REVIEWS_TAB = "id=tab-label-reviews-title";
 	public static final String DYNAMIC_RATING_STAR = "id=Rating-%s";

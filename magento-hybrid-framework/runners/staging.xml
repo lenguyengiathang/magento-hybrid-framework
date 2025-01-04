@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<suite name="Magento Luma" parallel="none">
+<suite name="Magento Luma" parallel="false">
 
 	<listeners>
 		<listener class-name="commons.MethodListener" />
@@ -14,22 +14,16 @@
 		<parameter name="browser" value="chrome" />
 	</test>
 
-	<test name="Register new user" preserve-order="true">
+	<test name="Register new user and log in" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.magento.commons.Register" />
 		</classes>
 	</test>
-	<test name="Login with cookies" preserve-order="true">
-		<parameter name="browser" value="chrome" />
-		<classes>
-			<class name="com.magento.commons.Login" />
-		</classes>
-	</test>
 	<test name="Run tests" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.WishList" />
+			<class name="com.magento.user.Orders" />
 		</classes>
 
 	</test>

@@ -174,23 +174,23 @@ public class ProductListingPageObject extends BasePage {
 		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
-	public void clickSizeButtonByProductNameAndLAbel(String productName, String label) {
+	public void clickSizeButtonByProductNameAndLabel(String productName, String sizeLabel) {
 		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
-				label);
+				sizeLabel);
 		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
-				label);
+				sizeLabel);
 	}
 
-	public void clickColorButtonByProductNameAndLAbel(String productName, String label) {
+	public void clickColorButtonByProductNameAndLabel(String productName, String colorLabel) {
 		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL,
-				productName, label);
+				productName, colorLabel);
 		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
-				label);
+				colorLabel);
 	}
 
 	public void addProductWithOptionsToCart(String productName, String sizeLabel, String colorLabel) {
-		clickSizeButtonByProductNameAndLAbel(productName, sizeLabel);
-		clickColorButtonByProductNameAndLAbel(productName, colorLabel);
+		clickSizeButtonByProductNameAndLabel(productName, sizeLabel);
+		clickColorButtonByProductNameAndLabel(productName, colorLabel);
 		clickAddToCartButtonByProductName(productName);
 	}
 
@@ -222,12 +222,16 @@ public class ProductListingPageObject extends BasePage {
 	}
 
 	public MyWishListPageObject clickWishListIconByProductName(String productName) {
+		waitForElementVisible(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		hoverOverElement(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME, productName);
 		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME, productName);
 		return PageGeneratorManager.getMyWishlistPage(driver);
 	}
 
 	public void clickCompareIconByProductName(String productName) {
+		waitForElementVisible(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		hoverOverElement(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME, productName);
 		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME, productName);
 	}

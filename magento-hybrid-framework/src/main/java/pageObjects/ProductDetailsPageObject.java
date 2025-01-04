@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
 import commons.GlobalConstants;
+import commons.PageGeneratorManager;
 import pageUIs.BasePageUI;
 import pageUIs.ProductDetailsPageUI;
 
@@ -12,6 +13,11 @@ public class ProductDetailsPageObject extends BasePage {
 
 	public ProductDetailsPageObject(WebDriver driver) {
 		this.driver = driver;
+	}
+
+	public String getChooseOptionsForItemWarningMessage() {
+		waitForElementVisible(driver, BasePageUI.MESSAGE);
+		return getElementText(driver, BasePageUI.MESSAGE);
 	}
 
 	public Float getProductFinalPrice() {
@@ -56,8 +62,14 @@ public class ProductDetailsPageObject extends BasePage {
 	}
 
 	public void clickAddToWishlistLink() {
-		waitForElementClickable(driver, ProductDetailsPageUI.ADD_TO_WISHLIST_LINK);
-		clickElementByJS(driver, ProductDetailsPageUI.ADD_TO_WISHLIST_LINK);
+		waitForElementClickable(driver, ProductDetailsPageUI.ADD_TO_WISH_LIST_LINK);
+		clickElementByJS(driver, ProductDetailsPageUI.ADD_TO_WISH_LIST_LINK);
+	}
+
+	public MyWishListPageObject clickUpdateWishListButton() {
+		waitForElementClickable(driver, ProductDetailsPageUI.UPDATE_WISH_LIST_LINK);
+		clickElementByJS(driver, ProductDetailsPageUI.UPDATE_WISH_LIST_LINK);
+		return PageGeneratorManager.getMyWishlistPage(driver);
 	}
 
 	public void clickAddToCompareLink() {

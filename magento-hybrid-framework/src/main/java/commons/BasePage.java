@@ -22,9 +22,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import pageObjects.CheckoutPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.MyAccountPageObject;
 import pageObjects.MyWishListPageObject;
+import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
 import pageObjects.ShoppingCartPageObject;
 import pageUIs.BasePageUI;
@@ -248,7 +250,8 @@ public class BasePage {
 
 	public void sendKeysToElement(WebDriver driver, String locatorType, String text, String... dynamicValues) {
 		WebElement element = getWebElement(driver, getDynamicXpath(locatorType, dynamicValues));
-		element.clear();
+		element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+		element.sendKeys(Keys.chord(Keys.BACK_SPACE));
 		element.sendKeys(text);
 	}
 
@@ -304,6 +307,20 @@ public class BasePage {
 		}
 	}
 
+	public boolean isElementNotDisplayed(WebDriver driver, String locatorType, String... dynamicValues) {
+		overrideImplicitTimeout(driver, shortTimeout);
+		List<WebElement> elements = getWebElements(driver, getDynamicXpath(locatorType, dynamicValues));
+		overrideImplicitTimeout(driver, longTimeout);
+
+		if (elements.size() == 0) {
+			return true;
+		} else if (elements.size() > 0 && !elements.get(0).isDisplayed()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public void overrideImplicitTimeout(WebDriver driver, long timeout) {
 		driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
 	}
@@ -327,14 +344,14 @@ public class BasePage {
 		select.selectByVisibleText(optionLabel);
 	}
 
-	public void getSelectedOptionDefaultDropdown(WebDriver driver, String locatorType) {
+	public String getSelectedOptionDefaultDropdown(WebDriver driver, String locatorType) {
 		Select select = new Select(getWebElement(driver, locatorType));
-		select.getFirstSelectedOption();
+		return select.getFirstSelectedOption().getText();
 	}
 
-	public void getSelectedOptionDefaultDropdown(WebDriver driver, String locatorType, String... dynamicValues) {
+	public String getSelectedOptionDefaultDropdown(WebDriver driver, String locatorType, String... dynamicValues) {
 		Select select = new Select(getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)));
-		select.getFirstSelectedOption();
+		return select.getFirstSelectedOption().getText();
 	}
 
 	public boolean isDropdownMultiple(WebDriver driver, String locatorType) {
@@ -422,10 +439,12 @@ public class BasePage {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 		if (xpathLocator.startsWith("xpath=") || xpathLocator.startsWith("Xpath=")
 				|| xpathLocator.startsWith("XPATH=")) {
-			xpathLocator.substring(0, 6);
+			xpathLocator = xpathLocator.substring(6);
 		}
-		return (String) jsExecutor.executeScript("return $(document.evaluate(\"" + xpathLocator
-				+ "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).val()");
+		return (String) jsExecutor.executeScript(
+				"var element = document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;"
+						+ "return element ? element.value || element.textContent || null : null;",
+				xpathLocator);
 	}
 
 	public String getElementValueByJS(WebDriver driver, String xpathLocator, String... dynamicValues) {
@@ -433,10 +452,12 @@ public class BasePage {
 		xpathLocator = String.format(xpathLocator, (Object[]) dynamicValues);
 		if (xpathLocator.startsWith("xpath=") || xpathLocator.startsWith("Xpath=")
 				|| xpathLocator.startsWith("XPATH=")) {
-			xpathLocator = xpathLocator.substring(0, 6);
+			xpathLocator = xpathLocator.substring(6);
 		}
-		return (String) jsExecutor.executeScript("return $(document.evaluate(\"" + xpathLocator
-				+ "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).val()");
+		return (String) jsExecutor.executeScript(
+				"var element = document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;"
+						+ "return element ? element.value || element.textContent || null : null;",
+				xpathLocator);
 	}
 
 	public boolean isDataSortedAscending(WebDriver driver, String locator) {
@@ -667,6 +688,12 @@ public class BasePage {
 		return getElementText(driver, BasePageUI.MINI_CART_QUANTITY);
 	}
 
+	public CheckoutPageObject clickProceedToCheckoutButton(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.PROCEED_TO_CHECKOUT_BUTTON);
+		clickElementByJS(driver, BasePageUI.PROCEED_TO_CHECKOUT_BUTTON);
+		return PageGeneratorManager.getCheckoutPageObject(driver);
+	}
+
 	public void clickMiniCartCrossIcon(WebDriver driver) {
 		waitForElementClickable(driver, BasePageUI.MINI_CART_CROSS_ICON);
 		clickElementByJS(driver, BasePageUI.MINI_CART_CROSS_ICON);
@@ -698,12 +725,33 @@ public class BasePage {
 
 	public void sendKeysToQuantityTextboxByProductName(WebDriver driver, String quantity, String productName) {
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
-		sendKeysToElement(driver, BasePageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName, quantity);
+		sendKeysToElement(driver, BasePageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, quantity, productName);
 	}
 
 	public String getQuantityValueByProductName(WebDriver driver, String productName) {
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
 		return getElementValueByJS(driver, BasePageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
+	}
+
+	public void clickUpdateButton(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.UPDATE_BUTTON);
+		clickElementByJS(driver, BasePageUI.UPDATE_BUTTON);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+	}
+
+	public ProductDetailsPageObject clickPenIconByProductName(WebDriver driver, String productName) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_PEN_ICON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, BasePageUI.DYNAMIC_PEN_ICON_BY_PRODUCT_NAME, productName);
+		return PageGeneratorManager.getProductDetailsPageObject(driver);
+	}
+
+	public void clickTrashcanIconByProductName(WebDriver driver, String productName) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_TRASHCAN_ICON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, BasePageUI.DYNAMIC_TRASHCAN_ICON_BY_PRODUCT_NAME, productName);
+	}
+
+	public boolean isProductNotDisplayedInMiniCart(WebDriver driver, String productName) {
+		return isElementNotDisplayed(driver, BasePageUI.DYNAMIC_PRODUCT_LINK_BY_NAME, productName);
 	}
 
 	public ShoppingCartPageObject clickViewAndEditCartLink(WebDriver driver) {
@@ -756,8 +804,11 @@ public class BasePage {
 	public HomepageObject clickSignOutDropdownLink(WebDriver driver) {
 		waitForElementClickable(driver, BasePageUI.SIGN_OUT_DROPDOWN_LINK);
 		clickElementByJS(driver, BasePageUI.SIGN_OUT_DROPDOWN_LINK);
-		sleepInSecond(5);
 		return PageGeneratorManager.getHomepage(driver);
+	}
+
+	public boolean isWelcomeMessageDisplayed(WebDriver driver) {
+		return isElementDisplayed(driver, BasePageUI.WELCOME_MESSAGE);
 	}
 
 	public BasePage clickMyAccountSidebarLinkByLabel(WebDriver driver, String label) {

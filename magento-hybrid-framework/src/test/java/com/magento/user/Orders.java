@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import commons.BaseTest;
 import commons.PageGeneratorManager;
+import pageObjects.CheckoutPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
@@ -114,21 +115,34 @@ public class Orders extends BaseTest {
 				"Bags");
 		productListingPage.addProductWithNoOptionsToCart("Driven Backpack");
 		productListingPage.clickShoppingCartIcon(driver);
+		productListingPage.sendKeysToQuantityTextboxByProductName(driver, "5", "Driven Backpack");
+		productListingPage.clickUpdateButton(driver);
+
+		Assert.assertEquals(productListingPage.getQuantityValueByProductName(driver, "Driven Backpack"), "5");
 	}
 
-	@Test
+	@Test(priority = 8)
 	public void Orders_Click_Pen_Icon() {
+		productDetailsPage = productListingPage.clickPenIconByProductName(driver, "Driven Backpack");
 
+		Assert.assertEquals(productDetailsPage.getPageHeader(driver), "Driven Backpack");
 	}
 
-	@Test
+	@Test(priority = 9)
 	public void Orders_Click_Trashcan_Icon() {
+		productDetailsPage.clickShoppingCartIcon(driver);
+		productDetailsPage.clickTrashcanIconByProductName(driver, "Driven Backpack");
+		productDetailsPage.clickConfirmationPopupOKButton(driver);
+		productDetailsPage.clickShoppingCartIcon(driver);
 
+		Assert.assertTrue(productDetailsPage.isProductNotDisplayedInMiniCart(driver, "Driven Backpack"));
 	}
 
-	@Test
+	@Test(priority = 10)
 	public void Orders_Click_Proceed_To_Checkout_Button() {
+		checkoutPage = productDetailsPage.clickProceedToCheckoutButton(driver);
 
+		Assert.assertEquals(productDetailsPage.getPageHeader(driver), "Shipping Address");
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -143,5 +157,6 @@ public class Orders extends BaseTest {
 	private ProductListingPageObject productListingPage;
 	private ProductDetailsPageObject productDetailsPage;
 	private ShoppingCartPageObject shoppingCartPage;
+	private CheckoutPageObject checkoutPage;
 	private com.magento.commons.Orders orderActions;
 }

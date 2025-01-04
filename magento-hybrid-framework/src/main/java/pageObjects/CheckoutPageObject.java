@@ -18,12 +18,12 @@ public class CheckoutPageObject extends BasePage {
 
 	public void clickAddressCardShipHereButton() {
 		waitForElementClickable(driver, CheckoutPageUI.ADDRESS_CARD_SHIP_HERE_BUTTON);
-		clickElement(driver, CheckoutPageUI.ADDRESS_CARD_SHIP_HERE_BUTTON);
+		clickElementByJS(driver, CheckoutPageUI.ADDRESS_CARD_SHIP_HERE_BUTTON);
 	}
 
 	public void clickNewAddressButton() {
 		waitForElementClickable(driver, CheckoutPageUI.NEW_ADDRESS_BUTTON);
-		clickElement(driver, CheckoutPageUI.NEW_ADDRESS_BUTTON);
+		clickElementByJS(driver, CheckoutPageUI.NEW_ADDRESS_BUTTON);
 	}
 
 	public void sendKeysToFirstNameTextbox(String firstName) {
@@ -73,7 +73,27 @@ public class CheckoutPageObject extends BasePage {
 
 	public void clickNextButton() {
 		waitForElementClickable(driver, CheckoutPageUI.NEXT_BUTTON);
-		clickElement(driver, CheckoutPageUI.NEXT_BUTTON);
+		clickElementByJS(driver, CheckoutPageUI.NEXT_BUTTON);
+	}
+
+	public void clickSignInLink() {
+		waitForElementClickable(driver, CheckoutPageUI.SIGN_IN_LINK);
+		clickElementByJS(driver, CheckoutPageUI.SIGN_IN_LINK);
+	}
+
+	public void sendKeysToSignInModalEmailAddressTextbox(String email) {
+		waitForElementVisible(driver, CheckoutPageUI.SIGN_IN_MODAL_EMAIL_ADDRESS_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.SIGN_IN_MODAL_EMAIL_ADDRESS_TEXTBOX, email);
+	}
+
+	public void sendKeysToSignInModalPasswordTextbox(String password) {
+		waitForElementVisible(driver, CheckoutPageUI.SIGN_IN_MODAL_PASSWORD_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.SIGN_IN_MODAL_PASSWORD_TEXTBOX, password);
+	}
+
+	public void clickSignInModalSignInButton() {
+		waitForElementClickable(driver, CheckoutPageUI.SIGN_IN_MODAL_SIGN_IN_BUTTON);
+		clickElementByJS(driver, CheckoutPageUI.SIGN_IN_MODAL_SIGN_IN_BUTTON);
 	}
 
 }
