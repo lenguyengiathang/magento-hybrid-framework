@@ -39,7 +39,7 @@ public class Orders extends BaseTest {
 				break;
 			}
 			trashcanIcons.get(0).click();
-			basePage.waitForElementVisible(driver, BasePageUI.PAGE_HEADER);
+			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
 		}
 	}
 

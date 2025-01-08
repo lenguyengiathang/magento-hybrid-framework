@@ -20,8 +20,8 @@ public class MyWishListPageObject extends BasePage {
 	}
 
 	public String getAddProductToWishListSuccessMessage() {
-		waitForElementVisible(driver, BasePageUI.MESSAGE);
-		return getElementText(driver, BasePageUI.MESSAGE);
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
 	public ProductListingPageObject clickSuccessMessageHereLink() {
@@ -81,8 +81,8 @@ public class MyWishListPageObject extends BasePage {
 	}
 
 	public String getShareWishListSuccessMessage() {
-		waitForElementVisible(driver, BasePageUI.MESSAGE);
-		return getElementText(driver, BasePageUI.MESSAGE);
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
 	public void clickAddToCartButtonByProductNameWithoutOptions(String productName) {
@@ -91,12 +91,22 @@ public class MyWishListPageObject extends BasePage {
 	}
 
 	public String getProductAddedToShoppingCartSuccessMessage() {
-		waitForElementVisible(driver, BasePageUI.MESSAGE);
-		return getElementText(driver, BasePageUI.MESSAGE);
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
-	public boolean isProductRemovedFromWishList(String productName) {
+	public String getAllProductsAddedToShoppingCartSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
+	public boolean isProductNotDisplayedInMyWishListPage(String productName) {
 		return isElementNotDisplayed(driver, MyWishListPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+	}
+
+	public String getProductRemovedFromWishListSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
 	public ProductDetailsPageObject clickAddToCartButtonByProductNameWithOptions(String productName) {

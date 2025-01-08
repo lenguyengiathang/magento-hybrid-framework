@@ -51,7 +51,7 @@ public class Orders extends BaseTest {
 				"Jackets");
 		productListingPage.addProductWithOptionsToCart(productName, productSize, productColor);
 
-		Assert.assertEquals(productListingPage.getAddedToCartSuccessMessage(),
+		Assert.assertEquals(productListingPage.getAddedToShoppingCartSuccessMessage(),
 				"You added " + productName + " to your shopping cart.");
 
 		productListingPage.clickShoppingCartIcon(driver);
@@ -63,7 +63,7 @@ public class Orders extends BaseTest {
 
 	@Test(priority = 4)
 	public void Orders_Click_View_And_Edit_Card_Link() {
-		shoppingCartPage = productListingPage.clickViewAndEditCartLink();
+		shoppingCartPage = productListingPage.clickViewAndEditCartLink(driver);
 
 		Assert.assertEquals(shoppingCartPage.getPageHeader(driver), "Shopping Cart");
 	}
@@ -74,7 +74,7 @@ public class Orders extends BaseTest {
 				"Bags");
 		productListingPage.addProductWithNoOptionsToCart("Driven Backpack");
 
-		Assert.assertEquals(productListingPage.getAddedToCartSuccessMessage(),
+		Assert.assertEquals(productListingPage.getAddedToShoppingCartSuccessMessage(),
 				"You added Driven Backpack to your shopping cart.");
 
 		shoppingCartPage = productListingPage.clickShoppingCartLink();

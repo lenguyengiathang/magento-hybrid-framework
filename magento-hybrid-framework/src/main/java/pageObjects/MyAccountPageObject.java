@@ -14,13 +14,13 @@ public class MyAccountPageObject extends BasePage {
 	}
 
 	public String getRegisterSuccessfulMessage() {
-		waitForElementVisible(driver, BasePageUI.MESSAGE);
-		return getElementText(driver, BasePageUI.MESSAGE);
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
 	public String getAccountInformationSavedSuccessMessage() {
-		waitForElementVisible(driver, BasePageUI.MESSAGE);
-		return getElementText(driver, BasePageUI.MESSAGE);
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
 	public String getFullName() {

@@ -45,8 +45,8 @@ public class CustomerLoginPageObject extends BasePage {
 	}
 
 	public String getLoginErrorMessage() {
-		waitForElementVisible(driver, BasePageUI.MESSAGE);
-		return getElementText(driver, BasePageUI.MESSAGE);
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
 }

@@ -16,8 +16,8 @@ public class ProductDetailsPageObject extends BasePage {
 	}
 
 	public String getChooseOptionsForItemWarningMessage() {
-		waitForElementVisible(driver, BasePageUI.MESSAGE);
-		return getElementText(driver, BasePageUI.MESSAGE);
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
 	public Float getProductFinalPrice() {
@@ -78,8 +78,8 @@ public class ProductDetailsPageObject extends BasePage {
 	}
 
 	public String getProductName() {
-		waitForElementVisible(driver, BasePageUI.PAGE_HEADER);
-		return getElementText(driver, BasePageUI.PAGE_HEADER);
+		waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
+		return getElementText(driver, BasePageUI.MainContent.PAGE_HEADER);
 	}
 
 	public String getProductSKU() {
