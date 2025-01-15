@@ -23,7 +23,7 @@
 	<test name="Run tests" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.Orders" />
+			<class name="com.magento.user.WishList" />
 		</classes>
 
 	</test>

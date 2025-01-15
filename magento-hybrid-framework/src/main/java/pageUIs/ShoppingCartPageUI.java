@@ -19,4 +19,8 @@ public class ShoppingCartPageUI {
 	public static final String PLACE_ORDER_BUTTON = "css=button[title='Place Order']";
 	public static final String ORDER_NUMBER = "css=.checkout-success strong";
 	public static final String CONTINUE_SHOPPING_BUTTON = "css=a.continue";
+	public static final String ORDER_SUBTOTAL = "css=span[data-th='Subtotal']";
+	public static final String ORDER_DISCOUNT = "css=td[data-th='Discount']>span>span";
+	public static final String ORDER_SHIPPING = "css=span[data-th='Shipping']";
+	public static final String ORDER_TOTAL = "css=td[data-th='Order Total']>strong>span";
 }

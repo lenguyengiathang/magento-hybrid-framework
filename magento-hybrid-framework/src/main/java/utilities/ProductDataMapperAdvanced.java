@@ -71,18 +71,11 @@ public class ProductDataMapperAdvanced {
 		}
 	}
 
-	@JsonProperty("misc_products")
-	private List<Category> miscProducts;
-
 	@JsonProperty("men_products")
 	private List<Category> menProducts;
 
 	@JsonProperty("women_products")
 	private List<Category> womenProducts;
-
-	public List<Category> getMiscProducts() {
-		return miscProducts;
-	}
 
 	public List<Category> getMenProducts() {
 		return menProducts;

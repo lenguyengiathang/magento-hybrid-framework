@@ -4,18 +4,19 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.AfterMethod;
 
 import commons.BasePage;
 import commons.BaseTest;
 import pageUIs.BasePageUI;
+import pageUIs.CompareProductsPageUI;
+import pageUIs.MyWishListPageUI;
 import pageUIs.ShoppingCartPageUI;
 import utilities.ProductDataMapperAdvanced;
 import utilities.ProductDataMapperBasic;
 
-public class Orders extends BaseTest {
+public class Products extends BaseTest {
 
-	public Orders(WebDriver driver) {
+	public Products(WebDriver driver) {
 		this.driver = driver;
 		basePage = BasePage.getBasePageObject();
 	}
@@ -29,7 +30,34 @@ public class Orders extends BaseTest {
 
 	}
 
-	@AfterMethod
+	public void clearComparisonList() {
+		basePage.clickCompareProductsLink(driver);
+		while (true) {
+			List<WebElement> crossIcons = basePage.getWebElements(driver, CompareProductsPageUI.CROSS_ICON);
+			if (crossIcons.isEmpty()) {
+				break;
+			}
+			crossIcons.get(0).click();
+			basePage.clickConfirmationPopupOKButton(driver);
+			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
+		}
+		basePage.clickLumaLogo(driver);
+	}
+
+	public void clearWishList() {
+		basePage.clickCustomerNameDropdown(driver);
+		basePage.clickMyWishListDropdownLink(driver);
+		while (true) {
+			List<WebElement> trashcanIcons = basePage.getWebElements(driver, MyWishListPageUI.TRASHCAN_ICON);
+			if (trashcanIcons.isEmpty()) {
+				break;
+			}
+			trashcanIcons.get(0).click();
+			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
+		}
+		basePage.clickLumaLogo(driver);
+	}
+
 	public void clearShoppingCart() {
 		basePage.clickShoppingCartIcon(driver);
 		basePage.clickViewAndEditCartLink(driver);
@@ -41,6 +69,7 @@ public class Orders extends BaseTest {
 			trashcanIcons.get(0).click();
 			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
 		}
+		basePage.clickLumaLogo(driver);
 	}
 
 	private WebDriver driver;

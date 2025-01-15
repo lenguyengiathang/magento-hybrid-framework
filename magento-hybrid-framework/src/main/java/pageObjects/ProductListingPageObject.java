@@ -152,74 +152,15 @@ public class ProductListingPageObject extends BasePage {
 		}
 	}
 
-	public void clickAddToCartButtonByProductName(String productName) {
-		waitForElementVisible(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
-		hoverOverElement(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
-		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME, productName);
-		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME, productName);
-		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
-	}
-
-	public void clickSizeButtonByProductNameAndLabel(String productName, String sizeLabel) {
-		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
-				sizeLabel);
-		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
-				sizeLabel);
-	}
-
-	public void clickColorButtonByProductNameAndLabel(String productName, String colorLabel) {
-		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL,
-				productName, colorLabel);
-		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
-				colorLabel);
-	}
-
-	public void addProductWithOptionsToCart(String productName, String sizeLabel, String colorLabel) {
-		clickSizeButtonByProductNameAndLabel(productName, sizeLabel);
-		clickColorButtonByProductNameAndLabel(productName, colorLabel);
-		clickAddToCartButtonByProductName(productName);
-	}
-
-	public void addProductWithNoOptionsToCart(String productName) {
-		clickAddToCartButtonByProductName(productName);
-	}
-
 	public String getAddedToShoppingCartSuccessMessage() {
 		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
-	public ShoppingCartPageObject clickShoppingCartLink() {
+	public ShoppingCartPageObject clickShoppingCartLinkSuccessMessage() {
 		waitForElementClickable(driver, ProductListingPageUI.SHOPPING_CART_LINK_SUCCESS_MESSAGE);
 		clickElementByJS(driver, ProductListingPageUI.SHOPPING_CART_LINK_SUCCESS_MESSAGE);
 		return PageGeneratorManager.getShoppingCartPageObject(driver);
-	}
-
-	public ProductDetailsPageObject clickProductLinkByName(String productName) {
-		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
-		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
-		return PageGeneratorManager.getProductDetailsPageObject(driver);
-	}
-
-	public MyWishListPageObject clickWishListIconByProductName(String productName) {
-		waitForElementVisible(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
-		hoverOverElement(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
-		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME, productName);
-		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME, productName);
-		return PageGeneratorManager.getMyWishlistPage(driver);
-	}
-
-	public void clickCompareIconByProductName(String productName) {
-		waitForElementVisible(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
-		hoverOverElement(driver, ProductListingPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
-		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME, productName);
-		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME, productName);
-	}
-
-	public ProductDetailsPageObject clickReviewsLinkByProductName(String productName) {
-		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_REVIEWS_LINK_BY_PRODUCT_NAME, productName);
-		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_REVIEWS_LINK_BY_PRODUCT_NAME, productName);
-		return PageGeneratorManager.getProductDetailsPageObject(driver);
 	}
 
 }

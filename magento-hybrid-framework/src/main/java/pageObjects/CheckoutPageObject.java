@@ -12,6 +12,14 @@ public class CheckoutPageObject extends BasePage {
 		this.driver = driver;
 	}
 
+	public static class Shipping {
+
+	}
+
+	public static class ReviewAndPayments {
+
+	}
+
 	public boolean isAddressCardSelected() {
 		return true;
 	}

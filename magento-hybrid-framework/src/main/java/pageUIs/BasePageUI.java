@@ -52,6 +52,17 @@ public class BasePageUI {
 		public static final String MESSAGE = "css=div[data-bind='html: $parent.prepareMessageForHtml(message.text)']";
 	}
 
+	public static class ProductCard {
+		public static final String DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]";
+		public static final String DYNAMIC_RATING_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div//div[@class='rating-result']";
+		public static final String DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL = "xpath=//li[contains(@class,'product-item')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div/div[contains(@class,'size')]/div/div[text()='%s']";
+		public static final String DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL = "xpath=//li[contains(@class,'product-item')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div/div[contains(@class,'color')]/div/div[@option-label='%s']";
+		public static final String DYNAMIC_REVIEWS_LINK_BY_PRODUCT_NAME = "xpath=//li[contains(@class,'product-item')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div[contains(@class,'reviews')]//a";
+		public static final String DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME = "xpath=//li[contains(@class,'product-item')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div[@class='product-item-inner']//button";
+		public static final String DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[last()]//a[@class='action towishlist']";
+		public static final String DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[last()]//a[@class='action tocompare']";
+	}
+
 	public static class CompareProductsSection {
 		public static final String EMPTY_COMPARISON_LIST_INFO_MESSAGE = "css=.block-compare>.empty";
 		public static final String DYNAMIC_CROSS_ICON_BY_PRODUCT_NAME = "xpath=//a[text()='%s']/parent::strong/following-sibling::a[@class='action delete']";

@@ -23,11 +23,11 @@ public class HomepageObject extends BasePage {
 		waitForElementClickable(driver, HomepageUI.SIGN_IN_LINK);
 		clickElement(driver, HomepageUI.SIGN_IN_LINK);
 		return PageGeneratorManager.getCustomerLoginPage(driver);
-
 	}
 
 	public String getSignedOutMessage() {
 		waitForElementVisible(driver, HomepageUI.SIGNED_OUT_MESSAGE);
 		return getElementText(driver, HomepageUI.SIGNED_OUT_MESSAGE);
 	}
+
 }

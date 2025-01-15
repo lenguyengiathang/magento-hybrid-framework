@@ -6,6 +6,7 @@ import pageObjects.AccountInformationPageObject;
 import pageObjects.AddressBookPageObject;
 import pageObjects.AdvancedSearchPageObject;
 import pageObjects.CheckoutPageObject;
+import pageObjects.CompareProductsPageObject;
 import pageObjects.CreateNewCustomerAccountPageObject;
 import pageObjects.CustomerLoginPageObject;
 import pageObjects.HomepageObject;
@@ -93,6 +94,10 @@ public class PageGeneratorManager {
 
 	public static CheckoutPageObject getCheckoutPageObject(WebDriver driver) {
 		return new CheckoutPageObject(driver);
+	}
+
+	public static CompareProductsPageObject getCompareProductsPage(WebDriver driver) {
+		return new CompareProductsPageObject(driver);
 	}
 
 }

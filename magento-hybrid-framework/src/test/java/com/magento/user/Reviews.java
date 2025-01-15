@@ -1,7 +1,6 @@
 package com.magento.user;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -19,7 +18,7 @@ import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
 import utilities.DataHelper;
 
-public class CompareProducts extends BaseTest {
+public class Reviews extends BaseTest {
 	@Parameters("browser")
 	@BeforeClass
 	public void beforeClass(String browser) {
@@ -34,20 +33,8 @@ public class CompareProducts extends BaseTest {
 	}
 
 	@Test
-	public void Info_Message_No_Product_In_Comparison_List() {
+	public void Click_Reviews_Link_In_Product_Card() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Bags");
-
-		Assert.assertEquals(productListingPage.getEmptyComparisonListInfoMessage(driver),
-				"You have no items to compare.");
-	}
-
-	@Test
-	public void Display_Of_Compare_Products_Link() {
-		Assert.assertFalse(productListingPage.isCompareProductsLinkDisplayed(driver));
-
-		productListingPage.clickCompareIconByProductName(driver, "Overnight Duffle");
-
-		Assert.assertTrue(productListingPage.isCompareProductsLinkDisplayed(driver));
 	}
 
 	@AfterClass(alwaysRun = true)

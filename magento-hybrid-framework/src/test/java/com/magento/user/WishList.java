@@ -2,21 +2,26 @@ package com.magento.user;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.magento.commons.Products;
 import com.magento.commons.Register;
 
 import commons.BaseTest;
 import commons.PageGeneratorManager;
+import pageObjects.CompareProductsPageObject;
 import pageObjects.CustomerLoginPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.MyAccountPageObject;
 import pageObjects.MyWishListPageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
+import pageObjects.ShoppingCartPageObject;
 import utilities.DataHelper;
 
 public class WishList extends BaseTest {
@@ -60,7 +65,7 @@ public class WishList extends BaseTest {
 	public void Click_Go_To_Wish_List_Link() {
 		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Watches");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Clamber Watch");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Clamber Watch");
 		myWishListPage.clickGoToWishListLink(driver);
 
 		Assert.assertEquals(myWishListPage.getPageHeader(driver), "My Wish List");
@@ -74,15 +79,38 @@ public class WishList extends BaseTest {
 	}
 
 	@Test(priority = 6)
-	public void Error_Message_Logged_Out_User_Adding_Products_To_Wish_List() {
-		myWishListPage.clickCustomerNameDropdown(driver);
-		homepage = myWishListPage.clickSignOutDropdownLink(driver);
-		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", "Tops",
-				"Bras & Tanks");
-		productListingPage.clickWishListIconByProductName("Zoe Tank");
+	public void Click_Wish_List_Icon() {
+		homepage = myWishListPage.clickLumaLogo(driver);
+		homepage.scrollToBottom(driver);
+		myWishListPage = homepage.clickWishListIconByProductName(driver, "Radiant Tee");
 
-		Assert.assertEquals(customerLoginPage.getLoginErrorMessage(),
-				"You must login or register to add items to your wishlist.");
+		Assert.assertEquals(myWishListPage.getPageHeader(driver), "My Wish List");
+		Assert.assertFalse(myWishListPage.isProductNotDisplayedInMyWishListPage("Radiant Tee"));
+
+		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
+				"Fitness Equipment");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Dual Handle Cardio Ball");
+
+		Assert.assertEquals(myWishListPage.getPageHeader(driver), "My Wish List");
+		Assert.assertFalse(myWishListPage.isProductNotDisplayedInMyWishListPage("Dual Handle Cardio Ball"));
+
+		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
+				"Bags");
+		productListingPage.clickCompareIconByProductName(driver, "Compete Track Tote");
+		compareProductsPage = productListingPage.clickCompareProductsLink(driver);
+		myWishListPage = compareProductsPage.clickWishListIconByProductName(driver, "Compete Track Tote");
+
+		Assert.assertEquals(myWishListPage.getPageHeader(driver), "My Wish List");
+		Assert.assertFalse(myWishListPage.isProductNotDisplayedInMyWishListPage("Compete Track Tote"));
+
+		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
+				"Watches");
+		productListingPage.clickAddToCartButtonByProductName(driver, "Dash Digital Watch");
+//		shoppingCartPage = productListingPage.clickShoppingCartLinkSuccessMessage();
+//		myWishListPage = shoppingCartPage.clickWishListIconByProductName(driver, "Affirm Water Bottle");
+//
+//		Assert.assertEquals(myWishListPage.getPageHeader(driver), "My Wish List");
+//		Assert.assertFalse(myWishListPage.isProductNotDisplayedInMyWishListPage("Affirm Water Bottle"));
 	}
 
 	@Test(priority = 7)
@@ -90,7 +118,7 @@ public class WishList extends BaseTest {
 		homepage = customerLoginPage.logInAsRegisteredUser(email, password);
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Fitness Equipment");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Dual Handle Cardio Ball");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Dual Handle Cardio Ball");
 
 		Assert.assertEquals(myWishListPage.getAddProductToWishListSuccessMessage(),
 				"Dual Handle Cardio Ball has been added to your Wish List. Click here to continue shopping.");
@@ -135,7 +163,7 @@ public class WishList extends BaseTest {
 	public void Add_Product_Without_Options_To_Shopping_Cart() {
 		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Fitness Equipment");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Sprite Foam Yoga Brick");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Sprite Foam Yoga Brick");
 		myWishListPage.clickAddToCartButtonByProductNameWithOptions("Sprite Foam Yoga Brick");
 
 		Assert.assertEquals(myWishListPage.getProductAddedToShoppingCartSuccessMessage(),
@@ -143,7 +171,7 @@ public class WishList extends BaseTest {
 
 		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Fitness Equipment");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Sprite Foam Yoga Brick");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Sprite Foam Yoga Brick");
 		myWishListPage.clickAddToCartButtonByProductNameWithoutOptions(driver, "Sprite Foam Yoga Brick");
 
 		Assert.assertEquals(myWishListPage.getProductAddedToShoppingCartSuccessMessage(),
@@ -154,7 +182,7 @@ public class WishList extends BaseTest {
 	public void Add_Product_With_Options_To_Shopping_Cart() {
 		productListingPage = myWishListPage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women",
 				"Bottoms", "Shorts");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Erika Running Short");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Erika Running Short");
 		productDetailsPage = myWishListPage.clickAddToCartButtonByProductNameWithOptions("Erika Running Short");
 
 		Assert.assertEquals(productDetailsPage.getChooseOptionsForItemWarningMessage(),
@@ -162,7 +190,7 @@ public class WishList extends BaseTest {
 
 		productListingPage = productDetailsPage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women",
 				"Bottoms", "Shorts");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Erika Running Short");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Erika Running Short");
 		productDetailsPage = myWishListPage.clickAddToCartButtonByProductNameWithOptions(driver, "Erika Running Short");
 
 		Assert.assertEquals(productDetailsPage.getChooseOptionsForItemWarningMessage(),
@@ -181,7 +209,7 @@ public class WishList extends BaseTest {
 	public void Product_Removed_From_Wish_List_After_Being_Added_To_Shopping_Cart() {
 		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Watches");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Dash Digital Watch");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Dash Digital Watch");
 		myWishListPage.clickAddToCartButtonByProductNameWithoutOptions("Dash Digital Watch");
 
 		Assert.assertEquals(myWishListPage.getProductAddedToShoppingCartSuccessMessage(),
@@ -193,9 +221,9 @@ public class WishList extends BaseTest {
 	public void Add_All_Products_Without_Options_To_Shopping_Cart() {
 		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Watches");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Dash Digital Watch");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Dash Digital Watch");
 		productListingPage = myWishListPage.clickSuccessMessageHereLink();
-		myWishListPage = productListingPage.clickWishListIconByProductName("Luma Analog Watch");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Luma Analog Watch");
 		myWishListPage.clickAddAllToCartButton();
 
 		Assert.assertEquals(myWishListPage.getAllProductsAddedToShoppingCartSuccessMessage(),
@@ -206,7 +234,7 @@ public class WishList extends BaseTest {
 	public void Remove_Product_From_Wish_List_Page() {
 		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Watches");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Dash Digital Watch");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Dash Digital Watch");
 		myWishListPage.clickTrashcanIconByProductName("Dash Digital Watch");
 
 		Assert.assertEquals(myWishListPage.getProductRemovedFromWishListSuccessMessage(),
@@ -219,13 +247,34 @@ public class WishList extends BaseTest {
 	public void Remove_Product_From_Wish_List_Section() {
 		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Watches");
-		myWishListPage = productListingPage.clickWishListIconByProductName("Dash Digital Watch");
+		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Dash Digital Watch");
 		myWishListPage.clickCrossIconByProductName(driver, "Dash Digital Watch");
 
 		Assert.assertEquals(myWishListPage.getProductRemovedFromWishListSuccessMessage(),
 				"Dash Digital Watch has been removed from your Wish List.");
 		Assert.assertTrue(myWishListPage.isProductNotDisplayedInMyWishListPage("Dash Digital Watch"));
 		Assert.assertTrue(myWishListPage.isProductNotDisplayedInMyWishListSection(driver, "Dash Digital Watch"));
+	}
+
+	@Test
+	public void Error_Message_Logged_Out_User_Adding_Products_To_Wish_List() {
+		myWishListPage.clickCustomerNameDropdown(driver);
+		homepage = myWishListPage.clickSignOutDropdownLink(driver);
+		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", "Tops",
+				"Bras & Tanks");
+		productListingPage.clickWishListIconByProductName(driver, "Zoe Tank");
+
+		Assert.assertEquals(customerLoginPage.getLoginErrorMessage(),
+				"You must login or register to add items to your wishlist.");
+	}
+
+	@AfterMethod
+	public void clearWishList(ITestResult result) {
+		Products productActions = new Products(driver);
+		if (result.getMethod().getMethodName().equals("Click_Wish_List_Icon")) {
+			productActions.clearWishList();
+			System.out.println("All products are removed from the wish list");
+		}
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -239,8 +288,10 @@ public class WishList extends BaseTest {
 	private HomepageObject homepage;
 	private MyAccountPageObject myAccountPage;
 	private CustomerLoginPageObject customerLoginPage;
+	private CompareProductsPageObject compareProductsPage;
 	private MyWishListPageObject myWishListPage;
 	private ProductListingPageObject productListingPage;
 	private ProductDetailsPageObject productDetailsPage;
+	private ShoppingCartPageObject shoppingCartPage;
 
 }

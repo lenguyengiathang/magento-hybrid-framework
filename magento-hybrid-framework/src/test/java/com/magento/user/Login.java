@@ -72,7 +72,7 @@ public class Login extends BaseTest {
 		homepage.clickCustomerNameDropdown(driver);
 		homepage.clickSignOutDropdownLink(driver);
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Bags");
-		productListingPage.clickAddToCartButtonByProductName("Wayfarer Messenger Bag");
+		productListingPage.clickAddToCartButtonByProductName(driver, "Wayfarer Messenger Bag");
 		productListingPage.clickShoppingCartIcon(driver);
 		checkoutPage = productListingPage.clickProceedToCheckoutButton(driver);
 		checkoutPage.clickSignInLink();
@@ -82,6 +82,11 @@ public class Login extends BaseTest {
 		homepage = checkoutPage.clickLumaLogo(driver);
 
 		Assert.assertTrue(homepage.isWelcomeMessageDisplayed(driver));
+	}
+
+	@Test
+	public void Click_Forgot_Password_Link() {
+
 	}
 
 	@AfterClass(alwaysRun = true)

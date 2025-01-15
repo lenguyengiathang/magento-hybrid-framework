@@ -23,6 +23,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import pageObjects.CheckoutPageObject;
+import pageObjects.CompareProductsPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.MyAccountPageObject;
 import pageObjects.MyWishListPageObject;
@@ -880,6 +881,12 @@ public class BasePage {
 		return getElementText(driver, BasePageUI.CompareProductsSection.EMPTY_COMPARISON_LIST_INFO_MESSAGE);
 	}
 
+	public CompareProductsPageObject clickCompareProductsLink(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.Header.COMPARE_PRODUCTS_LINK);
+		clickElementByJS(driver, BasePageUI.Header.COMPARE_PRODUCTS_LINK);
+		return PageGeneratorManager.getCompareProductsPage(driver);
+	}
+
 	public boolean isCompareProductsLinkDisplayed(WebDriver driver) {
 		return isElementDisplayed(driver, BasePageUI.Header.COMPARE_PRODUCTS_LINK);
 	}
@@ -904,6 +911,65 @@ public class BasePage {
 	public void clickConfirmationPopupOKButton(WebDriver driver) {
 		waitForElementClickable(driver, BasePageUI.General.CONFIRMATION_POPUP_OK_BUTTON);
 		clickElementByJS(driver, BasePageUI.General.CONFIRMATION_POPUP_OK_BUTTON);
+	}
+
+	public ProductDetailsPageObject clickProductLinkByProductName(WebDriver driver, String productName) {
+		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		return PageGeneratorManager.getProductDetailsPageObject(driver);
+	}
+
+	public void clickAddToCartButtonByProductName(WebDriver driver, String productName) {
+		waitForElementVisible(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		hoverOverElement(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME, productName);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+	}
+
+	public void clickSizeButtonByProductNameAndLabel(WebDriver driver, String productName, String sizeLabel) {
+		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL,
+				productName, sizeLabel);
+		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
+				sizeLabel);
+	}
+
+	public void clickColorButtonByProductNameAndLabel(WebDriver driver, String productName, String colorLabel) {
+		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL,
+				productName, colorLabel);
+		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
+				colorLabel);
+	}
+
+	public MyWishListPageObject clickWishListIconByProductName(WebDriver driver, String productName) {
+		waitForElementVisible(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		hoverOverElement(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME, productName);
+		return PageGeneratorManager.getMyWishlistPage(driver);
+	}
+
+	public void clickCompareIconByProductName(WebDriver driver, String productName) {
+		waitForElementVisible(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		hoverOverElement(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME, productName);
+	}
+
+	public ProductDetailsPageObject clickReviewsLinkByProductName(WebDriver driver, String productName) {
+		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_REVIEWS_LINK_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_REVIEWS_LINK_BY_PRODUCT_NAME, productName);
+		return PageGeneratorManager.getProductDetailsPageObject(driver);
+	}
+
+	public void addProductWithOptionsToCart(WebDriver driver, String productName, String sizeLabel, String colorLabel) {
+		clickSizeButtonByProductNameAndLabel(driver, productName, sizeLabel);
+		clickColorButtonByProductNameAndLabel(driver, productName, colorLabel);
+		clickAddToCartButtonByProductName(driver, productName);
+	}
+
+	public void addProductWithNoOptionsToCart(WebDriver driver, String productName) {
+		clickAddToCartButtonByProductName(driver, productName);
 	}
 
 }
