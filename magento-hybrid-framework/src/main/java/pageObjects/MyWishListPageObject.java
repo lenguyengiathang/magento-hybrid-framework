@@ -3,6 +3,7 @@ package pageObjects;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import commons.GlobalConstants;
 import commons.PageGeneratorManager;
 import pageUIs.BasePageUI;
 import pageUIs.MyWishListPageUI;
@@ -24,10 +25,23 @@ public class MyWishListPageObject extends BasePage {
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
-	public ProductListingPageObject clickSuccessMessageHereLink() {
+	public BasePage clickSuccessMessageHereLink() {
 		waitForElementClickable(driver, MyWishListPageUI.HERE_LINK);
 		clickElementByJS(driver, MyWishListPageUI.HERE_LINK);
-		return PageGeneratorManager.getProductListingPageObject(driver);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+
+		String url = getPageUrl(driver);
+		if (url.equals(GlobalConstants.PORTAL_PAGE_URL)) {
+			return PageGeneratorManager.getHomepage(driver);
+		} else if (url.contains("html")) {
+			return PageGeneratorManager.getProductListingPageObject(driver);
+		} else if (url.contains("compare")) {
+			return PageGeneratorManager.getCompareProductsPage(driver);
+		} else if (url.contains("cart")) {
+			return PageGeneratorManager.getShoppingCartPageObject(driver);
+		} else {
+			return null;
+		}
 	}
 
 	public void hoverOverProductCardByName(String productName) {
@@ -118,6 +132,16 @@ public class MyWishListPageObject extends BasePage {
 	public void clickAddAllToCartButton() {
 		waitForElementClickable(driver, MyWishListPageUI.ADD_ALL_TO_CART_BUTTON);
 		clickElementByJS(driver, MyWishListPageUI.ADD_ALL_TO_CART_BUTTON);
+	}
+
+	public void hoverOverSeeDetailsTextByProductName(String productName) {
+		waitForElementVisible(driver, MyWishListPageUI.DYNAMIC_SEE_DETAILS_TEXT_BY_PRODUCT_NAME, productName);
+		hoverOverElement(driver, MyWishListPageUI.DYNAMIC_SEE_DETAILS_TEXT_BY_PRODUCT_NAME, productName);
+	}
+
+	public String getOptionsDetails(String productName) {
+		waitForElementVisible(driver, MyWishListPageUI.OPTIONS_DETAILS_TOOLTIP, productName);
+		return getElementText(driver, MyWishListPageUI.OPTIONS_DETAILS_TOOLTIP, productName);
 	}
 
 }

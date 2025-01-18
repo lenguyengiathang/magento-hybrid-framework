@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -23,12 +24,9 @@ public class Orders extends BaseTest {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 		productActions = new com.magento.commons.Products(driver);
-
-		productData = ProductDataMapperBasic.loadProductData("MiscProducts.json");
-		productName = productData.getProducts().get(0).getProductName();
-		productSize = productData.getProducts().get(0).getSize();
-		productColor = productData.getProducts().get(0).getColor();
 	}
+
+	@BeforeMethod
 
 	@Test(priority = 1, groups = "miniCart", description = "Verify the information message displayed when the shopping cart is empty")
 	public void Info_Message_Empty_Shopping_Cart() {

@@ -1,7 +1,10 @@
 package pageUIs;
 
 public class ShoppingCartPageUI {
+	public static final String DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/ancestor::td/following-sibling::td//input[@title='Qty']";
+	public static final String DYNAMIC_MOVE_TO_WISH_LIST_LINK_BY_PRODUCT_NAME = "xpath=(//a[contains(text(),'%s')])[2]/ancestor::tr/following-sibling::tr//a[contains(@class,'towishlist')]";
 	public static final String TRASHCAN_ICON = "css=.action-delete";
+
 	public static final String APPLY_DISCOUNT_CODE_HEADER = "id=block-discount-heading";
 	public static final String ENTER_DISCOUNT_CODE_TEXTBOX = "id=coupon_code";
 	public static final String APPLY_DISCOUNT_BUTTON = "css=button[value='Apply Discount']";

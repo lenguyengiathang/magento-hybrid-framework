@@ -2,12 +2,15 @@ package utilities;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProductDataMapperAdvanced {
+
+	private Random random;
 
 	public static class Product {
 		@JsonProperty("product_name")
@@ -16,11 +19,11 @@ public class ProductDataMapperAdvanced {
 		@JsonProperty("price")
 		private String price;
 
-		@JsonProperty("size")
-		private String size;
+		@JsonProperty("sizes")
+		private List<String> sizes;
 
-		@JsonProperty("color")
-		private String color;
+		@JsonProperty("colors")
+		private List<String> colors;
 
 		public String getProductName() {
 			return productName;
@@ -30,59 +33,52 @@ public class ProductDataMapperAdvanced {
 			return price;
 		}
 
-		public String getSize() {
-			return size;
+		public List<String> getSizes() {
+			return sizes;
 		}
 
-		public String getColor() {
-			return color;
+		public List<String> getColors() {
+			return colors;
 		}
 	}
 
-	public static class ProductType {
-		@JsonProperty("type")
-		private String type;
+	public static class Subcategory {
+		@JsonProperty("subcategory")
+		private String subcategoryName;
 
-		@JsonProperty("items")
-		private List<Product> items;
+		@JsonProperty("products")
+		private List<Product> products;
 
-		public String getType() {
-			return type;
+		public String getSubcategoryName() {
+			return subcategoryName;
 		}
 
-		public List<Product> getItems() {
-			return items;
+		public List<Product> getProducts() {
+			return products;
 		}
 	}
 
 	public static class Category {
 		@JsonProperty("category")
-		private String category;
+		private String categoryName;
 
-		@JsonProperty("products")
-		private List<ProductType> products;
+		@JsonProperty("subcategories")
+		private List<Subcategory> subcategories;
 
-		public String getCategory() {
-			return category;
+		public String getCategoryName() {
+			return categoryName;
 		}
 
-		public List<ProductType> getProducts() {
-			return products;
+		public List<Subcategory> getSubcategories() {
+			return subcategories;
 		}
 	}
 
 	@JsonProperty("men_products")
-	private List<Category> menProducts;
+	public List<Category> categories;
 
-	@JsonProperty("women_products")
-	private List<Category> womenProducts;
-
-	public List<Category> getMenProducts() {
-		return menProducts;
-	}
-
-	public List<Category> getWomenProducts() {
-		return womenProducts;
+	public List<Category> getCategories() {
+		return categories;
 	}
 
 	public static ProductDataMapperAdvanced loadProductData(String fileName) {
@@ -96,5 +92,32 @@ public class ProductDataMapperAdvanced {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public Category getRandomCategory() {
+		random = new Random();
+		return categories.get(random.nextInt(categories.size()));
+	}
+
+	public Subcategory getRandomSubcategory(Category category) {
+		random = new Random();
+		return category.getSubcategories().get(random.nextInt(category.getSubcategories().size()));
+	}
+
+	public Product getRandomProductFromSubcategory(Subcategory subcategory) {
+		random = new Random();
+		return subcategory.getProducts().get(random.nextInt(subcategory.getProducts().size()));
+	}
+
+	public String getRandomSize(Product product) {
+		random = new Random();
+		List<String> sizes = product.getSizes();
+		return sizes.get(random.nextInt(sizes.size()));
+	}
+
+	public String getRandomColor(Product product) {
+		random = new Random();
+		List<String> colors = product.getColors();
+		return colors.get(random.nextInt(colors.size()));
 	}
 }

@@ -61,9 +61,10 @@ public class ProductDetailsPageObject extends BasePage {
 		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
-	public void clickAddToWishlistLink() {
+	public MyWishListPageObject clickAddToWishlistLink() {
 		waitForElementClickable(driver, ProductDetailsPageUI.ADD_TO_WISH_LIST_LINK);
 		clickElementByJS(driver, ProductDetailsPageUI.ADD_TO_WISH_LIST_LINK);
+		return PageGeneratorManager.getMyWishlistPage(driver);
 	}
 
 	public MyWishListPageObject clickUpdateWishListButton() {

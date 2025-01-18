@@ -1,0 +1,55 @@
+{
+  "gear_products": [
+    {
+      "category": "Bags",
+      "products": [
+        {
+          "product_name": "Push It Messenger Bag",
+          "price": "45.00"
+        },
+        {
+          "product_name": "Overnight Duffle",
+          "price": "45.00"
+        },
+        {
+          "product_name": "Driven Backpack",
+          "price": "36.00"
+        }
+      ]
+    },
+    {
+      "category": "Fitness Equipment",
+      "products": [
+        {
+          "product_name": "Go-Get'r Pushup Grips",
+          "price": "19.00"
+        },
+        {
+          "product_name": "Dual Handle Cardio Ball",
+          "price": "12.00"
+        },
+        {
+          "product_name": "Affirm Water Bottle",
+          "price": "7.00"
+        }
+      ]
+    },
+    {
+      "category": "Watches",
+      "products": [
+        {
+          "product_name": "Clamber Watch",
+          "price": "54.00"
+        },
+        {
+          "product_name": "Dash Digital Watch",
+          "price": "92.00"
+        },
+        {
+          "product_name": "Aim Analog Watch",
+          "price": "45.00"
+        }
+      ]
+    }
+  ]
+}

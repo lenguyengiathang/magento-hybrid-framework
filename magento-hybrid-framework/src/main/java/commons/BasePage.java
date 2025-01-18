@@ -251,8 +251,7 @@ public class BasePage {
 
 	public void sendKeysToElement(WebDriver driver, String locatorType, String text, String... dynamicValues) {
 		WebElement element = getWebElement(driver, getDynamicXpath(locatorType, dynamicValues));
-		element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-		element.sendKeys(Keys.chord(Keys.BACK_SPACE));
+		element.clear();
 		element.sendKeys(text);
 	}
 
@@ -538,6 +537,12 @@ public class BasePage {
 	public void scrollToElement(WebDriver driver, String locatorType) {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", getWebElement(driver, locatorType));
+	}
+
+	public void scrollToElement(WebDriver driver, String locatorType, String... dynamicValues) {
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+		WebElement element = getWebElement(driver, getDynamicXpath(locatorType, dynamicValues));
+		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", element);
 	}
 
 	public void removeAttributeInDOM(WebDriver driver, String locatorType, String attribute) {
@@ -942,6 +947,7 @@ public class BasePage {
 	}
 
 	public MyWishListPageObject clickWishListIconByProductName(WebDriver driver, String productName) {
+		scrollToElement(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		waitForElementVisible(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		hoverOverElement(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_WISH_LIST_ICON_BY_PRODUCT_NAME, productName);
@@ -950,6 +956,7 @@ public class BasePage {
 	}
 
 	public void clickCompareIconByProductName(WebDriver driver, String productName) {
+		scrollToElement(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		waitForElementVisible(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		hoverOverElement(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_COMPARE_ICON_BY_PRODUCT_NAME, productName);

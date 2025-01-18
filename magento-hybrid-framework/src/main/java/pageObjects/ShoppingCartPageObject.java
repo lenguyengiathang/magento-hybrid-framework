@@ -3,6 +3,7 @@ package pageObjects;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import pageUIs.BasePageUI;
 import pageUIs.ShoppingCartPageUI;
 
 public class ShoppingCartPageObject extends BasePage {
@@ -10,6 +11,11 @@ public class ShoppingCartPageObject extends BasePage {
 
 	public ShoppingCartPageObject(WebDriver driver) {
 		this.driver = driver;
+	}
+
+	public void sendKeysToQuantityTextboxByProductName(String quantity, String productName) {
+		waitForElementVisible(driver, ShoppingCartPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
+		sendKeysToElement(driver, ShoppingCartPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName, quantity);
 	}
 
 	public void clickUpdateShoppingCartButton() {
@@ -60,5 +66,15 @@ public class ShoppingCartPageObject extends BasePage {
 	public void clickCheckOutWithMultipleAddressesLink() {
 		waitForElementClickable(driver, ShoppingCartPageUI.CHECK_OUT_WITH_MULTIPLE_ADDRESSES);
 		clickElementByJS(driver, ShoppingCartPageUI.CHECK_OUT_WITH_MULTIPLE_ADDRESSES);
+	}
+
+	public void clickMoveToWishListLinkByProductName(String productName) {
+		waitForElementClickable(driver, ShoppingCartPageUI.DYNAMIC_MOVE_TO_WISH_LIST_LINK_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, ShoppingCartPageUI.DYNAMIC_MOVE_TO_WISH_LIST_LINK_BY_PRODUCT_NAME, productName);
+	}
+
+	public String getMovedToWishListSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 }

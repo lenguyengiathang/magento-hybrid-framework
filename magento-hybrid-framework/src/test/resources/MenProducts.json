@@ -1,0 +1,77 @@
+{
+  "men_products": [
+    {
+      "category": "Tops",
+      "subcategories": [
+        {
+          "subcategory": "Jackets",
+          "products": [
+            {
+              "product_name": "Proteus Fitness Jackshirt",
+              "price": "45.00",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Black", "Blue", "Orange"]
+            },
+            {
+              "product_name": "Montana Wind Jacket",
+              "price": "49.00",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Black", "Green", "Red"]
+            },
+            {
+              "product_name": "Jupiter All-Weather Trainer",
+              "price": "56.99",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Blue", "Green", "Purple"]
+            }
+          ]
+        },
+        {
+          "subcategory": "Hoodies & Sweatshirts",
+          "products": [
+            {
+              "product_name": "Marco Lightweight Active Hoodie",
+              "price": "74.00",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Blue", "Green", "Purple"]
+            },
+            {
+              "product_name": "Frankie Sweatshirt",
+              "price": "60.00",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Green", "White", "Yellow"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Bottoms",
+      "subcategories": [
+        {
+          "subcategory": "Pants",
+          "products": [
+            {
+              "product_name": "Cronus Yoga Pant",
+              "price": "As low as 38.40",
+              "sizes": ["32", "33", "34", "36"],
+              "colors": ["Black", "Blue", "Red"]
+            },
+            {
+              "product_name": "Geo Insulated Jogging Pant",
+              "price": "As low as $40.80",
+              "sizes": ["32", "33", "34", "36"],
+              "colors": ["Blue", "Green", "Red"]
+            }
+          ]
+        },
+        {
+          "subcategory": "Shorts",
+          "products": [
+            
+          ]
+        }
+      ]
+    }
+  ]
+}
