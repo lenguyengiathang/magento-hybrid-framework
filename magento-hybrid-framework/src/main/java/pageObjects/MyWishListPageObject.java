@@ -45,8 +45,9 @@ public class MyWishListPageObject extends BasePage {
 	}
 
 	public void hoverOverProductCardByName(String productName) {
-		waitForElementVisible(driver, MyWishListPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
-		hoverOverElement(driver, MyWishListPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		scrollToElement(driver, MyWishListPageUI.DYNAMIC_PRODUCT_CARD_BY_PRODUCT_NAME, productName);
+		waitForElementVisible(driver, MyWishListPageUI.DYNAMIC_PRODUCT_CARD_BY_PRODUCT_NAME, productName);
+		hoverOverElement(driver, MyWishListPageUI.DYNAMIC_PRODUCT_CARD_BY_PRODUCT_NAME, productName);
 	}
 
 	public void sendKeysToCommentTextbox(String productName, String comment) {
@@ -115,7 +116,7 @@ public class MyWishListPageObject extends BasePage {
 	}
 
 	public boolean isProductNotDisplayedInMyWishListPage(String productName) {
-		return isElementNotDisplayed(driver, MyWishListPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		return isElementNotDisplayed(driver, MyWishListPageUI.DYNAMIC_PRODUCT_CARD_BY_PRODUCT_NAME, productName);
 	}
 
 	public String getProductRemovedFromWishListSuccessMessage() {

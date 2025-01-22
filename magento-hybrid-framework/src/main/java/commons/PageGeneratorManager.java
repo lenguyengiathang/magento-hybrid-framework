@@ -4,11 +4,13 @@ import org.openqa.selenium.WebDriver;
 
 import pageObjects.AccountInformationPageObject;
 import pageObjects.AddressBookPageObject;
+import pageObjects.AddressPageObject;
 import pageObjects.AdvancedSearchPageObject;
 import pageObjects.CheckoutPageObject;
 import pageObjects.CompareProductsPageObject;
 import pageObjects.CreateNewCustomerAccountPageObject;
 import pageObjects.CustomerLoginPageObject;
+import pageObjects.ForgotYourPasswordPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.MyAccountPageObject;
 import pageObjects.MyDownloadableProductsPageObject;
@@ -19,6 +21,7 @@ import pageObjects.OrdersAndReturnsPageObject;
 import pageObjects.PopularSearchTermsPageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
+import pageObjects.SelectShippingMethodPageObject;
 import pageObjects.ShoppingCartPageObject;
 import pageObjects.StoredPaymentMethodsPageObject;
 
@@ -34,6 +37,10 @@ public class PageGeneratorManager {
 
 	public static CustomerLoginPageObject getCustomerLoginPage(WebDriver driver) {
 		return new CustomerLoginPageObject(driver);
+	}
+
+	public static ForgotYourPasswordPageObject getForgotYourPasswordPage(WebDriver driver) {
+		return new ForgotYourPasswordPageObject(driver);
 	}
 
 	public static ProductListingPageObject getProductListingPageObject(WebDriver driver) {
@@ -98,6 +105,14 @@ public class PageGeneratorManager {
 
 	public static CompareProductsPageObject getCompareProductsPage(WebDriver driver) {
 		return new CompareProductsPageObject(driver);
+	}
+
+	public static SelectShippingMethodPageObject getSelectShippingMethodPage(WebDriver driver) {
+		return new SelectShippingMethodPageObject(driver);
+	}
+
+	public static AddressPageObject getAddressPageObject(WebDriver driver) {
+		return new AddressPageObject(driver);
 	}
 
 }

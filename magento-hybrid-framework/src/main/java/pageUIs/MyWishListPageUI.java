@@ -6,7 +6,7 @@ public class MyWishListPageUI {
 
 	public static final String FIRST_PRODUCT_CARD = "xpath=(//form[@id='wishlist-view-form']//a[@class='product-item-link'])[1]";
 	public static final String TRASHCAN_ICON = "css=a[title='Remove Item']";
-	public static final String DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]";
+	public static final String DYNAMIC_PRODUCT_CARD_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/ancestor::li";
 	public static final String DYNAMIC_COMMENT_TEXTBOX_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'')]/parent::strong/following-sibling::div[3]//textarea";
 	public static final String DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[3]//input";
 	public static final String DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div[3]//button";

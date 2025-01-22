@@ -2,6 +2,7 @@ package pageUIs;
 
 public class ProductListingPageUI {
 	public static final String SEARCH_FOUND_MESSAGE = "css=div[class='search found']";
+	public static final String NO_RESULT_FOUND_ERROR_MESSAGE = "css=.error";
 	public static final String SEARCH_CRITERIA = "css=div[class='search summary'] li";
 	public static final String SEARCH_WARNING_MESSAGE = "css=div[class='message notice']>div";
 	public static final String MODIFY_YOUR_SEARCH_LINK = "xpath=//a[text()='Modify your search.']";
@@ -19,6 +20,7 @@ public class ProductListingPageUI {
 	public static final String SORT_ARROW_ICON = "css=#sorter~a";
 
 	public static final String SHOPPING_CART_LINK_SUCCESS_MESSAGE = "xpath=//a[text()='shopping cart']";
+	public static final String COMPARISON_LIST_LINK_SUCCESS_MESSAGE = "xpath=//a[text()='comparison list']";
 
 	public static final String PRODUCT_LINK = "css=.product-item";
 	public static final String PRODUCT_NAME = "css=.product-item-name>a";

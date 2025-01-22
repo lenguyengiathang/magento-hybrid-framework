@@ -41,7 +41,7 @@ public class AdvancedSearchPageObject extends BasePage {
 
 	public ProductListingPageObject clickSearchButton() {
 		waitForElementClickable(driver, AdvancedSearchPageUI.SEARCH_BUTTON);
-		clickElement(driver, AdvancedSearchPageUI.SEARCH_BUTTON);
+		clickElementByJS(driver, AdvancedSearchPageUI.SEARCH_BUTTON);
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 

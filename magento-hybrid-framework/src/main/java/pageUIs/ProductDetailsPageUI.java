@@ -7,7 +7,7 @@ public class ProductDetailsPageUI {
 	public static final String PRODUCT_FINAL_PRICE = "css=.product-info-price span[id*=product-price]";
 	public static final String PRODUCT_REGULAR_PRICE = "css=.product-info-price span[id*=old-price]";
 	public static final String PRODUCT_SKU = "css=div[itemprop='sku']";
-	public static final String PRODUCT_DESCRIPTION = "css=div[class='product attribute description']>div";
+	public static final String PRODUCT_DESCRIPTION = "css=.description>.value";
 	public static final String DYNAMIC_PRODUCT_SIZE_BUTTON_BY_LABEL = "xpath=//span[text()='Size']/following-sibling::div/div[text()='%s']";
 	public static final String PRODUCT_SIZE_ERROR_MESSAGE = "css=.size div.mage-error";
 	public static final String DYNAMIC_PRODUCT_COLOR_BUTTON_BY_LABEL = "xpath=//span[text()='Color']/following-sibling::div/div";
@@ -18,6 +18,8 @@ public class ProductDetailsPageUI {
 	public static final String ADD_TO_WISH_LIST_LINK = "css=.product-addto-links>a:nth-of-type(1)";
 	public static final String UPDATE_WISH_LIST_LINK = "css=.product-addto-links>a:nth-of-type(1)";
 	public static final String ADD_TO_COMPARE_LINK = "css=.product-addto-links>a:nth-of-type(2)";
+	public static final String MORE_INFORMATION_TAB = "xpath=//a[contains(text(),'More Information')]";
+	public static final String PRODUCT_ACTIVITY = "xpath=//td[@data-th='Activity']";
 	public static final String REVIEWS_TAB = "id=tab-label-reviews-title";
 	public static final String DYNAMIC_RATING_STAR = "id=Rating-%s";
 	public static final String NICKNAME_TEXBOX = "id=nickname_field";

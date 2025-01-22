@@ -284,4 +284,9 @@ public class BaseTest {
 		return rand.nextInt(99999);
 	}
 
+	public int generateRandomNumberWithinRange(int range) {
+		Random rand = new Random();
+		return rand.nextInt(range);
+	}
+
 }

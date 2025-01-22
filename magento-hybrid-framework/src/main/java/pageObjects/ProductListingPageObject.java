@@ -48,6 +48,16 @@ public class ProductListingPageObject extends BasePage {
 		return getElementText(driver, ProductListingPageUI.SEARCH_WARNING_MESSAGE);
 	}
 
+	public String getNoSearchResultFoundErrorMessage() {
+		waitForElementVisible(driver, ProductListingPageUI.NO_RESULT_FOUND_ERROR_MESSAGE);
+		return getElementText(driver, ProductListingPageUI.NO_RESULT_FOUND_ERROR_MESSAGE);
+	}
+
+	public String getProductAddedToComparisonListSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
 	public String getProductName() {
 		waitForElementVisible(driver, ProductListingPageUI.PRODUCT_NAME);
 		return getElementText(driver, ProductListingPageUI.PRODUCT_NAME);
@@ -102,6 +112,7 @@ public class ProductListingPageObject extends BasePage {
 				return false;
 			}
 			backToPage(driver);
+			sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 			waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_LINK);
 		}
 		return true;
@@ -127,6 +138,7 @@ public class ProductListingPageObject extends BasePage {
 				}
 			}
 			backToPage(driver);
+			sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 			waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_LINK);
 		}
 		return true;
@@ -161,6 +173,12 @@ public class ProductListingPageObject extends BasePage {
 		waitForElementClickable(driver, ProductListingPageUI.SHOPPING_CART_LINK_SUCCESS_MESSAGE);
 		clickElementByJS(driver, ProductListingPageUI.SHOPPING_CART_LINK_SUCCESS_MESSAGE);
 		return PageGeneratorManager.getShoppingCartPageObject(driver);
+	}
+
+	public CompareProductsPageObject clickComparisonListLinkSuccessMessage() {
+		waitForElementClickable(driver, ProductListingPageUI.COMPARISON_LIST_LINK_SUCCESS_MESSAGE);
+		clickElementByJS(driver, ProductListingPageUI.COMPARISON_LIST_LINK_SUCCESS_MESSAGE);
+		return PageGeneratorManager.getCompareProductsPage(driver);
 	}
 
 }

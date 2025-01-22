@@ -7,6 +7,9 @@ import org.openqa.selenium.WebElement;
 
 import commons.BasePage;
 import commons.BaseTest;
+import commons.GlobalConstants;
+import commons.PageGeneratorManager;
+import pageObjects.ProductListingPageObject;
 import pageUIs.BasePageUI;
 import pageUIs.CompareProductsPageUI;
 import pageUIs.MyWishListPageUI;
@@ -30,7 +33,7 @@ public class Products extends BaseTest {
 	}
 
 	public void loadAdvancedProductData(String jsonFile) {
-		if (productWithoutOptionsData == null) {
+		if (productWithOptionsData == null) {
 			productWithOptionsData = ProductDataMapperAdvanced.loadProductData(jsonFile);
 		}
 	}
@@ -42,7 +45,7 @@ public class Products extends BaseTest {
 	}
 
 	public ProductDataMapperBasic.Product getRandomBasicProductFromCategory(ProductDataMapperBasic.Category category) {
-		randomBasicProduct = productWithoutOptionsData.getRandomProductFromCategory(getRandomBasicCategory());
+		randomBasicProduct = productWithoutOptionsData.getRandomProductFromCategory(category);
 		return randomBasicProduct;
 	}
 
@@ -51,13 +54,15 @@ public class Products extends BaseTest {
 		return randomAdvancedCategory;
 	}
 
-	public ProductDataMapperAdvanced.Subcategory getRandomAdvancedSubcategory() {
-		randomAdvancedSubcategory = productWithOptionsData.getRandomSubcategory(randomAdvancedCategory);
+	public ProductDataMapperAdvanced.Subcategory getRandomAdvancedSubcategory(
+			ProductDataMapperAdvanced.Category category) {
+		randomAdvancedSubcategory = productWithOptionsData.getRandomSubcategory(category);
 		return randomAdvancedSubcategory;
 	}
 
-	public ProductDataMapperAdvanced.Product getRandomAdvancedProduct() {
-		randomAdvancedProduct = productWithOptionsData.getRandomProductFromSubcategory(randomAdvancedSubcategory);
+	public ProductDataMapperAdvanced.Product getRandomAdvancedProduct(
+			ProductDataMapperAdvanced.Subcategory subcategory) {
+		randomAdvancedProduct = productWithOptionsData.getRandomProductFromSubcategory(subcategory);
 		return randomAdvancedProduct;
 	}
 
@@ -76,8 +81,8 @@ public class Products extends BaseTest {
 			loadAdvancedProductData(jsonFile);
 
 			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
-			Subcategory subcategory = getRandomAdvancedSubcategory();
-			productName = getRandomAdvancedProduct().getProductName();
+			Subcategory subcategory = getRandomAdvancedSubcategory(category);
+			productName = getRandomAdvancedProduct(subcategory).getProductName();
 
 			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
 					subcategory.getSubcategoryName());
@@ -93,15 +98,15 @@ public class Products extends BaseTest {
 		basePage.clickAddToCartButtonByProductNameWithoutOptions(driver, productName);
 	}
 
-	public void addProductWithOptionsToWishList(String group) {
+	public void addRandomProductWithOptionsToWishList(String group) {
 		if (group.equalsIgnoreCase("Men") || group.equalsIgnoreCase("Women")) {
 			String jsonFile = group.equalsIgnoreCase("Men") ? "MenProducts.json" : "WomenProducts.json";
 
 			loadAdvancedProductData(jsonFile);
 
 			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
-			Subcategory subcategory = getRandomAdvancedSubcategory();
-			productName = getRandomAdvancedProduct().getProductName();
+			Subcategory subcategory = getRandomAdvancedSubcategory(category);
+			productName = getRandomAdvancedProduct(subcategory).getProductName();
 
 			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
 					subcategory.getSubcategoryName());
@@ -109,7 +114,7 @@ public class Products extends BaseTest {
 		}
 	}
 
-	public void addProductWithoutOptionsToWishList() {
+	public void addRandomProductWithoutOptionsToWishList() {
 		Category category = getRandomBasicCategory();
 		productName = getRandomBasicProductFromCategory(category).getProductName();
 
@@ -117,17 +122,45 @@ public class Products extends BaseTest {
 		basePage.clickWishListIconByProductName(driver, productName);
 	}
 
-	public void clearComparisonList() {
-		basePage.clickCompareProductsLink(driver);
+	public ProductListingPageObject addRandomProductWithOptionsToComparisonList(String group) {
+		if (group.equalsIgnoreCase("Men") || group.equalsIgnoreCase("Women")) {
+			String jsonFile = group.equalsIgnoreCase("Men") ? "MenProducts.json" : "WomenProducts.json";
+
+			loadAdvancedProductData(jsonFile);
+
+			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
+			Subcategory subcategory = getRandomAdvancedSubcategory(category);
+			productName = getRandomAdvancedProduct(subcategory).getProductName();
+
+			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
+					subcategory.getSubcategoryName());
+			basePage.clickCompareIconByProductName(driver, productName);
+		}
+		return PageGeneratorManager.getProductListingPageObject(driver);
+	}
+
+	public ProductListingPageObject addRandomProductWithoutOptionsToComparisonList() {
+		Category category = getRandomBasicCategory();
+		productName = getRandomBasicProductFromCategory(category).getProductName();
+
+		basePage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category.getCategoryName());
+		basePage.clickCompareIconByProductName(driver, productName);
+
+		return PageGeneratorManager.getProductListingPageObject(driver);
+	}
+
+	public void clearShoppingCart() {
+		basePage.clickShoppingCartIcon(driver);
+		basePage.clickViewAndEditCartLink(driver);
 		while (true) {
-			List<WebElement> crossIcons = basePage.getWebElements(driver, CompareProductsPageUI.CROSS_ICON);
-			if (crossIcons.isEmpty()) {
+			List<WebElement> trashcanIcons = basePage.getWebElements(driver, ShoppingCartPageUI.TRASHCAN_ICON);
+			if (trashcanIcons.isEmpty()) {
 				break;
 			}
-			crossIcons.get(0).click();
-			basePage.clickConfirmationPopupOKButton(driver);
+			trashcanIcons.get(0).click();
 			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
 		}
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	public void clearWishList() {
@@ -142,19 +175,21 @@ public class Products extends BaseTest {
 			basePage.clickElementByJS(driver, MyWishListPageUI.TRASHCAN_ICON);
 			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
 		}
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
-	public void clearShoppingCart() {
-		basePage.clickShoppingCartIcon(driver);
-		basePage.clickViewAndEditCartLink(driver);
+	public void clearComparisonList() {
+		basePage.clickCompareProductsLink(driver);
 		while (true) {
-			List<WebElement> trashcanIcons = basePage.getWebElements(driver, ShoppingCartPageUI.TRASHCAN_ICON);
-			if (trashcanIcons.isEmpty()) {
+			List<WebElement> crossIcons = basePage.getWebElements(driver, CompareProductsPageUI.CROSS_ICON);
+			if (crossIcons.isEmpty()) {
 				break;
 			}
-			trashcanIcons.get(0).click();
+			crossIcons.get(0).click();
+			basePage.clickConfirmationPopupOKButton(driver);
 			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
 		}
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	private WebDriver driver;

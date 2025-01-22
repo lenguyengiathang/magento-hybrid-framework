@@ -93,6 +93,16 @@ public class ProductDetailsPageObject extends BasePage {
 		return getElementText(driver, ProductDetailsPageUI.PRODUCT_DESCRIPTION);
 	}
 
+	public void clickMoreInformationTab() {
+		waitForElementClickable(driver, ProductDetailsPageUI.MORE_INFORMATION_TAB);
+		clickElementByJS(driver, ProductDetailsPageUI.MORE_INFORMATION_TAB);
+	}
+
+	public String getProductActivity() {
+		waitForElementVisible(driver, ProductDetailsPageUI.PRODUCT_ACTIVITY);
+		return getElementText(driver, ProductDetailsPageUI.PRODUCT_ACTIVITY);
+	}
+
 	public void clickRatingStar(String number) {
 		waitForElementClickable(driver, ProductDetailsPageUI.DYNAMIC_RATING_STAR, number);
 		clickElementByJS(driver, ProductDetailsPageUI.DYNAMIC_RATING_STAR, number);

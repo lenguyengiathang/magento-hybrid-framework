@@ -893,7 +893,17 @@ public class BasePage {
 	}
 
 	public boolean isCompareProductsLinkDisplayed(WebDriver driver) {
-		return isElementDisplayed(driver, BasePageUI.Header.COMPARE_PRODUCTS_LINK);
+		String classValue = getElementAttribute(driver, BasePageUI.Header.COMPARE_PRODUCTS_LINK, "class");
+		if (!classValue.contains("no-display")) {
+			return true;
+		}
+		return false;
+	}
+
+	public CompareProductsPageObject clickCompareButton(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.CompareProductsSection.COMPARE_BUTTON);
+		clickElementByJS(driver, BasePageUI.CompareProductsSection.COMPARE_BUTTON);
+		return PageGeneratorManager.getCompareProductsPage(driver);
 	}
 
 	public BasePage clickFooterLinkByLabel(WebDriver driver, String label) {

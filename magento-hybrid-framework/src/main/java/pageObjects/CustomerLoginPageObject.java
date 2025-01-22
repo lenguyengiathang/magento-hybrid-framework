@@ -49,4 +49,10 @@ public class CustomerLoginPageObject extends BasePage {
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
+	public ForgotYourPasswordPageObject clickForgotYourPasswordLink() {
+		waitForElementClickable(driver, CustomerLoginPageUI.FORGOT_YOUR_PASSWORD_LINK);
+		clickElement(driver, CustomerLoginPageUI.FORGOT_YOUR_PASSWORD_LINK);
+		return PageGeneratorManager.getForgotYourPasswordPage(driver);
+	}
+
 }
