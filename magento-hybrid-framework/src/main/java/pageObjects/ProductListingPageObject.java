@@ -181,4 +181,42 @@ public class ProductListingPageObject extends BasePage {
 		return PageGeneratorManager.getCompareProductsPage(driver);
 	}
 
+	public double getProductOverallRating(String productName) {
+		waitForElementVisible(driver, ProductListingPageUI.DYNAMIC_OVERALL_RATING_BY_PRODUCT_NAME, productName);
+		String titleValue = getElementAttribute(driver, ProductListingPageUI.DYNAMIC_OVERALL_RATING_BY_PRODUCT_NAME,
+				productName);
+		return Integer.valueOf(titleValue) / 20.0;
+	}
+
+	public void selectOptionSortByDropdownByLabel(String label) {
+		waitForElementVisible(driver, ProductListingPageUI.SORT_BY_DROPDOWN, label);
+		selectOptionDefaultDropdown(driver, ProductListingPageUI.SORT_BY_DROPDOWN, label);
+	}
+
+	public void clickSortArrowIcon() {
+		waitForElementClickable(driver, ProductListingPageUI.SORT_ARROW_ICON);
+		clickElementByJS(driver, ProductListingPageUI.SORT_ARROW_ICON);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+	}
+
+	public boolean isNumberOfProductsPerPageCorrect(int expectedCount) {
+		while (true) {
+			int productCount = getNumberOfElements(driver, ProductListingPageUI.PRODUCT_LINK);
+			if (productCount > expectedCount) {
+				return false;
+			}
+			if (isElementNotDisplayed(driver, ProductListingPageUI.NEXT_PAGE_BUTTON) == true) {
+				break;
+			}
+			clickNextPageButton(driver);
+		}
+		return true;
+	}
+
+	public void clickViewToggleButton(String view) {
+		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_VIEW_TOGGLE_BUTTON_BY_VIEW_NAME, view);
+		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_VIEW_TOGGLE_BUTTON_BY_VIEW_NAME, view);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+	}
+
 }

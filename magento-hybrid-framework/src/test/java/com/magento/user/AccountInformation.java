@@ -15,21 +15,23 @@ import pageObjects.AccountInformationPageObject;
 import pageObjects.CustomerLoginPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.MyAccountPageObject;
-import utilities.DataHelper;
+import utilities.FakeDataHelper;
 
-public class MyAccount extends BaseTest {
+public class AccountInformation extends BaseTest {
 	@Parameters("browser")
 	@BeforeClass
 	public void beforeClass(String browser) {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 
-		data = DataHelper.getDataHelper();
+		data = FakeDataHelper.getDataHelper();
 		email = Register.email;
 		password = Register.password;
 		newFirstName = data.getFirstName();
 		newLastName = data.getLastName();
 		newFullName = newFirstName + ' ' + newLastName;
+		newEmail = data.getEmailAddress();
+		newPassword = password + generateRandomNumber();
 
 		customerLoginPage = homepage.clickSignInLink();
 		homepage = customerLoginPage.logInAsRegisteredUser(email, password);
@@ -61,7 +63,7 @@ public class MyAccount extends BaseTest {
 		accountInformationPage = myAccountPage.clickEditContactInformationLink();
 		accountInformationPage.sendKeysToFirstNameTextbox(newFirstName);
 		accountInformationPage.sendKeysToLastNameTextbox(newLastName);
-		myAccountPage = accountInformationPage.clickSaveButton();
+		myAccountPage = (MyAccountPageObject) accountInformationPage.clickSaveButton();
 
 		Assert.assertEquals(myAccountPage.getAccountInformationSavedSuccessMessage(),
 				"You saved the account information.");
@@ -87,14 +89,33 @@ public class MyAccount extends BaseTest {
 		Assert.assertEquals(accountInformationPage.getChangeEmailPasswordSectionHeader(), "Change Email and Password");
 	}
 
-	@Test(description = "Verify that user can change the email linked to their account")
+	@Test(priority = 1, description = "Verify that user can change the email linked to their account")
 	public void Change_Email() {
+		homepage.clickCustomerNameDropdown(driver);
+		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
+		accountInformationPage = myAccountPage.clickEditContactInformationLink();
+		accountInformationPage.checkChangeEmailCheckbox();
+		accountInformationPage.sendKeysToEmailTextbox(newEmail);
+		accountInformationPage.sendKeysToCurrentPasswordTextbox(password);
+		customerLoginPage = (CustomerLoginPageObject) accountInformationPage.clickSaveButton();
+		homepage = customerLoginPage.logInAsRegisteredUser(newEmail, password);
 
+		Assert.assertTrue(homepage.isWelcomeMessageDisplayed(driver));
 	}
 
-	@Test(description = "Verify that user can change the password linked to their account")
+	@Test(priority = 2, description = "Verify that user can change the password linked to their account")
 	public void Change_Password() {
+		homepage.clickCustomerNameDropdown(driver);
+		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
+		accountInformationPage = myAccountPage.clickEditContactInformationLink();
+		accountInformationPage.checkChangePasswordCheckbox();
+		accountInformationPage.sendKeysToCurrentPasswordTextbox(password);
+		accountInformationPage.sendKeysToNewPasswordTextbox(newPassword);
+		accountInformationPage.sendKeysToConfirmNewPasswordTextbox(newPassword);
+		customerLoginPage = (CustomerLoginPageObject) accountInformationPage.clickSaveButton();
+		homepage = customerLoginPage.logInAsRegisteredUser(newEmail, newPassword);
 
+		Assert.assertTrue(homepage.isWelcomeMessageDisplayed(driver));
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -103,8 +124,8 @@ public class MyAccount extends BaseTest {
 	}
 
 	private WebDriver driver;
-	private DataHelper data;
-	private String email, password, newFirstName, newLastName, newFullName;
+	private FakeDataHelper data;
+	private String email, password, newFirstName, newLastName, newFullName, newEmail, newPassword;
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;
 	private MyAccountPageObject myAccountPage;

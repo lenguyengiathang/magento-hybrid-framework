@@ -8,6 +8,7 @@ public class ShoppingCartPageUI {
 	public static final String APPLY_DISCOUNT_CODE_HEADER = "id=block-discount-heading";
 	public static final String ENTER_DISCOUNT_CODE_TEXTBOX = "id=coupon_code";
 	public static final String APPLY_DISCOUNT_BUTTON = "css=button[value='Apply Discount']";
+	public static final String CANCEL_COUPON_BUTTON = "css=button[value='Cancel Coupon']";
 	public static final String UPDATE_SHOPPING_CART_BUTTON = "css=button[title='Update Shopping Cart']";
 	public static final String ESTIMATED_SHIPPING_AND_TAX = "id=block-shipping-heading";
 	public static final String COUNTRY_DROPDOWN = "css=select[name='country_id']";

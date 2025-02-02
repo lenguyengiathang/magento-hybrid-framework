@@ -38,6 +38,26 @@ public class ShoppingCartPageObject extends BasePage {
 		clickElementByJS(driver, ShoppingCartPageUI.UPDATE_SHOPPING_CART_BUTTON);
 	}
 
+	public String getDiscountCodeAppliedSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
+	public void clickCancelCouponButton() {
+		waitForElementClickable(driver, ShoppingCartPageUI.CANCEL_COUPON_BUTTON);
+		clickElementByJS(driver, ShoppingCartPageUI.CANCEL_COUPON_BUTTON);
+	}
+
+	public String getDiscountCodeRemovedSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
+	public String getInvalidDiscountCodeErrorMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
 	public float getOrderSubtotal() {
 		waitForElementVisible(driver, ShoppingCartPageUI.ORDER_SUBTOTAL);
 		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_SUBTOTAL));

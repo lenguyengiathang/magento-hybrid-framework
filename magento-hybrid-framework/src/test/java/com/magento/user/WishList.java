@@ -26,7 +26,7 @@ import pageObjects.MyWishListPageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
 import pageObjects.ShoppingCartPageObject;
-import utilities.DataHelper;
+import utilities.FakeDataHelper;
 
 public class WishList extends BaseTest {
 	@Parameters("browser")
@@ -35,7 +35,7 @@ public class WishList extends BaseTest {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 		productActions = new Products(driver);
-		data = DataHelper.getDataHelper();
+		data = FakeDataHelper.getDataHelper();
 
 		email = Register.email;
 		password = Register.password;
@@ -405,7 +405,7 @@ public class WishList extends BaseTest {
 
 	private WebDriver driver;
 	private String email, password;
-	private DataHelper data;
+	private FakeDataHelper data;
 	private HomepageObject homepage;
 	private MyAccountPageObject myAccountPage;
 	private CustomerLoginPageObject customerLoginPage;

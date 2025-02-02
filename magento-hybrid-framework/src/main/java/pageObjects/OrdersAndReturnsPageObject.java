@@ -22,7 +22,7 @@ public class OrdersAndReturnsPageObject extends BasePage {
 		sendKeysToElement(driver, OrdersAndReturnsPageUI.BILLING_LAST_NAME_TEXTBOX, billingLastName);
 	}
 
-	public void selectItemFindOrderByDropdown(String emailOrZipCode) {
+	public void selectOptionFindOrderByDropdown(String emailOrZipCode) {
 		selectOptionDefaultDropdown(driver, OrdersAndReturnsPageUI.FIND_ORDER_BY_DROPDOWN, emailOrZipCode);
 	}
 

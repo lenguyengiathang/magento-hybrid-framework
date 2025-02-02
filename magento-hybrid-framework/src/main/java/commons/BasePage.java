@@ -341,7 +341,7 @@ public class BasePage {
 	public void selectOptionDefaultDropdown(WebDriver driver, String locatorType, String optionLabel,
 			String... dynamicValues) {
 		Select select = new Select(getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)));
-		select.selectByVisibleText(optionLabel);
+		select.selectByVisibleText(optionLabel.trim());
 	}
 
 	public String getSelectedOptionDefaultDropdown(WebDriver driver, String locatorType) {
@@ -494,6 +494,11 @@ public class BasePage {
 
 		Collections.reverse(sortedList);
 		return list.equals(sortedList);
+	}
+
+	public void clickOutisdeElement(WebDriver driver) {
+		WebElement body = getWebElement(driver, BasePageUI.MainContent.MAIN_CONTENT);
+		body.click();
 	}
 
 	public void scrollToBottom(WebDriver driver) {
@@ -780,7 +785,7 @@ public class BasePage {
 				firstLevelLabel, dropdownLabel.toLowerCase());
 		waitForElementClickable(driver, BasePageUI.Header.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL,
 				secondLevelLabel, dropdownLabel.toLowerCase());
-		clickElementByJS(driver, BasePageUI.Header.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL,
+		clickElement(driver, BasePageUI.Header.DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL,
 				secondLevelLabel, dropdownLabel.toLowerCase());
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
@@ -791,7 +796,7 @@ public class BasePage {
 		hoverOverElement(driver, BasePageUI.Header.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
 		waitForElementClickable(driver, BasePageUI.Header.DYNAMIC_NAVIGATION_BAR_DROPDOWN_SINGLE_LEVEL_ITEM_BY_LABEL,
 				label);
-		clickElementByJS(driver, BasePageUI.Header.DYNAMIC_NAVIGATION_BAR_DROPDOWN_SINGLE_LEVEL_ITEM_BY_LABEL, label);
+		clickElement(driver, BasePageUI.Header.DYNAMIC_NAVIGATION_BAR_DROPDOWN_SINGLE_LEVEL_ITEM_BY_LABEL, label);
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 
@@ -987,6 +992,17 @@ public class BasePage {
 
 	public void addProductWithNoOptionsToCart(WebDriver driver, String productName) {
 		clickAddToCartButtonByProductName(driver, productName);
+	}
+
+	public void clickNextPageButton(WebDriver driver) {
+		waitForElementClickable(driver, ProductListingPageUI.NEXT_PAGE_BUTTON);
+		clickElementByJS(driver, ProductListingPageUI.NEXT_PAGE_BUTTON);
+	}
+
+	public void selectOptionLimiterDropdown(WebDriver driver, String productCount) {
+		scrollToBottom(driver);
+		waitForElementVisible(driver, ProductListingPageUI.LIMITER_DROPDOWN);
+		selectOptionDefaultDropdown(driver, ProductListingPageUI.LIMITER_DROPDOWN, productCount);
 	}
 
 }

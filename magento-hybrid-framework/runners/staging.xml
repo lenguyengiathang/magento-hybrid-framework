@@ -14,19 +14,19 @@
 		<parameter name="browser" value="chrome" />
 	</test>
 
-<!-- 	<test name="Register new user and log in" preserve-order="true"> -->
-<!-- 		<parameter name="browser" value="chrome" /> -->
-<!-- 		<classes> -->
-<!-- 			<class name="com.magento.commons.Register" /> -->
-<!-- 		</classes> -->
-<!-- 	</test> -->
+	<test name="Register new user and log in" preserve-order="true">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="com.magento.commons.Register" />
+		</classes>
+	</test>
 	<test name="Run tests" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.CompareProducts" />
-<!-- 			<methods> -->
-<!-- 				<include name="Success_Message_Product_Added_To_Comparison_List" /> -->
-<!-- 			</methods> -->
+			<class name="com.magento.user.AddressBook" />
+			<methods>
+				<include name="Add_New_Address_No_Address_Yet" />
+			</methods>
 		</classes>
 
 	</test>

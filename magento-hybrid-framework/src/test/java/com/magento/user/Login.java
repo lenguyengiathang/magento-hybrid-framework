@@ -18,7 +18,7 @@ import pageObjects.CustomerLoginPageObject;
 import pageObjects.ForgotYourPasswordPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.ProductListingPageObject;
-import utilities.DataHelper;
+import utilities.FakeDataHelper;
 
 public class Login extends BaseTest {
 	@Parameters("browser")
@@ -27,7 +27,7 @@ public class Login extends BaseTest {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 
-		data = DataHelper.getDataHelper();
+		data = FakeDataHelper.getDataHelper();
 		email = Register.email;
 		password = Register.password;
 	}
@@ -116,7 +116,7 @@ public class Login extends BaseTest {
 	}
 
 	private WebDriver driver;
-	private DataHelper data;
+	private FakeDataHelper data;
 	private String email, password;
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;

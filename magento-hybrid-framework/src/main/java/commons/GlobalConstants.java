@@ -7,6 +7,5 @@ public class GlobalConstants {
 	public static final long LONG_TIMEOUT = 30;
 
 	public static final String PROJECT_PATH = System.getProperty("user.dir");
-
 	public static final String UPLOAD_FILE_PATH = null;
 }

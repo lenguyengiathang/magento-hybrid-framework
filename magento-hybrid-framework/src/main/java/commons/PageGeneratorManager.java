@@ -21,6 +21,7 @@ import pageObjects.OrdersAndReturnsPageObject;
 import pageObjects.PopularSearchTermsPageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
+import pageObjects.ReviewDetailsPageObject;
 import pageObjects.SelectShippingMethodPageObject;
 import pageObjects.ShoppingCartPageObject;
 import pageObjects.StoredPaymentMethodsPageObject;
@@ -75,6 +76,10 @@ public class PageGeneratorManager {
 		return new AddressBookPageObject(driver);
 	}
 
+	public static AddressPageObject getAddressPage(WebDriver driver) {
+		return new AddressPageObject(driver);
+	}
+
 	public static AccountInformationPageObject getAccountInformationPage(WebDriver driver) {
 		return new AccountInformationPageObject(driver);
 	}
@@ -85,6 +90,10 @@ public class PageGeneratorManager {
 
 	public static MyProductReviewsPageObject getMyProductReviewsPage(WebDriver driver) {
 		return new MyProductReviewsPageObject(driver);
+	}
+
+	public static ReviewDetailsPageObject getReviewDetailsPage(WebDriver driver) {
+		return new ReviewDetailsPageObject(driver);
 	}
 
 	public static PopularSearchTermsPageObject getPopularSearchTermsPage(WebDriver driver) {

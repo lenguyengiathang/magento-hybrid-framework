@@ -67,10 +67,15 @@ public class AccountInformationPageObject extends BasePage {
 		return getElementText(driver, AccountInformationPageUI.CHANGE_EMAIL_PASSWORD_SECTION_HEADER);
 	}
 
-	public MyAccountPageObject clickSaveButton() {
+	public BasePage clickSaveButton() {
+		String currentPasswordValue = getElementAttribute(driver, AccountInformationPageUI.CURRENT_PASSWORD_TEXTBOX,
+				"value");
 		waitForElementClickable(driver, AccountInformationPageUI.SAVE_BUTTON);
-		clickElement(driver, AccountInformationPageUI.SAVE_BUTTON);
-		return new MyAccountPageObject(driver);
+		clickElementByJS(driver, AccountInformationPageUI.SAVE_BUTTON);
+		if (currentPasswordValue.isEmpty()) {
+			return new MyAccountPageObject(driver);
+		}
+		return new CustomerLoginPageObject(driver);
 	}
 
 }

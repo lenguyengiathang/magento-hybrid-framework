@@ -1,12 +1,17 @@
 package com.magento.user;
 
+import java.util.Random;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+
+import com.magento.commons.Products;
 
 import commons.BaseTest;
 import commons.PageGeneratorManager;
@@ -15,7 +20,6 @@ import pageObjects.HomepageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
 import pageObjects.ShoppingCartPageObject;
-import utilities.ProductDataMapperBasic;
 
 public class Orders extends BaseTest {
 	@Parameters("browser")
@@ -27,6 +31,29 @@ public class Orders extends BaseTest {
 	}
 
 	@BeforeMethod
+	public void addProductToCart(ITestResult result) {
+		String[] groups = result.getMethod().getGroups();
+		Random random = new Random();
+
+		for (String group : groups) {
+			switch (group) {
+			case "addProductWithoutOptions":
+				productActions.addRandomProductWithoutOptionsToCart();
+				break;
+			case "addProductWithOptions":
+				String groupChoice = random.nextBoolean() ? "Men" : "Women";
+				productActions.addRandomProductWithOptionsToCart(groupChoice);
+				break;
+			default:
+				continue;
+			}
+			productName = Products.productName;
+			System.out.println("The @BeforeMethod executed successfully: " + productName
+					+ " is added to the shopping cart successfully.");
+			break;
+		}
+		homepage.clickLumaLogo(driver);
+	}
 
 	@Test(priority = 1, groups = "miniCart", description = "Verify the information message displayed when the shopping cart is empty")
 	public void Info_Message_Empty_Shopping_Cart() {
@@ -38,19 +65,15 @@ public class Orders extends BaseTest {
 
 	@Test(priority = 2, groups = "miniCart", description = "Verify that the mini cart is not displayed when user clicks the cross icon")
 	public void Cross_Icon() {
-		homepage.refreshCurrentPage(driver);
 		homepage.clickShoppingCartIcon(driver);
 		homepage.clickMiniCartCrossIcon(driver);
 
 		Assert.assertTrue(homepage.isMiniCartNotDisplayed(driver));
 	}
 
-	@Test(priority = 3, groups = "miniCart", description = "Verify that the corresponding product and its options are displayed correctly in the mini cart when user adds it to the shopping cart")
+	@Test(priority = 3, groups = { "miniCart",
+			"addProductWithOptions" }, description = "Verify that the corresponding product and its options are displayed correctly in the mini cart when user adds it to the shopping cart")
 	public void Product_Options_Displayed_Correctly() {
-		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Men", "Tops",
-				"Jackets");
-		productListingPage.addProductWithOptionsToCart(driver, productName, productSize, productColor);
-
 		Assert.assertEquals(productListingPage.getAddedToShoppingCartSuccessMessage(),
 				"You added " + productName + " to your shopping cart.");
 
@@ -152,7 +175,7 @@ public class Orders extends BaseTest {
 
 	}
 
-	@Test
+	@Test(groups = "promotion")
 	public void Apply_Twenty_Percent_Discount_For_Order_Equal_To_Or_Greater_Than_200() {
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Driven Backpack");
 		productDetailsPage.sendKeysToQuantityTextbox("10");
@@ -165,7 +188,7 @@ public class Orders extends BaseTest {
 		Assert.assertEquals(subtotal * 0.8, total, 0.01);
 	}
 
-	@Test
+	@Test(groups = "promotion")
 	public void Apply_Twenty_Percent_Discount_With_Code_20poff() {
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Driven Backpack");
 		productDetailsPage.clickAddToCartButton();
@@ -180,13 +203,68 @@ public class Orders extends BaseTest {
 		Assert.assertEquals(subtotal * 0.8, total, 0.01);
 	}
 
+	@Test(groups = "promotion")
+	public void Discount_Code_Applied_Success_Message() {
+		homepage.clickShoppingCartIcon(driver);
+		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
+		shoppingCartPage.clickApplyDiscountCodeHeader();
+		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox("20poff");
+		shoppingCartPage.clickApplyDiscountButton();
+
+		Assert.assertEquals(shoppingCartPage.getDiscountCodeAppliedSuccessMessage(),
+				"You used coupon code \"20poff\".");
+	}
+
+	@Test(groups = "promotion", dependsOnMethods = "Discount_Code_Applied_Success_Message", description = "Verify the display of the success message when user removes a discount code")
+	public void Discount_Code_Removed_Success_Message() {
+		shoppingCartPage.clickCancelCouponButton();
+
+		Assert.assertEquals(shoppingCartPage.getDiscountCodeRemovedSuccessMessage(), "You canceled the coupon code.");
+	}
+
+	@Test(groups = "promotion", description = "Verify the display of the error message when an invalid discount code is used")
+	public void Invalid_Discount_Code_Error_Message() {
+		homepage.clickShoppingCartIcon(driver);
+		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
+		shoppingCartPage.clickApplyDiscountCodeHeader();
+		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox("invalid");
+		shoppingCartPage.clickApplyDiscountButton();
+
+		Assert.assertEquals(shoppingCartPage.getInvalidDiscountCodeErrorMessage(),
+				"The coupon code \"invalid\" is not valid.");
+	}
+
+	@Test(groups = "promotion", description = "Verify that shipping is free with table rate shipping when the order total is $50 or more")
+	public void Free_Shipping_For_Order_Equal_To_Or_Greater_Than_50() {
+
+	}
+
+	@Test(groups = "promotion", description = "")
+	public void Four_Tees_For_The_Price_Of_Three() {
+
+	}
+
+	@Test(groups = "promotion", description = "")
+	public void Multiple_Promotions_Applied_To_Order() {
+
+	}
+
+	@Test(groups = "checkout", description = "Verify the elements displayed when user is not logged in and fills in the 'Email Address' field with the email linked to their account")
+	public void Elements_Displayed_When_User_Fills_In_Email_Linked_To_Account() {
+
+	}
+
+	@Test
+	public void Display_Of_Shipping_Address_Card_When_Selected() {
+
+	}
+
 	@AfterClass(alwaysRun = true)
 	public void afterClass() {
 		closeBrowserAndDriver();
 	}
 
 	private WebDriver driver;
-	private ProductDataMapperBasic productData;
 	private String productName, productSize, productColor;
 	private HomepageObject homepage;
 	private ProductListingPageObject productListingPage;

@@ -4,9 +4,6 @@ public class BasePageUI {
 	public static class General {
 		public static final String UPLOAD_FILE = "";
 		public static final String CONFIRMATION_POPUP_OK_BUTTON = "css=.modal-footer button.action-accept";
-
-		public static final String PAGINATION_LINK = "xpath=(//div[@class='pages'])[1]//ul/li[not(contains(@class,'next'))]";
-		public static final String LIMITER_DROPDOWN = "id=limiter";
 	}
 
 	public static class Header {
@@ -21,7 +18,7 @@ public class BasePageUI {
 		public static final String SEARCH_SUGGESTION = "css=#search_autocomplete li";
 		public static final String SEARCH_SUGGESTION_TEXT = "css=#search_autocomplete li>span:nth-of-type(1)";
 		public static final String SEARCH_SUGGESTION_NUMBER = "css=#search_autocomplete li>span:nth-of-type(2)";
-		public static final String DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL = "xpath=//nav//span[text()=\"%s\"]/parent::a";
+		public static final String DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL = "xpath=//nav//span[text()='%s']/parent::a";
 		public static final String DYNAMIC_NAVIGATION_BAR_DROPDOWN_SINGLE_LEVEL_ITEM_BY_LABEL = "xpath=//span[text()='%s']/parent::a";
 		public static final String DYNAMIC_NAVIGATION_BAR_DROPDOWN_MULTI_LEVEL_ITEM_BY_LABEL = "xpath=//span[text()='%s']/parent::a[contains(@href,'/%s')]";
 
@@ -50,6 +47,7 @@ public class BasePageUI {
 	public static class MainContent {
 		public static final String PAGE_HEADER = "css=h1>span";
 		public static final String MESSAGE = "css=div[data-bind='html: $parent.prepareMessageForHtml(message.text)']";
+		public static final String MAIN_CONTENT = "id=maincontent";
 	}
 
 	public static class ProductCard {

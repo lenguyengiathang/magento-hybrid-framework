@@ -1,6 +1,10 @@
 package pageObjects;
 
+import java.util.List;
+import java.util.Map;
+
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import commons.BasePage;
 import commons.GlobalConstants;
@@ -40,9 +44,14 @@ public class ProductDetailsPageObject extends BasePage {
 		clickElementByJS(driver, ProductDetailsPageUI.DYNAMIC_PRODUCT_COLOR_BUTTON_BY_LABEL, label);
 	}
 
-	public void clickAddReviewLink() {
-		waitForElementClickable(driver, ProductDetailsPageUI.ADD_REVIEW_LINK);
-		clickElementByJS(driver, ProductDetailsPageUI.ADD_REVIEW_LINK);
+	public void clickAddYourReviewLink() {
+		waitForElementClickable(driver, ProductDetailsPageUI.ADD_YOUR_REVIEW_LINK);
+		clickElementByJS(driver, ProductDetailsPageUI.ADD_YOUR_REVIEW_LINK);
+	}
+
+	public void clickBeTheFirstToReviewThisProductLink() {
+		waitForElementClickable(driver, ProductDetailsPageUI.BE_THE_FIRST_TO_REVIEW_THIS_PRODUCT_LINK);
+		clickElementByJS(driver, ProductDetailsPageUI.BE_THE_FIRST_TO_REVIEW_THIS_PRODUCT_LINK);
 	}
 
 	public void clickViewReviewsLink() {
@@ -103,9 +112,44 @@ public class ProductDetailsPageObject extends BasePage {
 		return getElementText(driver, ProductDetailsPageUI.PRODUCT_ACTIVITY);
 	}
 
+	public void clickReviewsTab() {
+		waitForElementClickable(driver, ProductDetailsPageUI.REVIEWS_TAB);
+		clickElementByJS(driver, ProductDetailsPageUI.REVIEWS_TAB);
+	}
+
 	public void clickRatingStar(String number) {
 		waitForElementClickable(driver, ProductDetailsPageUI.DYNAMIC_RATING_STAR, number);
 		clickElementByJS(driver, ProductDetailsPageUI.DYNAMIC_RATING_STAR, number);
+	}
+
+	public int getNumberOfRatedStars() {
+		List<WebElement> stars = getWebElements(driver, ProductDetailsPageUI.RATING_STAR);
+
+		int ratedStarsCount = 0;
+
+		for (WebElement star : stars) {
+			String color = star.getCssValue("color");
+			if (color.equals("rgb(255, 85, 1)")) {
+				ratedStarsCount++;
+			}
+		}
+		return ratedStarsCount;
+	}
+
+	public double getSumOfRatedStarsFromOtherReviews() {
+		List<WebElement> stars = getWebElements(driver, ProductDetailsPageUI.RATING_STAR_OTHER_REVIEWS);
+		int totalStars = 0;
+
+		for (WebElement star : stars) {
+			String titleValue = star.getAttribute("title");
+			Map<String, Integer> ratingMap = Map.of("20%", 1, "40%", 2, "60%", 3, "80%", 4, "100%", 5);
+			totalStars += ratingMap.getOrDefault(titleValue, 0);
+		}
+		return (double) totalStars;
+	}
+
+	public boolean isOverallRatingDisplayedCorrectly(double overallStars) {
+		return overallStars == getSumOfRatedStarsFromOtherReviews();
 	}
 
 	public void sendKeysToNicknameTextbox(String nickname) {
@@ -123,4 +167,37 @@ public class ProductDetailsPageObject extends BasePage {
 		sendKeysToElement(driver, ProductDetailsPageUI.REVIEW_TEXTBOX, review);
 	}
 
+	public boolean isCustomerReviewsHeaderDisplayed() {
+		return isElementDisplayed(driver, ProductDetailsPageUI.CUSTOMER_REVIEWS_HEADER);
+	}
+
+	public void clickSubmitReviewButton() {
+		waitForElementClickable(driver, ProductDetailsPageUI.SUBMIT_REVIEW_BUTTON);
+		clickElementByJS(driver, ProductDetailsPageUI.SUBMIT_REVIEW_BUTTON);
+	}
+
+	public String getRatingErrorMessage() {
+		waitForElementVisible(driver, ProductDetailsPageUI.RATING_ERROR_MESSAGE);
+		return getElementText(driver, ProductDetailsPageUI.RATING_ERROR_MESSAGE);
+	}
+
+	public String getNicknameErrorMessage() {
+		waitForElementVisible(driver, ProductDetailsPageUI.NICKNAME_ERROR_MESSAGE);
+		return getElementText(driver, ProductDetailsPageUI.NICKNAME_ERROR_MESSAGE);
+	}
+
+	public String getSummaryErrorMessage() {
+		waitForElementVisible(driver, ProductDetailsPageUI.SUMMARY_ERROR_MESSAGE);
+		return getElementText(driver, ProductDetailsPageUI.SUMMARY_ERROR_MESSAGE);
+	}
+
+	public String getReviewErrorMessage() {
+		waitForElementVisible(driver, ProductDetailsPageUI.REVIEW_ERROR_MESSAGE);
+		return getElementText(driver, ProductDetailsPageUI.REVIEW_ERROR_MESSAGE);
+	}
+
+	public String getReviewSubmittedSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
 }

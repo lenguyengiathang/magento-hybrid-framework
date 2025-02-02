@@ -15,6 +15,7 @@ import pageUIs.CompareProductsPageUI;
 import pageUIs.MyWishListPageUI;
 import pageUIs.ShoppingCartPageUI;
 import utilities.ProductDataMapperAdvanced;
+import utilities.ProductDataMapperAdvanced.Product;
 import utilities.ProductDataMapperAdvanced.Subcategory;
 import utilities.ProductDataMapperBasic;
 import utilities.ProductDataMapperBasic.Category;
@@ -66,12 +67,14 @@ public class Products extends BaseTest {
 		return randomAdvancedProduct;
 	}
 
-	public String getRandomSizeOption() {
-		return productWithOptionsData.getRandomSize(randomAdvancedProduct);
+	public String getRandomSizeOption(ProductDataMapperAdvanced.Product product) {
+		randomAdvancedProductSize = productWithOptionsData.getRandomSize(product);
+		return randomAdvancedProductSize;
 	}
 
-	public String getRandomColorOption() {
-		return productWithOptionsData.getRandomColor(randomAdvancedProduct);
+	public String getRandomColorOption(ProductDataMapperAdvanced.Product product) {
+		randomAdvancedProductColor = productWithOptionsData.getRandomColor(product);
+		return randomAdvancedProductColor;
 	}
 
 	public void addRandomProductWithOptionsToCart(String group) {
@@ -82,11 +85,14 @@ public class Products extends BaseTest {
 
 			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
 			Subcategory subcategory = getRandomAdvancedSubcategory(category);
-			productName = getRandomAdvancedProduct(subcategory).getProductName();
+			Product product = getRandomAdvancedProduct(subcategory);
+			productName = product.getProductName();
+			productSize = getRandomSizeOption(product);
+			productColor = getRandomColorOption(product);
 
 			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
 					subcategory.getSubcategoryName());
-			basePage.addProductWithOptionsToCart(driver, productName, getRandomSizeOption(), getRandomColorOption());
+			basePage.addProductWithOptionsToCart(driver, productName, productSize, productColor);
 		}
 	}
 
@@ -201,5 +207,6 @@ public class Products extends BaseTest {
 	private ProductDataMapperAdvanced.Category randomAdvancedCategory;
 	private ProductDataMapperAdvanced.Subcategory randomAdvancedSubcategory;
 	private ProductDataMapperAdvanced.Product randomAdvancedProduct;
-	public static String productName;
+	private String randomAdvancedProductSize, randomAdvancedProductColor;
+	public static String productName, productSize, productColor;
 }
