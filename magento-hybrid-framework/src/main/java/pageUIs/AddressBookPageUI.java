@@ -13,6 +13,9 @@ public class AddressBookPageUI {
 	}
 
 	public static class AdditionalAddressEntries {
+		public static final String NO_OTHER_ADDRESS_ENTRIES_INFO_MESSAGE = "xpath=//strong[text()='Additional Address Entries']/parent::div/following-sibling::div/p";
 		public static final String DYNAMIC_ADDITIONAL_ADDRESS_VALUE_BY_ROW_INDEX_AND_COLUMN_NAME = "xpath=//tbody/tr[%s]/td[@data-th='%s']";
+		public static final String DYNAMIC_EDIT_LINK_BY_STREET_ADDRESS = "xpath=//tbody/tr/td[@data-th='Street Address' and text()='%s']/following-sibling::td/a[@class='action edit']";
+		public static final String DYNAMIC_DELETE_LINK_BY_STREET_ADDRESS = "xpath=//tbody/tr/td[@data-th='Street Address' and text()='%s']/following-sibling::td/a[@class='action delete']";
 	}
 }

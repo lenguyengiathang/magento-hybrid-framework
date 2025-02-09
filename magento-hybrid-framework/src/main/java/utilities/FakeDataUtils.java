@@ -4,13 +4,13 @@ import java.util.Locale;
 
 import com.github.javafaker.Faker;
 
-public class FakeDataHelper {
+public class FakeDataUtils {
 
 	private Locale locale = new Locale("en");
 	private Faker faker = new Faker(locale);
 
-	public static FakeDataHelper getDataHelper() {
-		return new FakeDataHelper();
+	public static FakeDataUtils getDataHelper() {
+		return new FakeDataUtils();
 	}
 
 	public String getFirstName() {

@@ -16,5 +16,6 @@ public class AddressPageUI {
 	public static final String USE_AS_MY_DEFAULT_BILLING_ADDRESS_CHECKBOX = "id=primary_billing";
 	public static final String USE_AS_MY_DEFAULT_SHIPPING_ADDRESS_CHECKBOX = "id=primary_shipping";
 	public static final String DEFAULT_ADDRESS_INFO_MESSAGE = "css=.info";
+	public static final String DYNAMIC_DEFAULT_ADDRESS_INFO_MESSAGE_BY_INDEX = "xpath=//div[@class='message info'][%s]/span";
 	public static final String SAVE_ADDRESS_BUTTON = "css=button[title='Save Address']";
 }

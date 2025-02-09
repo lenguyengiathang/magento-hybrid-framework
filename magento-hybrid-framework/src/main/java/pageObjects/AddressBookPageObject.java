@@ -13,6 +13,18 @@ public class AddressBookPageObject extends BasePage {
 		this.driver = driver;
 	}
 
+	public AddressPageObject clickChangeBillingAddressLink() {
+		waitForElementClickable(driver, AddressBookPageUI.DefaultAddresses.CHANGE_BILLING_ADDRESS_LINK);
+		clickElementByJS(driver, AddressBookPageUI.DefaultAddresses.CHANGE_BILLING_ADDRESS_LINK);
+		return PageGeneratorManager.getAddressPage(driver);
+	}
+
+	public AddressPageObject clickChangeShippingAddressLink() {
+		waitForElementClickable(driver, AddressBookPageUI.DefaultAddresses.CHANGE_SHIPPING_ADDRESS_LINK);
+		clickElementByJS(driver, AddressBookPageUI.DefaultAddresses.CHANGE_SHIPPING_ADDRESS_LINK);
+		return PageGeneratorManager.getAddressPage(driver);
+	}
+
 	public String getDefaultBillingAddressFullName() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_BILLING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_BILLING_ADDRESS);
@@ -145,4 +157,30 @@ public class AddressBookPageObject extends BasePage {
 		clickElementByJS(driver, AddressBookPageUI.ADD_NEW_ADDRESS_BUTTON);
 		return PageGeneratorManager.getAddressPage(driver);
 	}
+
+	public String getNoOtherAddressEntriesInfoMessage() {
+		waitForElementVisible(driver, AddressBookPageUI.AdditionalAddressEntries.NO_OTHER_ADDRESS_ENTRIES_INFO_MESSAGE);
+		return getElementText(driver, AddressBookPageUI.AdditionalAddressEntries.NO_OTHER_ADDRESS_ENTRIES_INFO_MESSAGE);
+	}
+
+	public AddressPageObject clickEditLinkByStreetAddress(String streetAddress) {
+		waitForElementClickable(driver, AddressBookPageUI.AdditionalAddressEntries.DYNAMIC_EDIT_LINK_BY_STREET_ADDRESS,
+				streetAddress);
+		clickElementByJS(driver, AddressBookPageUI.AdditionalAddressEntries.DYNAMIC_EDIT_LINK_BY_STREET_ADDRESS,
+				streetAddress);
+		return PageGeneratorManager.getAddressPage(driver);
+	}
+
+	public void clickDeleteLinkByStreetAddress(String streetAddress) {
+		waitForElementClickable(driver,
+				AddressBookPageUI.AdditionalAddressEntries.DYNAMIC_DELETE_LINK_BY_STREET_ADDRESS, streetAddress);
+		clickElementByJS(driver, AddressBookPageUI.AdditionalAddressEntries.DYNAMIC_DELETE_LINK_BY_STREET_ADDRESS,
+				streetAddress);
+	}
+
+	public boolean isAdditionalAddressByStreetAddressNotDisplayed(String streetAddress) {
+		return isElementNotDisplayed(driver,
+				AddressBookPageUI.AdditionalAddressEntries.DYNAMIC_DELETE_LINK_BY_STREET_ADDRESS, streetAddress);
+	}
+
 }

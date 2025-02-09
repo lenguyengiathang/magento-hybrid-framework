@@ -1,5 +1,5 @@
 {
-  "men_products": [
+  "categories": [
     {
       "category": "Tops",
       "subcategories": [
@@ -33,7 +33,7 @@
               "product_name": "Marco Lightweight Active Hoodie",
               "price": "74.00",
               "sizes": ["XS", "S", "M", "L", "XL"],
-              "colors": ["Blue", "Green", "Purple"]
+              "colors": ["Blue", "Green", "Lavender"]
             },
             {
               "product_name": "Frankie Sweatshirt",
@@ -68,7 +68,18 @@
         {
           "subcategory": "Shorts",
           "products": [
-            
+            {
+              "product_name": "Arcadio Gym Short",
+              "price": "20.00",
+              "sizes": ["32", "33", "34", "36"],
+              "colors": ["Black", "Blue", "Red"]
+            },
+            {
+              "product_name": "Sol Active Short",
+              "price": "32.00",
+              "sizes": ["32", "33", "34", "36"],
+              "colors": ["Blue", "Green", "Purple"]
+            }
           ]
         }
       ]

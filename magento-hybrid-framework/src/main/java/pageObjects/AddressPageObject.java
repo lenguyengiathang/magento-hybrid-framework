@@ -89,6 +89,11 @@ public class AddressPageObject extends BasePage {
 		return getElementText(driver, AddressPageUI.DEFAULT_ADDRESS_INFO_MESSAGE);
 	}
 
+	public String getDefaultAddressInfoMessageByIndex(String index) {
+		waitForElementVisible(driver, AddressPageUI.DYNAMIC_DEFAULT_ADDRESS_INFO_MESSAGE_BY_INDEX, index);
+		return getElementText(driver, AddressPageUI.DYNAMIC_DEFAULT_ADDRESS_INFO_MESSAGE_BY_INDEX, index);
+	}
+
 	public AddressBookPageObject clickSaveAddressButton() {
 		waitForElementClickable(driver, AddressPageUI.SAVE_ADDRESS_BUTTON);
 		clickElementByJS(driver, AddressPageUI.SAVE_ADDRESS_BUTTON);

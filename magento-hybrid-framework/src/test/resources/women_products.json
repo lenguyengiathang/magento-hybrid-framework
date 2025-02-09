@@ -1,2 +1,88 @@
 {
+  "categories": [
+    {
+      "category": "Tops",
+      "subcategories": [
+        {
+          "subcategory": "Jackets",
+          "products": [
+            {
+              "product_name": "Olivia 1/4 Zip Light Jacket",
+              "price": "77.00",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Black", "Blue", "Purple"]
+            },
+            {
+              "product_name": "Riona Full Zip Jacket",
+              "price": "60.00",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Brown", "Green", "Red"]
+            },
+            {
+              "product_name": "Augusta Pullover Jacket",
+              "price": "57.00",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Blue", "Orange", "Red"]
+            }
+          ]
+        },
+        {
+          "subcategory": "Hoodies & Sweatshirts",
+          "products": [
+            {
+              "product_name": "Circe Hooded Ice Fleece",
+              "price": "68.00",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Gray", "Green", "Purple"]
+            },
+            {
+              "product_name": "Helena Hooded Fleece",
+              "price": "55.00",
+              "sizes": ["XS", "S", "M", "L", "XL"],
+              "colors": ["Blue", "Gray", "Yellow"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Bottoms",
+      "subcategories": [
+        {
+          "subcategory": "Pants",
+          "products": [
+            {
+              "product_name": "Portia Capri",
+              "price": "39.20",
+              "sizes": ["28", "29"],
+              "colors": ["Blue", "Green", "Orange"]
+            },
+            {
+              "product_name": "Daria Bikram Pant",
+              "price": "40.80",
+              "sizes": ["28", "29"],
+              "colors": ["Black", "Gray", "White"]
+            }
+          ]
+        },
+        {
+          "subcategory": "Shorts",
+          "products": [
+            {
+              "product_name": "Erika Running Short",
+              "price": "45.00",
+              "sizes": ["28", "29", "30", "31", "32"],
+              "colors": ["Green", "Purple", "Red"]
+            },
+            {
+              "product_name": "Mimi All-Purpose Short",
+              "price": "44.00",
+              "sizes": ["28", "29"],
+              "colors": ["Gray", "Green", "White"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

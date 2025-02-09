@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CSVHelper {
+public class CSVUtils {
 	public static String[] getRandomRowFromCSVFile(String filePath) throws IOException {
 		List<String[]> data = new ArrayList<>();
 

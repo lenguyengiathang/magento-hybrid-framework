@@ -245,19 +245,21 @@ public class BasePage {
 
 	public void sendKeysToElement(WebDriver driver, String locatorType, String text) {
 		WebElement element = getWebElement(driver, locatorType);
-		element.clear();
+		clearText(driver, locatorType);
+		sleepInSecond(1);
 		element.sendKeys(text);
 	}
 
 	public void sendKeysToElement(WebDriver driver, String locatorType, String text, String... dynamicValues) {
 		WebElement element = getWebElement(driver, getDynamicXpath(locatorType, dynamicValues));
-		element.clear();
+		clearText(driver, getDynamicXpath(locatorType, dynamicValues));
+		sleepInSecond(1);
 		element.sendKeys(text);
 	}
 
 	public void clearText(WebDriver driver, String locatorType) {
 		WebElement element = getWebElement(driver, locatorType);
-		element.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+		element.clear();
 	}
 
 	public String getElementText(WebDriver driver, String locatorType) {
@@ -393,6 +395,13 @@ public class BasePage {
 
 	public void checkDefaultCheckboxRadioButton(WebDriver driver, String locatorType) {
 		WebElement element = getWebElement(driver, locatorType);
+		if (!element.isSelected()) {
+			element.click();
+		}
+	}
+
+	public void checkDefaultCheckboxRadioButton(WebDriver driver, String locatorType, String... dynamicValues) {
+		WebElement element = getWebElement(driver, getDynamicXpath(locatorType, dynamicValues));
 		if (!element.isSelected()) {
 			element.click();
 		}
@@ -685,8 +694,11 @@ public class BasePage {
 	}
 
 	public void clickShoppingCartIcon(WebDriver driver) {
-		waitForElementClickable(driver, BasePageUI.Header.MiniCart.SHOPPING_CART_ICON);
-		clickElementByJS(driver, BasePageUI.Header.MiniCart.SHOPPING_CART_ICON);
+		WebElement miniCartModal = getWebElement(driver, BasePageUI.Header.MiniCart.MINI_CART_MODAL);
+		if (!miniCartModal.isDisplayed()) {
+			waitForElementClickable(driver, BasePageUI.Header.MiniCart.SHOPPING_CART_ICON);
+			clickElementByJS(driver, BasePageUI.Header.MiniCart.SHOPPING_CART_ICON);
+		}
 	}
 
 	public Float getMiniCartSubtotal(WebDriver driver) {
@@ -931,6 +943,7 @@ public class BasePage {
 	public void clickConfirmationPopupOKButton(WebDriver driver) {
 		waitForElementClickable(driver, BasePageUI.General.CONFIRMATION_POPUP_OK_BUTTON);
 		clickElementByJS(driver, BasePageUI.General.CONFIRMATION_POPUP_OK_BUTTON);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	public ProductDetailsPageObject clickProductLinkByProductName(WebDriver driver, String productName) {

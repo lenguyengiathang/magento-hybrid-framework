@@ -17,7 +17,7 @@ import pageObjects.CreateNewCustomerAccountPageObject;
 import pageObjects.CustomerLoginPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.MyAccountPageObject;
-import utilities.FakeDataHelper;
+import utilities.FakeDataUtils;
 
 public class Register extends BaseTest {
 	@Parameters("browser")
@@ -26,7 +26,7 @@ public class Register extends BaseTest {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 
-		data = FakeDataHelper.getDataHelper();
+		data = FakeDataUtils.getDataHelper();
 		firstName = data.getFirstName();
 		lastName = data.getLastName();
 		email = firstName.concat(lastName).toLowerCase() + generateRandomNumber() + "@email.co";
@@ -245,7 +245,7 @@ public class Register extends BaseTest {
 	}
 
 	private WebDriver driver;
-	private FakeDataHelper data;
+	private FakeDataUtils data;
 	private String firstName, lastName, email, password;
 	private HomepageObject homepage;
 	private CreateNewCustomerAccountPageObject createNewCustomerAccountPage;

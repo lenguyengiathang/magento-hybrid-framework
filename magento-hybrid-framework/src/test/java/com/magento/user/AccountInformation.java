@@ -15,7 +15,7 @@ import pageObjects.AccountInformationPageObject;
 import pageObjects.CustomerLoginPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.MyAccountPageObject;
-import utilities.FakeDataHelper;
+import utilities.FakeDataUtils;
 
 public class AccountInformation extends BaseTest {
 	@Parameters("browser")
@@ -24,7 +24,7 @@ public class AccountInformation extends BaseTest {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 
-		data = FakeDataHelper.getDataHelper();
+		data = FakeDataUtils.getDataHelper();
 		email = Register.email;
 		password = Register.password;
 		newFirstName = data.getFirstName();
@@ -124,7 +124,7 @@ public class AccountInformation extends BaseTest {
 	}
 
 	private WebDriver driver;
-	private FakeDataHelper data;
+	private FakeDataUtils data;
 	private String email, password, newFirstName, newLastName, newFullName, newEmail, newPassword;
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;

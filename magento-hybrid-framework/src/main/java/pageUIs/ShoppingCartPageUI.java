@@ -14,8 +14,7 @@ public class ShoppingCartPageUI {
 	public static final String COUNTRY_DROPDOWN = "css=select[name='country_id']";
 	public static final String STATE_PROVINCE_DROPDOWN = "css=select[name='region_id']";
 	public static final String ZIP_POSTAL_CODE_TEXTBOX = "css=input[name='postcode']";
-	public static final String TABLE_RATE_RADIO_BUTTON = "id=s_method_tablerate_bestway";
-	public static final String FIXED_RADIO_BUTTON = "id=s_method_flatrate_flatrate";
+	public static final String DYNAMIC_SHIPPING_METHOD_RADIO_BUTTON_BY_LABEL = "xpath=//label[text()='%s']/preceding-sibling::input";
 	public static final String PROCEED_TO_CHECKOUT = "css=button[title='Proceed to Checkout']";
 	public static final String CHECK_OUT_WITH_MULTIPLE_ADDRESSES = "xpath=//span[text()='Check Out with Multiple Addresses']/parent::a";
 	public static final String CART_EMPTY_INFO_MESSAGE = "css=.cart-empty";

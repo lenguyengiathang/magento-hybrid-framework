@@ -77,23 +77,22 @@ public class Products extends BaseTest {
 		return randomAdvancedProductColor;
 	}
 
-	public void addRandomProductWithOptionsToCart(String group) {
-		if (group.equalsIgnoreCase("Men") || group.equalsIgnoreCase("Women")) {
-			String jsonFile = group.equalsIgnoreCase("Men") ? "MenProducts.json" : "WomenProducts.json";
+	public void addRandomProductWithOptionsToCart(String jsonFile) {
+		loadAdvancedProductData(jsonFile);
 
-			loadAdvancedProductData(jsonFile);
+		String group = jsonFile.contains("women") ? "Women" : "Men";
 
-			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
-			Subcategory subcategory = getRandomAdvancedSubcategory(category);
-			Product product = getRandomAdvancedProduct(subcategory);
-			productName = product.getProductName();
-			productSize = getRandomSizeOption(product);
-			productColor = getRandomColorOption(product);
+		utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
+		Subcategory subcategory = getRandomAdvancedSubcategory(category);
+		Product product = getRandomAdvancedProduct(subcategory);
+		productName = product.getProductName();
+		productSize = getRandomSizeOption(product);
+		productColor = getRandomColorOption(product);
 
-			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
-					subcategory.getSubcategoryName());
-			basePage.addProductWithOptionsToCart(driver, productName, productSize, productColor);
-		}
+		basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
+				subcategory.getSubcategoryName());
+		basePage.addProductWithOptionsToCart(driver, productName, productSize, productColor);
+		basePage.clickLumaLogo(driver);
 	}
 
 	public void addRandomProductWithoutOptionsToCart() {
@@ -104,20 +103,18 @@ public class Products extends BaseTest {
 		basePage.clickAddToCartButtonByProductNameWithoutOptions(driver, productName);
 	}
 
-	public void addRandomProductWithOptionsToWishList(String group) {
-		if (group.equalsIgnoreCase("Men") || group.equalsIgnoreCase("Women")) {
-			String jsonFile = group.equalsIgnoreCase("Men") ? "MenProducts.json" : "WomenProducts.json";
+	public void addRandomProductWithOptionsToWishList(String jsonFile) {
+		loadAdvancedProductData(jsonFile);
 
-			loadAdvancedProductData(jsonFile);
+		String group = jsonFile.contains("women") ? "Women" : "Men";
 
-			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
-			Subcategory subcategory = getRandomAdvancedSubcategory(category);
-			productName = getRandomAdvancedProduct(subcategory).getProductName();
+		utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
+		Subcategory subcategory = getRandomAdvancedSubcategory(category);
+		productName = getRandomAdvancedProduct(subcategory).getProductName();
 
-			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
-					subcategory.getSubcategoryName());
-			basePage.clickWishListIconByProductName(driver, productName);
-		}
+		basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
+				subcategory.getSubcategoryName());
+		basePage.clickWishListIconByProductName(driver, productName);
 	}
 
 	public void addRandomProductWithoutOptionsToWishList() {
@@ -128,20 +125,19 @@ public class Products extends BaseTest {
 		basePage.clickWishListIconByProductName(driver, productName);
 	}
 
-	public ProductListingPageObject addRandomProductWithOptionsToComparisonList(String group) {
-		if (group.equalsIgnoreCase("Men") || group.equalsIgnoreCase("Women")) {
-			String jsonFile = group.equalsIgnoreCase("Men") ? "MenProducts.json" : "WomenProducts.json";
+	public ProductListingPageObject addRandomProductWithOptionsToComparisonList(String jsonFile) {
+		loadAdvancedProductData(jsonFile);
 
-			loadAdvancedProductData(jsonFile);
+		String group = jsonFile.contains("women") ? "Women" : "Men";
 
-			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
-			Subcategory subcategory = getRandomAdvancedSubcategory(category);
-			productName = getRandomAdvancedProduct(subcategory).getProductName();
+		utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
+		Subcategory subcategory = getRandomAdvancedSubcategory(category);
+		productName = getRandomAdvancedProduct(subcategory).getProductName();
 
-			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
-					subcategory.getSubcategoryName());
-			basePage.clickCompareIconByProductName(driver, productName);
-		}
+		basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
+				subcategory.getSubcategoryName());
+		basePage.clickCompareIconByProductName(driver, productName);
+
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 
@@ -181,7 +177,6 @@ public class Products extends BaseTest {
 			basePage.clickElementByJS(driver, MyWishListPageUI.TRASHCAN_ICON);
 			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
 		}
-		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	public void clearComparisonList() {

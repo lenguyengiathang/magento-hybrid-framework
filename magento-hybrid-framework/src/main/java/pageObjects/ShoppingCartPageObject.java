@@ -3,6 +3,7 @@ package pageObjects;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import commons.PageGeneratorManager;
 import pageUIs.BasePageUI;
 import pageUIs.ShoppingCartPageUI;
 
@@ -34,8 +35,8 @@ public class ShoppingCartPageObject extends BasePage {
 	}
 
 	public void clickApplyDiscountButton() {
-		waitForElementClickable(driver, ShoppingCartPageUI.UPDATE_SHOPPING_CART_BUTTON);
-		clickElementByJS(driver, ShoppingCartPageUI.UPDATE_SHOPPING_CART_BUTTON);
+		waitForElementClickable(driver, ShoppingCartPageUI.APPLY_DISCOUNT_BUTTON);
+		clickElementByJS(driver, ShoppingCartPageUI.APPLY_DISCOUNT_BUTTON);
 	}
 
 	public String getDiscountCodeAppliedSuccessMessage() {
@@ -58,6 +59,11 @@ public class ShoppingCartPageObject extends BasePage {
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
+	public void clickShippingMethodRadioButtonByLabel(String label) {
+		waitForElementClickable(driver, ShoppingCartPageUI.DYNAMIC_SHIPPING_METHOD_RADIO_BUTTON_BY_LABEL, label);
+		clickElementByJS(driver, ShoppingCartPageUI.DYNAMIC_SHIPPING_METHOD_RADIO_BUTTON_BY_LABEL, label);
+	}
+
 	public float getOrderSubtotal() {
 		waitForElementVisible(driver, ShoppingCartPageUI.ORDER_SUBTOTAL);
 		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_SUBTOTAL));
@@ -78,14 +84,16 @@ public class ShoppingCartPageObject extends BasePage {
 		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_TOTAL));
 	}
 
-	public void clickProceedToCheckoutButton() {
+	public CheckoutPageObject clickProceedToCheckoutButton() {
 		waitForElementClickable(driver, ShoppingCartPageUI.PROCEED_TO_CHECKOUT);
 		clickElementByJS(driver, ShoppingCartPageUI.PROCEED_TO_CHECKOUT);
+		return PageGeneratorManager.getCheckoutPageObject(driver);
 	}
 
-	public void clickCheckOutWithMultipleAddressesLink() {
+	public ShipToMultipleAddressesPageObject clickCheckOutWithMultipleAddressesLink() {
 		waitForElementClickable(driver, ShoppingCartPageUI.CHECK_OUT_WITH_MULTIPLE_ADDRESSES);
 		clickElementByJS(driver, ShoppingCartPageUI.CHECK_OUT_WITH_MULTIPLE_ADDRESSES);
+		return PageGeneratorManager.getShipToMultipleAddressesPage(driver);
 	}
 
 	public void clickMoveToWishListLinkByProductName(String productName) {

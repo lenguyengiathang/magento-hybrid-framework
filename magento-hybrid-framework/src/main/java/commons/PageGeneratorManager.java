@@ -6,6 +6,8 @@ import pageObjects.AccountInformationPageObject;
 import pageObjects.AddressBookPageObject;
 import pageObjects.AddressPageObject;
 import pageObjects.AdvancedSearchPageObject;
+import pageObjects.BillingInformationPageObject;
+import pageObjects.ChangeBillingAddressPageObject;
 import pageObjects.CheckoutPageObject;
 import pageObjects.CompareProductsPageObject;
 import pageObjects.CreateNewCustomerAccountPageObject;
@@ -17,12 +19,15 @@ import pageObjects.MyDownloadableProductsPageObject;
 import pageObjects.MyOrdersPageObject;
 import pageObjects.MyProductReviewsPageObject;
 import pageObjects.MyWishListPageObject;
+import pageObjects.OrderDetailsPageObject;
 import pageObjects.OrdersAndReturnsPageObject;
 import pageObjects.PopularSearchTermsPageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
 import pageObjects.ReviewDetailsPageObject;
+import pageObjects.ReviewOrderPageObject;
 import pageObjects.SelectShippingMethodPageObject;
+import pageObjects.ShipToMultipleAddressesPageObject;
 import pageObjects.ShoppingCartPageObject;
 import pageObjects.StoredPaymentMethodsPageObject;
 
@@ -122,6 +127,26 @@ public class PageGeneratorManager {
 
 	public static AddressPageObject getAddressPageObject(WebDriver driver) {
 		return new AddressPageObject(driver);
+	}
+
+	public static ShipToMultipleAddressesPageObject getShipToMultipleAddressesPage(WebDriver driver) {
+		return new ShipToMultipleAddressesPageObject(driver);
+	}
+
+	public static BillingInformationPageObject getBillingInformationPage(WebDriver driver) {
+		return new BillingInformationPageObject(driver);
+	}
+
+	public static ChangeBillingAddressPageObject getChangeBillingAddressPage(WebDriver driver) {
+		return new ChangeBillingAddressPageObject(driver);
+	}
+
+	public static ReviewOrderPageObject getReviewOrderPage(WebDriver driver) {
+		return new ReviewOrderPageObject(driver);
+	}
+
+	public static OrderDetailsPageObject getOrderDetaisPage(WebDriver driver) {
+		return new OrderDetailsPageObject(driver);
 	}
 
 }

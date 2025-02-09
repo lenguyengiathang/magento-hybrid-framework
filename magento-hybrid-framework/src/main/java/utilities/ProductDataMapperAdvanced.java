@@ -9,8 +9,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProductDataMapperAdvanced {
-
-	private Random random;
+	private static final Random random = new Random();
 
 	public static class Product {
 		@JsonProperty("product_name")
@@ -74,7 +73,7 @@ public class ProductDataMapperAdvanced {
 		}
 	}
 
-	@JsonProperty("men_products")
+	@JsonProperty("categories")
 	public List<Category> categories;
 
 	public List<Category> getCategories() {
@@ -95,28 +94,23 @@ public class ProductDataMapperAdvanced {
 	}
 
 	public Category getRandomCategory() {
-		random = new Random();
 		return categories.get(random.nextInt(categories.size()));
 	}
 
 	public Subcategory getRandomSubcategory(Category category) {
-		random = new Random();
 		return category.getSubcategories().get(random.nextInt(category.getSubcategories().size()));
 	}
 
 	public Product getRandomProductFromSubcategory(Subcategory subcategory) {
-		random = new Random();
 		return subcategory.getProducts().get(random.nextInt(subcategory.getProducts().size()));
 	}
 
 	public String getRandomSize(Product product) {
-		random = new Random();
 		List<String> sizes = product.getSizes();
 		return sizes.get(random.nextInt(sizes.size()));
 	}
 
 	public String getRandomColor(Product product) {
-		random = new Random();
 		List<String> colors = product.getColors();
 		return colors.get(random.nextInt(colors.size()));
 	}

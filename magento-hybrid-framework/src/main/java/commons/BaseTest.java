@@ -2,14 +2,17 @@ package commons;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -174,7 +177,7 @@ public class BaseTest {
 
 	public void deleteAllureReport() {
 		try {
-			String pathFolderDownload = GlobalConstants.PROJECT_PATH + "/allure-json";
+			String pathFolderDownload = GlobalConstants.PROJECT_PATH + "/allure-results";
 			File file = new File(pathFolderDownload);
 			File[] listOfFiles = file.listFiles();
 			if (listOfFiles.length != 0) {
@@ -251,32 +254,53 @@ public class BaseTest {
 	}
 
 	protected String getCurrentDate() {
-		DateTime nowUTC = new DateTime(DateTimeZone.UTC);
-		int day = nowUTC.getDayOfMonth();
-		if (day < 10) {
-			String dayValue = "0" + day;
-			return dayValue;
-		}
-		return String.valueOf(day);
+		ZonedDateTime nowUTC = ZonedDateTime.now(ZoneId.of("UTC"));
+		return nowUTC.format(DateTimeFormatter.ofPattern("dd"));
 	}
 
 	protected String getCurrentMonth() {
-		DateTime now = new DateTime(DateTimeZone.UTC);
-		int month = now.getMonthOfYear();
-		if (month < 10) {
-			String monthValue = "0" + month;
-			return monthValue;
-		}
-		return String.valueOf(month);
+		ZonedDateTime nowUTC = ZonedDateTime.now(ZoneId.of("UTC"));
+		return nowUTC.format(DateTimeFormatter.ofPattern("MM"));
 	}
 
 	protected String getCurrentYear() {
-		DateTime now = new DateTime(DateTimeZone.UTC);
-		return String.valueOf(now.getYear());
+		ZonedDateTime nowUTC = ZonedDateTime.now(ZoneId.of("UTC"));
+		return nowUTC.format(DateTimeFormatter.ofPattern("yyyy"));
 	}
 
-	protected String getTodaysDate() {
+	protected String getTodaysDateNumeric() {
 		return getCurrentDate() + "/" + getCurrentMonth() + "/" + getCurrentYear();
+	}
+
+	protected String getTodaysDateTextual(String dateNumeric) {
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMMM d', 'yyyy", Locale.ENGLISH);
+
+		LocalDate date = LocalDate.parse(dateNumeric, inputFormatter);
+
+		int day = Integer.valueOf(getCurrentDate());
+
+		String ordinalSuffix;
+		if (day >= 11 && day <= 13) {
+			ordinalSuffix = "th";
+		} else {
+			switch (day % 10) {
+			case 1:
+				ordinalSuffix = "st";
+				break;
+			case 2:
+				ordinalSuffix = "nd";
+				break;
+			case 3:
+				ordinalSuffix = "rd";
+				break;
+			default:
+				ordinalSuffix = "th";
+			}
+		}
+		String dateTextual = date.format(outputFormatter);
+		dateTextual = day + ordinalSuffix + ", " + dateTextual.substring(dateTextual.indexOf(" ") + 1);
+		return dateTextual;
 	}
 
 	public int generateRandomNumber() {
