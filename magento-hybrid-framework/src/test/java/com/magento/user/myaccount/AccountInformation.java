@@ -1,4 +1,4 @@
-package com.magento.user;
+package com.magento.user.myaccount;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;

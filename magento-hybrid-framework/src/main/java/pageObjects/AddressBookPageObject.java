@@ -178,7 +178,7 @@ public class AddressBookPageObject extends BasePage {
 				streetAddress);
 	}
 
-	public boolean isAdditionalAddressByStreetAddressNotDisplayed(String streetAddress) {
+	public boolean isAdditionalAddressByStreetAddressDisplayed(String streetAddress) {
 		return isElementNotDisplayed(driver,
 				AddressBookPageUI.AdditionalAddressEntries.DYNAMIC_DELETE_LINK_BY_STREET_ADDRESS, streetAddress);
 	}

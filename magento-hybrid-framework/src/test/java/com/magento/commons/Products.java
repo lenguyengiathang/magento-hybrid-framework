@@ -29,7 +29,7 @@ public class Products extends BaseTest {
 
 	public void loadBasicProductData() {
 		if (productWithoutOptionsData == null) {
-			productWithoutOptionsData = ProductDataMapperBasic.loadProductData("GearProducts.json");
+			productWithoutOptionsData = ProductDataMapperBasic.loadProductData("gear_products.json");
 		}
 	}
 
@@ -100,7 +100,8 @@ public class Products extends BaseTest {
 		productName = getRandomBasicProductFromCategory(category).getProductName();
 
 		basePage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category.getCategoryName());
-		basePage.clickAddToCartButtonByProductNameWithoutOptions(driver, productName);
+		basePage.addProductWithNoOptionsToCart(driver, productName);
+		basePage.clickLumaLogo(driver);
 	}
 
 	public void addRandomProductWithOptionsToWishList(String jsonFile) {

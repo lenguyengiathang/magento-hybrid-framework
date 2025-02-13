@@ -30,7 +30,11 @@ public class CheckoutPageUI {
 		public static final String SHIPPING_ADDRESS_POPUP_SHIP_HERE_BUTTON = "css=.action-save-address";
 		public static final String DYNAMIC_SHIPPING_METHOD_RADIO_BUTTON_BY_LABEL = "xpath=//td[text()='%s']/preceding-sibling::td/input";
 		public static final String NEXT_BUTTON = "css=.continue";
-
+		public static final String EMAIL_ADDRESS_TEXTBOX = "id=customer-email";
+		public static final String PASSWORD_TEXTBOX = "id=customer-password";
+		public static final String LOGIN_BUTTON = "css=.login.primary";
+		public static final String FORGOT_YOUR_PASSWORD_LINK = "css=.remind";
+		public static final String SHIPPING_METHOD_NOT_SELECTED_WARNING_MESSAGE = "css=span[data-bind='text: errorValidationMessage()']";
 	}
 
 	public static class ReviewAndPayment {

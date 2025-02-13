@@ -11,7 +11,7 @@ public class AddressPageUI {
 	public static final String CITY_TEXTBOX = "id=city";
 	public static final String STATE_PROVINCE_DROPDOWN = "id=region_id";
 	public static final String ZIP_POSTAL_CODE_TEXTBOX = "id=zip";
-	public static final String INVALID_ZIP_POSTAL_CODE_WARNING_MESSAGE = "id=warning";
+	public static final String INVALID_ZIP_POSTAL_CODE_WARNING_MESSAGE = "css=.warning>span";
 	public static final String COUNTRY_DROPDOWN = "id=country";
 	public static final String USE_AS_MY_DEFAULT_BILLING_ADDRESS_CHECKBOX = "id=primary_billing";
 	public static final String USE_AS_MY_DEFAULT_SHIPPING_ADDRESS_CHECKBOX = "id=primary_shipping";

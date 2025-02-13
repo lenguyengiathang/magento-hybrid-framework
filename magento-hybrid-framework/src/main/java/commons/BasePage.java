@@ -246,14 +246,12 @@ public class BasePage {
 	public void sendKeysToElement(WebDriver driver, String locatorType, String text) {
 		WebElement element = getWebElement(driver, locatorType);
 		clearText(driver, locatorType);
-		sleepInSecond(1);
 		element.sendKeys(text);
 	}
 
 	public void sendKeysToElement(WebDriver driver, String locatorType, String text, String... dynamicValues) {
 		WebElement element = getWebElement(driver, getDynamicXpath(locatorType, dynamicValues));
 		clearText(driver, getDynamicXpath(locatorType, dynamicValues));
-		sleepInSecond(1);
 		element.sendKeys(text);
 	}
 

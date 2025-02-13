@@ -1,11 +1,12 @@
 Company,Phone Number,Street Address 1,Street Address 2,Street Address 3,City,State/Province,Zip/Postal Code,Country
-Acme Corp,1234567890,123 Main St,Apt 4B,New York,New York,10001,United States
-XYZ Inc,9876543210,456 Elm St,Suite 200,Los Angeles,California,90001,United States
+Company,Phone Number,Street Address 1,Street Address 2,Street Address 3,City,State/Province,Zip/Postal Code,Country
+Acme Corp,1234567890,123 Main St,Apt 4B,Building A,New York,New York,10001,United States
+XYZ Inc,9876543210,456 Elm St,Suite 200,Tower 1,Los Angeles,California,90001,United States
 Tech Ltd,5551234567,789 Pine St,Floor 3,Unit 5,Chicago,Illinois,60601,United States
-Global Solutions,2345678901,321 Oak St,Suite 101,San Francisco,California,94105,United States
-Innovative Co,8765432109,654 Maple Ave,Floor 2,Miami,Florida,33101,United States
-EuroTech,1122334455,10 Rue de Paris,Suite 3,Paris,Ile-de-France,75001,France
-RedTech GmbH,9988776655,Berliner Str. 12,Unit 4,Berlin,Berlin,10115,Germany
-Innovate Ltd,4455667788,123 King St,Suite 2,Melbourne,Victoria,3000,Australia
-TechnoWorld,6677889900,789 Queen St,Unit 3,Toronto,Ontario,M5V 2C3,Canada
-World Enterprises,9988776655,101 Oxford St,Unit 5,London,England,W1D 2LB,United Kingdom
+Global Solutions,2345678901,321 Oak St,Suite 101,Block C,San Francisco,California,94105,United States
+Innovative Co,8765432109,654 Maple Ave,Floor 2,Building 7,Miami,Florida,33101,United States
+EuroTech,1122334455,10 Rue de Paris,Suite 3,Office 22,Paris,Ile-de-France,75001,France
+RedTech GmbH,9988776655,Berliner Str. 12,Unit 4,Floor 5,Berlin,Berlin,10115,Germany
+Innovate Ltd,4455667788,123 King St,Suite 2,Level 10,Melbourne,Victoria,3000,Australia
+TechnoWorld,6677889900,789 Queen St,Unit 3,Building X,Toronto,Ontario,M5V 2C3,Canada
+World Enterprises,9988776655,101 Oxford St,Unit 5,Office 15,London,England,W1D 2LB,United Kingdom

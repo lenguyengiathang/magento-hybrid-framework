@@ -48,7 +48,7 @@ public class MiniCart extends BaseTest {
 	}
 
 	@Test(description = "Verify the information message displayed when the shopping cart is empty")
-	public void MiniCart_01_Info_Message_Empty_Shopping_Cart() {
+	public void Mini_Cart_01_Info_Message_Empty_Shopping_Cart() {
 		homepage.clickShoppingCartIcon(driver);
 
 		Assert.assertEquals(homepage.getEmptyShoppingCartInfoMessage(driver),
@@ -56,7 +56,7 @@ public class MiniCart extends BaseTest {
 	}
 
 	@Test(description = "Verify that the mini cart is not displayed when user clicks the cross icon")
-	public void MiniCart_02_Click_Cross_Icon() {
+	public void Mini_Cart_02_Click_Cross_Icon() {
 		homepage.clickShoppingCartIcon(driver);
 		homepage.clickMiniCartCrossIcon(driver);
 
@@ -65,7 +65,7 @@ public class MiniCart extends BaseTest {
 
 	@Test(groups = { "addProductToCart",
 			"clearCart" }, description = "Verify that the corresponding product and its options are displayed correctly in the mini cart when user adds it to the shopping cart")
-	public void MiniCart_03_Product_Options_Displayed_Correctly() {
+	public void Mini_Cart_03_Product_Options_Displayed_Correctly() {
 		homepage.clickShoppingCartIcon(driver);
 		homepage.clickSeeDetailsCollapsibleHeaderByProductName(driver, productName);
 
@@ -75,7 +75,7 @@ public class MiniCart extends BaseTest {
 
 	@Test(groups = { "addProductToCart",
 			"clearCart" }, description = "Verify that user is directed to the 'Shopping Cart' page when clicking the 'View and Edit Cart' hyperlink")
-	public void MiniCart_04_Click_View_And_Edit_Card_Link() {
+	public void Mini_Cart_04_Click_View_And_Edit_Card_Link() {
 		homepage.clickShoppingCartIcon(driver);
 		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
 
@@ -83,7 +83,7 @@ public class MiniCart extends BaseTest {
 	}
 
 	@Test(groups = "clearCart", description = "Verify that the subtotal equals the sum of the prices of the added products")
-	public void MiniCart_05_Orders_Subtotal_Equals_Sum_Of_Product_Prices() {
+	public void Mini_Cart_05_Orders_Subtotal_Equals_Sum_Of_Product_Prices() {
 		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Men", "Tops",
 				"Tees");
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Aero Daily Fitness Tee");
@@ -107,7 +107,7 @@ public class MiniCart extends BaseTest {
 	}
 
 	@Test(groups = "clearCart", description = "Verify that the total quantity equals the sum of the quantities of the added products")
-	public void MiniCart_06_Total_Quantity_Equals_Sum_Of_Product_Quantity() {
+	public void Mini_Cart_06_Total_Quantity_Equals_Sum_Of_Product_Quantity() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Fitness Equipment");
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Sprite Foam Roller");
@@ -125,7 +125,7 @@ public class MiniCart extends BaseTest {
 
 	@Test(groups = { "addProductToCart",
 			"clearCart" }, description = "Verify that user can change the quantity of added products")
-	public void MiniCart_07_Change_Product_Quantity() {
+	public void Mini_Cart_07_Change_Product_Quantity() {
 		homepage.clickShoppingCartIcon(driver);
 		homepage.sendKeysToQuantityTextboxByProductName(driver, "3", productName);
 		homepage.clickUpdateButton(driver);
@@ -135,7 +135,7 @@ public class MiniCart extends BaseTest {
 
 	@Test(groups = { "addProductToCart",
 			"clearCart" }, description = "Verify that user is directed to \"Product Details\" page when clicking the pen icon")
-	public void MiniCart_08_Click_Pen_Icon() {
+	public void Mini_Cart_08_Click_Pen_Icon() {
 		homepage.clickShoppingCartIcon(driver);
 		productDetailsPage = homepage.clickPenIconByProductName(driver, productName);
 
@@ -143,7 +143,7 @@ public class MiniCart extends BaseTest {
 	}
 
 	@Test(groups = "addProductToCart", description = "Verify that the product is not displayed in the mini cart when clicking the trashcan icon")
-	public void MiniCart_09_Click_Trashcan_Icon() {
+	public void Mini_Cart_09_Click_Trashcan_Icon() {
 		homepage.clickShoppingCartIcon(driver);
 		homepage.clickTrashcanIconByProductName(driver, productName);
 		homepage.clickConfirmationPopupOKButton(driver);
@@ -152,7 +152,7 @@ public class MiniCart extends BaseTest {
 	}
 
 	@Test(groups = "addProductToCart", description = "Verify that user is directed to the 'Shipping' step of the 'Checkout' page when clicking the 'Proceed to Checkout' button")
-	public void MiniCart_10_Click_Proceed_To_Checkout_Button() {
+	public void Mini_Cart_10_Click_Proceed_To_Checkout_Button() {
 		homepage.clickShoppingCartIcon(driver);
 		checkoutPage = homepage.clickProceedToCheckoutButton(driver);
 

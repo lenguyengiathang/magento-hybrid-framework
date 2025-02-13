@@ -12,16 +12,18 @@ public class CSVUtils {
 		List<String[]> data = new ArrayList<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+			br.readLine();
+
 			String line;
-			boolean skipHeader = true;
 			while ((line = br.readLine()) != null) {
-				if (skipHeader) {
-					skipHeader = false;
-					continue;
-				}
 				data.add(line.split(","));
 			}
 		}
+
+		if (data.isEmpty()) {
+			throw new IOException("CSV file is empty or only contains headers.");
+		}
+
 		Random random = new Random();
 		return data.get(random.nextInt(data.size()));
 	}

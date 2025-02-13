@@ -16,7 +16,7 @@ public class ShoppingCartPageObject extends BasePage {
 
 	public void sendKeysToQuantityTextboxByProductName(String quantity, String productName) {
 		waitForElementVisible(driver, ShoppingCartPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
-		sendKeysToElement(driver, ShoppingCartPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName, quantity);
+		sendKeysToElement(driver, ShoppingCartPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, quantity, productName);
 	}
 
 	public void clickUpdateShoppingCartButton() {
@@ -25,8 +25,8 @@ public class ShoppingCartPageObject extends BasePage {
 	}
 
 	public void clickApplyDiscountCodeHeader() {
-		waitForElementClickable(driver, ShoppingCartPageUI.UPDATE_SHOPPING_CART_BUTTON);
-		clickElementByJS(driver, ShoppingCartPageUI.UPDATE_SHOPPING_CART_BUTTON);
+		waitForElementClickable(driver, ShoppingCartPageUI.APPLY_DISCOUNT_CODE_HEADER);
+		clickElementByJS(driver, ShoppingCartPageUI.APPLY_DISCOUNT_CODE_HEADER);
 	}
 
 	public void sendKeysToEnterDiscountCodeTextbox(String discountCode) {
@@ -66,22 +66,22 @@ public class ShoppingCartPageObject extends BasePage {
 
 	public float getOrderSubtotal() {
 		waitForElementVisible(driver, ShoppingCartPageUI.ORDER_SUBTOTAL);
-		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_SUBTOTAL));
+		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_SUBTOTAL).replace("$", ""));
 	}
 
 	public float getOrderDiscount() {
 		waitForElementVisible(driver, ShoppingCartPageUI.ORDER_DISCOUNT);
-		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_DISCOUNT));
+		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_DISCOUNT).replace("$", ""));
 	}
 
 	public float getOrderShipping() {
 		waitForElementVisible(driver, ShoppingCartPageUI.ORDER_SHIPPING);
-		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_SHIPPING));
+		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_SHIPPING).replace("$", ""));
 	}
 
 	public float getOrderTotal() {
 		waitForElementVisible(driver, ShoppingCartPageUI.ORDER_TOTAL);
-		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_TOTAL));
+		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_TOTAL).replace("$", ""));
 	}
 
 	public CheckoutPageObject clickProceedToCheckoutButton() {
@@ -104,5 +104,9 @@ public class ShoppingCartPageObject extends BasePage {
 	public String getMovedToWishListSuccessMessage() {
 		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
+	public boolean isSummaryLoadingIconNotDisplayed() {
+		return isElementNotDisplayed(driver, ShoppingCartPageUI.SUMMARY_LOADING_ICON);
 	}
 }

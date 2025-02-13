@@ -22,6 +22,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.annotations.BeforeSuite;
 
@@ -189,6 +190,24 @@ public class BaseTest {
 			}
 		} catch (Exception e) {
 			System.out.print(e.getMessage());
+		}
+	}
+
+	protected void logTestResult(ITestResult result) {
+		int status = result.getStatus();
+		switch (status) {
+		case ITestResult.SUCCESS:
+			System.out.println("Test passed: " + result.getMethod().getDescription());
+			break;
+		case ITestResult.FAILURE:
+			System.out.println("Test failed: " + result.getMethod().getDescription());
+			break;
+		case ITestResult.SKIP:
+			System.out.println("Test skipped: " + result.getMethod().getDescription());
+			break;
+		default:
+			System.out.println("Unknown status: " + result.getMethod().getDescription());
+			break;
 		}
 	}
 

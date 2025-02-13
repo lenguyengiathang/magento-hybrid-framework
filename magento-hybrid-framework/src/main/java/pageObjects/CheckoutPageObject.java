@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import commons.BasePage;
+import commons.GlobalConstants;
 import commons.PageGeneratorManager;
 import pageUIs.BasePageUI;
 import pageUIs.CheckoutPageUI;
@@ -138,8 +139,8 @@ public class CheckoutPageObject extends BasePage {
 	}
 
 	public String getShippingMethodNotSelectedWarningMessage() {
-		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
-		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+		waitForElementVisible(driver, CheckoutPageUI.Shipping.SHIPPING_METHOD_NOT_SELECTED_WARNING_MESSAGE);
+		return getElementText(driver, CheckoutPageUI.Shipping.SHIPPING_METHOD_NOT_SELECTED_WARNING_MESSAGE);
 	}
 
 	public boolean isTableRateRadioButtonDisplayed() {
@@ -263,6 +264,35 @@ public class CheckoutPageObject extends BasePage {
 	public String getOrderNumber() {
 		waitForElementVisible(driver, CheckoutPageUI.OrderSuccess.ORDER_NUMBER);
 		return getElementText(driver, CheckoutPageUI.OrderSuccess.ORDER_NUMBER);
+	}
+
+	public void sendKeysToEmailAddressTextbox(String email) {
+		waitForElementVisible(driver, CheckoutPageUI.Shipping.EMAIL_ADDRESS_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.Shipping.EMAIL_ADDRESS_TEXTBOX, email);
+		clickOutisdeElement(driver);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+	}
+
+	public void sendKeysToPasswordTextbox(String password) {
+		waitForElementVisible(driver, CheckoutPageUI.Shipping.PASSWORD_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.Shipping.PASSWORD_TEXTBOX, password);
+	}
+
+	public void clickLoginButton() {
+		waitForElementClickable(driver, CheckoutPageUI.Shipping.LOGIN_BUTTON);
+		clickElementByJS(driver, CheckoutPageUI.Shipping.LOGIN_BUTTON);
+	}
+
+	public boolean isPasswordTextboxDisplayed() {
+		return isElementDisplayed(driver, CheckoutPageUI.Shipping.PASSWORD_TEXTBOX);
+	}
+
+	public boolean isLoginButtonDisplayed() {
+		return isElementDisplayed(driver, CheckoutPageUI.Shipping.LOGIN_BUTTON);
+	}
+
+	public boolean isForgotYourPasswordLinkDisplayed() {
+		return isElementDisplayed(driver, CheckoutPageUI.Shipping.FORGOT_YOUR_PASSWORD_LINK);
 	}
 
 }

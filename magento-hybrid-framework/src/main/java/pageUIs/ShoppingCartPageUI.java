@@ -26,4 +26,5 @@ public class ShoppingCartPageUI {
 	public static final String ORDER_DISCOUNT = "css=td[data-th='Discount']>span>span";
 	public static final String ORDER_SHIPPING = "css=span[data-th='Shipping']";
 	public static final String ORDER_TOTAL = "css=td[data-th='Order Total']>strong>span";
+	public static final String SUMMARY_LOADING_ICON = "css=img[title='Loading...']";
 }
