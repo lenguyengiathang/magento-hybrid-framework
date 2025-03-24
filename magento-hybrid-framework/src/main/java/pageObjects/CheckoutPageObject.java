@@ -93,6 +93,7 @@ public class CheckoutPageObject extends BasePage {
 	}
 
 	public void clickNextButton() {
+		scrollToBottom(driver);
 		waitForElementClickable(driver, CheckoutPageUI.Shipping.NEXT_BUTTON);
 		clickElementByJS(driver, CheckoutPageUI.Shipping.NEXT_BUTTON);
 	}
@@ -131,6 +132,7 @@ public class CheckoutPageObject extends BasePage {
 	public void clickSignInModalSignInButton() {
 		waitForElementClickable(driver, CheckoutPageUI.General.SIGN_IN_MODAL_SIGN_IN_BUTTON);
 		clickElementByJS(driver, CheckoutPageUI.General.SIGN_IN_MODAL_SIGN_IN_BUTTON);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	public void selectShippingMethodRadioButtonByLabel(String label) {
@@ -154,7 +156,7 @@ public class CheckoutPageObject extends BasePage {
 
 	}
 
-	public void checkMyBillingAndShippingAddressAreTheSame() {
+	public void checkMyBillingAndShippingAddressAreTheSameCheckbox() {
 		waitForElementClickable(driver, CheckoutPageUI.ReviewAndPayment.MY_BILLING_AND_SHIPPING_ADDRESS_ARE_THE_SAME);
 		checkDefaultCheckboxRadioButton(driver,
 				CheckoutPageUI.ReviewAndPayment.MY_BILLING_AND_SHIPPING_ADDRESS_ARE_THE_SAME);
@@ -166,8 +168,14 @@ public class CheckoutPageObject extends BasePage {
 	}
 
 	public String getBillingAddress() {
-		// TODO Auto-generated method stub
-		return null;
+		waitForElementVisible(driver, CheckoutPageUI.ReviewAndPayment.BILLING_ADDRESS);
+		return getElementText(driver, CheckoutPageUI.ReviewAndPayment.BILLING_ADDRESS);
+	}
+
+	public String getBillingAddressZipCode() {
+		waitForElementVisible(driver, CheckoutPageUI.ReviewAndPayment.BILLING_ADDRESS);
+		String fullAddress = getElementText(driver, CheckoutPageUI.ReviewAndPayment.BILLING_ADDRESS);
+		return fullAddress.split("\n")[5].split(",")[2].trim();
 	}
 
 	public void clickEditBillingAddressButton() {
@@ -239,31 +247,22 @@ public class CheckoutPageObject extends BasePage {
 		clickElementByJS(driver, CheckoutPageUI.ReviewAndPayment.PEN_ICON_SHIP_TO_SECTION);
 	}
 
+	public String getShippingAddress() {
+		waitForElementVisible(driver, CheckoutPageUI.ReviewAndPayment.SHIPPING_ADDRESS);
+		return getElementText(driver, CheckoutPageUI.ReviewAndPayment.SHIPPING_ADDRESS);
+	}
+
 	public void clickPenIconShippingMethodSection() {
 		waitForElementClickable(driver, CheckoutPageUI.ReviewAndPayment.PEN_ICON_SHIPPING_METHOD_SECTION);
 		clickElementByJS(driver, CheckoutPageUI.ReviewAndPayment.PEN_ICON_SHIPPING_METHOD_SECTION);
 	}
 
-	public void clickPlaceOrderButton() {
+	public OrderSuccessPageObject clickPlaceOrderButton() {
+		isLoadingIconNotDisplayed(driver);
 		waitForElementClickable(driver, CheckoutPageUI.ReviewAndPayment.PLACE_ORDER_BUTTON);
 		clickElementByJS(driver, CheckoutPageUI.ReviewAndPayment.PLACE_ORDER_BUTTON);
-	}
-
-	public HomepageObject clickContinueShoppingButton() {
-		waitForElementClickable(driver, CheckoutPageUI.OrderSuccess.CONTINUE_SHOPPING_BUTTON);
-		clickElementByJS(driver, CheckoutPageUI.OrderSuccess.CONTINUE_SHOPPING_BUTTON);
-		return PageGeneratorManager.getHomepage(driver);
-	}
-
-	public OrderDetailsPageObject clickOrderNumber() {
-		waitForElementClickable(driver, CheckoutPageUI.OrderSuccess.ORDER_NUMBER);
-		clickElementByJS(driver, CheckoutPageUI.OrderSuccess.ORDER_NUMBER);
-		return PageGeneratorManager.getOrderDetaisPage(driver);
-	}
-
-	public String getOrderNumber() {
-		waitForElementVisible(driver, CheckoutPageUI.OrderSuccess.ORDER_NUMBER);
-		return getElementText(driver, CheckoutPageUI.OrderSuccess.ORDER_NUMBER);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+		return PageGeneratorManager.getOrderSuccessPage(driver);
 	}
 
 	public void sendKeysToEmailAddressTextbox(String email) {
@@ -281,6 +280,7 @@ public class CheckoutPageObject extends BasePage {
 	public void clickLoginButton() {
 		waitForElementClickable(driver, CheckoutPageUI.Shipping.LOGIN_BUTTON);
 		clickElementByJS(driver, CheckoutPageUI.Shipping.LOGIN_BUTTON);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	public boolean isPasswordTextboxDisplayed() {

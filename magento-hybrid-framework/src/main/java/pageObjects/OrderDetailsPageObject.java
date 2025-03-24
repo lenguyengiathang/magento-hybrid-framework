@@ -43,12 +43,12 @@ public class OrderDetailsPageObject extends BasePage {
 
 	public String getProductQuantityByProductName(String productName) {
 		waitForElementVisible(driver, OrderDetailsPageUI.DYNAMIC_QUANTITY_BY_PRODUCT_NAME, productName);
-		return getElementText(driver, OrderDetailsPageUI.DYNAMIC_QUANTITY_BY_PRODUCT_NAME, productName).split(" ")[1];
+		return getElementText(driver, OrderDetailsPageUI.DYNAMIC_QUANTITY_BY_PRODUCT_NAME, productName);
 	}
 
 	public Float getProductSubtotalByProductName(String productName) {
-		waitForElementVisible(driver, OrderDetailsPageUI.DYNAMIC_PRICE_BY_PRODUCT_NAME, productName);
-		String subtotalText = getElementText(driver, OrderDetailsPageUI.DYNAMIC_PRICE_BY_PRODUCT_NAME, productName);
+		waitForElementVisible(driver, OrderDetailsPageUI.DYNAMIC_SUBTOTAL_BY_PRODUCT_NAME, productName);
+		String subtotalText = getElementText(driver, OrderDetailsPageUI.DYNAMIC_SUBTOTAL_BY_PRODUCT_NAME, productName);
 		return Float.parseFloat(subtotalText.replace("$", ""));
 	}
 
@@ -69,7 +69,7 @@ public class OrderDetailsPageObject extends BasePage {
 
 	public Float getOrderDiscount() {
 		waitForElementVisible(driver, OrderDetailsPageUI.ORDER_DISCOUNT);
-		return Float.parseFloat(getElementText(driver, OrderDetailsPageUI.ORDER_DISCOUNT).replace("$", ""));
+		return Float.parseFloat(getElementText(driver, OrderDetailsPageUI.ORDER_DISCOUNT).replace("-$", ""));
 	}
 
 	public Float getOrderShippingAndHandling() {

@@ -3,7 +3,7 @@ package pageObjects;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
-import pageUIs.BasePageUI;
+import pageUIs.MyOrdersPageUI;
 
 public class MyOrdersPageObject extends BasePage {
 	private WebDriver driver;
@@ -13,7 +13,11 @@ public class MyOrdersPageObject extends BasePage {
 	}
 
 	public String getNoOrdersPlacedInfoMessage() {
-		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
-		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+		waitForElementVisible(driver, MyOrdersPageUI.NO_PLACED_ORDERS_INFO_MESSAGE);
+		return getElementText(driver, MyOrdersPageUI.NO_PLACED_ORDERS_INFO_MESSAGE);
+	}
+
+	public boolean isOrderByOrderNumberDisplayed(String orderNumber) {
+		return isElementDisplayed(driver, MyOrdersPageUI.DYNAMIC_ORDER_NUMBER, orderNumber);
 	}
 }

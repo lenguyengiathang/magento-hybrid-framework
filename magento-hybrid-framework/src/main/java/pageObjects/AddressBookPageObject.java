@@ -87,55 +87,55 @@ public class AddressBookPageObject extends BasePage {
 	public String getDefaultShippingAddressFullName() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
-		return fullAddress.split("<br>")[0].trim();
+		return fullAddress.split("\n")[0].trim();
 	}
 
 	public String getDefaultShippingAddressCompany() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
-		return fullAddress.split("<br>")[1].trim();
+		return fullAddress.split("\n")[1].trim();
 	}
 
 	public String getDefaultShippingAddressAddressFirstLine() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
-		return fullAddress.split("<br>")[2].trim();
+		return fullAddress.split("\n")[2].trim();
 	}
 
 	public String getDefaultShippingAddressAddressSecondLine() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
-		return fullAddress.split("<br>")[3].trim();
+		return fullAddress.split("\n")[3].trim();
 	}
 
 	public String getDefaultShippingAddressAddressThirdLine() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
-		return fullAddress.split("<br>")[4].trim();
+		return fullAddress.split("\n")[4].trim();
 	}
 
 	public String getDefaultShippingAddressCity() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
-		return fullAddress.split("<br>")[5].split(",")[0].trim();
+		return fullAddress.split("\n")[5].split(",")[0].trim();
 	}
 
 	public String getDefaultShippingAddressState() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
-		return fullAddress.split("<br>")[5].split(",")[1].trim();
+		return fullAddress.split("\n")[5].split(",")[1].trim();
 	}
 
 	public String getDefaultShippingAddressZipPostalCode() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
-		return fullAddress.split("<br>")[5].split(",")[2].trim();
+		return fullAddress.split("\n")[5].split(",")[2].trim();
 	}
 
 	public String getDefaultShippingAddressCountry() {
 		waitForElementVisible(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
 		String fullAddress = getElementText(driver, AddressBookPageUI.DefaultAddresses.DEFAULT_SHIPPING_ADDRESS);
-		return fullAddress.split("<br>")[6].trim();
+		return fullAddress.split("\n")[6].trim();
 	}
 
 	public String getDefaultShippingAddressPhone() {

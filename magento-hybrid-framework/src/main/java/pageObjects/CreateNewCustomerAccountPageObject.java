@@ -39,6 +39,14 @@ public class CreateNewCustomerAccountPageObject extends BasePage {
 		sendKeysToElement(driver, CreateNewCustomerAccountPageUI.PASSWORD_TEXTBOX, password);
 	}
 
+	public void completeRegistrationForm(String firstName, String lastName, String email, String password) {
+		sendKeysToFirstNameTextbox(firstName);
+		sendKeysToLastNameTextbox(lastName);
+		sendKeysToEmailTextbox(email);
+		sendKeysToPasswordTextbox(password);
+		sendKeysToConfirmPasswordTextbox(password);
+	}
+
 	@Step("Get password strength message")
 	public String getPasswordStrengthMessage() {
 		waitForElementVisible(driver, CreateNewCustomerAccountPageUI.PASSWORD_STRENGTH_MESSAGE);
@@ -86,5 +94,10 @@ public class CreateNewCustomerAccountPageObject extends BasePage {
 	public String getExistingEmailErrorMessage() {
 		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
+	public String getInputValueByTextboxLabel(String label) {
+		waitForElementVisible(driver, CreateNewCustomerAccountPageUI.DYNAMIC_TEXTBOX_BY_LABEL, label);
+		return getElementValueByJS(driver, CreateNewCustomerAccountPageUI.DYNAMIC_TEXTBOX_BY_LABEL, label);
 	}
 }

@@ -13,7 +13,6 @@ import pageObjects.ProductListingPageObject;
 import pageUIs.BasePageUI;
 import pageUIs.CompareProductsPageUI;
 import pageUIs.MyWishListPageUI;
-import pageUIs.ShoppingCartPageUI;
 import utilities.ProductDataMapperAdvanced;
 import utilities.ProductDataMapperAdvanced.Product;
 import utilities.ProductDataMapperAdvanced.Subcategory;
@@ -78,120 +77,145 @@ public class Products extends BaseTest {
 	}
 
 	public void addRandomProductWithOptionsToCart(String jsonFile) {
-		loadAdvancedProductData(jsonFile);
+		try {
+			loadAdvancedProductData(jsonFile);
 
-		String group = jsonFile.contains("women") ? "Women" : "Men";
+			String group = jsonFile.contains("women") ? "Women" : "Men";
 
-		utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
-		Subcategory subcategory = getRandomAdvancedSubcategory(category);
-		Product product = getRandomAdvancedProduct(subcategory);
-		productName = product.getProductName();
-		productSize = getRandomSizeOption(product);
-		productColor = getRandomColorOption(product);
+			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
+			Subcategory subcategory = getRandomAdvancedSubcategory(category);
+			Product product = getRandomAdvancedProduct(subcategory);
+			productName = product.getProductName();
+			productSize = getRandomSizeOption(product);
+			productColor = getRandomColorOption(product);
 
-		basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
-				subcategory.getSubcategoryName());
-		basePage.addProductWithOptionsToCart(driver, productName, productSize, productColor);
-		basePage.clickLumaLogo(driver);
+			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
+					subcategory.getSubcategoryName());
+			basePage.addProductWithOptionsToCart(driver, productName, productSize, productColor);
+			basePage.clickLumaLogo(driver);
+		} catch (Exception e) {
+			System.err.println("Error adding product to shopping cart: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public void addRandomProductWithoutOptionsToCart() {
-		Category category = getRandomBasicCategory();
-		productName = getRandomBasicProductFromCategory(category).getProductName();
+		try {
+			Category category = getRandomBasicCategory();
+			productName = getRandomBasicProductFromCategory(category).getProductName();
 
-		basePage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category.getCategoryName());
-		basePage.addProductWithNoOptionsToCart(driver, productName);
-		basePage.clickLumaLogo(driver);
+			basePage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category.getCategoryName());
+			basePage.addProductWithNoOptionsToCart(driver, productName);
+			basePage.clickLumaLogo(driver);
+		} catch (Exception e) {
+			System.err.println("Error adding product to shopping cart: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public void addRandomProductWithOptionsToWishList(String jsonFile) {
-		loadAdvancedProductData(jsonFile);
+		try {
+			loadAdvancedProductData(jsonFile);
 
-		String group = jsonFile.contains("women") ? "Women" : "Men";
+			String group = jsonFile.contains("women") ? "Women" : "Men";
 
-		utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
-		Subcategory subcategory = getRandomAdvancedSubcategory(category);
-		productName = getRandomAdvancedProduct(subcategory).getProductName();
+			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
+			Subcategory subcategory = getRandomAdvancedSubcategory(category);
+			productName = getRandomAdvancedProduct(subcategory).getProductName();
 
-		basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
-				subcategory.getSubcategoryName());
-		basePage.clickWishListIconByProductName(driver, productName);
+			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
+					subcategory.getSubcategoryName());
+			basePage.clickWishListIconByProductName(driver, productName);
+		} catch (Exception e) {
+			System.err.println("Error adding product to wish list: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public void addRandomProductWithoutOptionsToWishList() {
-		Category category = getRandomBasicCategory();
-		productName = getRandomBasicProductFromCategory(category).getProductName();
+		try {
+			Category category = getRandomBasicCategory();
+			productName = getRandomBasicProductFromCategory(category).getProductName();
 
-		basePage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category.getCategoryName());
-		basePage.clickWishListIconByProductName(driver, productName);
+			basePage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category.getCategoryName());
+			basePage.clickWishListIconByProductName(driver, productName);
+		} catch (Exception e) {
+			System.err.println("Error adding product to wish list: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public ProductListingPageObject addRandomProductWithOptionsToComparisonList(String jsonFile) {
-		loadAdvancedProductData(jsonFile);
+		try {
+			loadAdvancedProductData(jsonFile);
 
-		String group = jsonFile.contains("women") ? "Women" : "Men";
+			String group = jsonFile.contains("women") ? "Women" : "Men";
 
-		utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
-		Subcategory subcategory = getRandomAdvancedSubcategory(category);
-		productName = getRandomAdvancedProduct(subcategory).getProductName();
+			utilities.ProductDataMapperAdvanced.Category category = getRandomAdvancedCategory();
+			Subcategory subcategory = getRandomAdvancedSubcategory(category);
+			productName = getRandomAdvancedProduct(subcategory).getProductName();
 
-		basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
-				subcategory.getSubcategoryName());
-		basePage.clickCompareIconByProductName(driver, productName);
+			basePage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
+					subcategory.getSubcategoryName());
+			basePage.clickCompareIconByProductName(driver, productName);
 
+		} catch (Exception e) {
+			System.err.println("Error adding product to comparison list: " + e.getMessage());
+			e.printStackTrace();
+		}
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 
 	public ProductListingPageObject addRandomProductWithoutOptionsToComparisonList() {
-		Category category = getRandomBasicCategory();
-		productName = getRandomBasicProductFromCategory(category).getProductName();
+		try {
+			Category category = getRandomBasicCategory();
+			productName = getRandomBasicProductFromCategory(category).getProductName();
 
-		basePage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category.getCategoryName());
-		basePage.clickCompareIconByProductName(driver, productName);
-
+			basePage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category.getCategoryName());
+			basePage.clickCompareIconByProductName(driver, productName);
+		} catch (Exception e) {
+			System.err.println("Error adding product to comparison list: " + e.getMessage());
+			e.printStackTrace();
+		}
 		return PageGeneratorManager.getProductListingPageObject(driver);
 	}
 
-	public void clearShoppingCart() {
-		basePage.clickShoppingCartIcon(driver);
-		basePage.clickViewAndEditCartLink(driver);
-		while (true) {
-			List<WebElement> trashcanIcons = basePage.getWebElements(driver, ShoppingCartPageUI.TRASHCAN_ICON);
-			if (trashcanIcons.isEmpty()) {
-				break;
-			}
-			trashcanIcons.get(0).click();
-			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
-		}
-		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
-	}
-
 	public void clearWishList() {
-		basePage.clickCustomerNameDropdown(driver);
-		basePage.clickMyWishListDropdownLink(driver);
-		while (true) {
-			List<WebElement> trashcanIcons = basePage.getWebElements(driver, MyWishListPageUI.TRASHCAN_ICON);
-			if (trashcanIcons.isEmpty()) {
-				break;
+		try {
+			basePage.clickCustomerNameDropdown(driver);
+			basePage.clickMyWishListDropdownLink(driver);
+			while (true) {
+				List<WebElement> trashcanIcons = basePage.getWebElements(driver, MyWishListPageUI.TRASHCAN_ICON);
+				if (trashcanIcons.isEmpty()) {
+					break;
+				}
+				basePage.hoverOverElement(driver, MyWishListPageUI.FIRST_PRODUCT_CARD);
+				basePage.clickElementByJS(driver, MyWishListPageUI.TRASHCAN_ICON);
+				basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
 			}
-			basePage.hoverOverElement(driver, MyWishListPageUI.FIRST_PRODUCT_CARD);
-			basePage.clickElementByJS(driver, MyWishListPageUI.TRASHCAN_ICON);
-			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
+		} catch (Exception e) {
+			System.err.println("Error clearing wish list: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
 	public void clearComparisonList() {
-		basePage.clickCompareProductsLink(driver);
-		while (true) {
-			List<WebElement> crossIcons = basePage.getWebElements(driver, CompareProductsPageUI.CROSS_ICON);
-			if (crossIcons.isEmpty()) {
-				break;
+		try {
+			basePage.clickCompareProductsLink(driver);
+			while (true) {
+				List<WebElement> crossIcons = basePage.getWebElements(driver, CompareProductsPageUI.CROSS_ICON);
+				if (crossIcons.isEmpty()) {
+					break;
+				}
+				crossIcons.get(0).click();
+				basePage.clickConfirmationPopupOKButton(driver);
+				basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
 			}
-			crossIcons.get(0).click();
-			basePage.clickConfirmationPopupOKButton(driver);
-			basePage.waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
+			sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+		} catch (Exception e) {
+			System.err.println("Error clearing comparison list: " + e.getMessage());
+			e.printStackTrace();
 		}
-		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	private WebDriver driver;

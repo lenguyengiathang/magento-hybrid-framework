@@ -196,12 +196,13 @@ public class ProductListingPageObject extends BasePage {
 	public void clickSortArrowIcon() {
 		waitForElementClickable(driver, ProductListingPageUI.SORT_ARROW_ICON);
 		clickElementByJS(driver, ProductListingPageUI.SORT_ARROW_ICON);
-		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+		waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_NAME);
 	}
 
 	public boolean isNumberOfProductsPerPageCorrect(int expectedCount) {
 		while (true) {
 			int productCount = getNumberOfElements(driver, ProductListingPageUI.PRODUCT_LINK);
+			System.out.println(productCount);
 			if (productCount > expectedCount) {
 				return false;
 			}
@@ -217,6 +218,11 @@ public class ProductListingPageObject extends BasePage {
 		waitForElementClickable(driver, ProductListingPageUI.DYNAMIC_VIEW_TOGGLE_BUTTON_BY_VIEW_NAME, view);
 		clickElementByJS(driver, ProductListingPageUI.DYNAMIC_VIEW_TOGGLE_BUTTON_BY_VIEW_NAME, view);
 		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+	}
+
+	public boolean areProductPricesDisplayedCorrectly() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

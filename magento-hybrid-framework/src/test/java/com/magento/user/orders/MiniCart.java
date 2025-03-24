@@ -1,8 +1,5 @@
 package com.magento.user.orders;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -12,7 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.magento.commons.Products;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import commons.BaseTest;
 import commons.PageGeneratorManager;
@@ -21,6 +18,7 @@ import pageObjects.HomepageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
 import pageObjects.ShoppingCartPageObject;
+import utilities.JsonUtils;
 
 public class MiniCart extends BaseTest {
 	@Parameters("browser")
@@ -28,23 +26,23 @@ public class MiniCart extends BaseTest {
 	public void beforeClass(String browser) {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
-
-		productActions = new com.magento.commons.Products(driver);
 	}
 
-	@BeforeMethod(alwaysRun = true, onlyForGroups = "addProductToCart")
-	public void addProductToCart(Method method) {
-		if (Arrays.asList(method.getAnnotation(Test.class).groups()).contains("addProductToCart")) {
-			try {
-				productActions.addRandomProductWithOptionsToCart("men_products.json");
-				productName = Products.productName;
-				productSize = Products.productSize;
-				productColor = Products.productColor;
-			} catch (Exception e) {
-				System.err.println("Error adding product to cart: " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
+	@BeforeMethod(onlyForGroups = "addProductToCart")
+	public void addProductWithOptionsToCart() {
+		resultNode = JsonUtils.getRandomProductWithOptions("women_products.json");
+		category = resultNode.get("category").asText();
+		subcategory = resultNode.get("subcategory").asText();
+		productName = resultNode.get("product").get("product_name").asText();
+		productSize = resultNode.get("size").asText();
+		productColor = resultNode.get("color").asText();
+
+		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", category,
+				subcategory);
+		productListingPage.clickSizeButtonByProductNameAndLabel(driver, productName, productSize);
+		productListingPage.clickColorButtonByProductNameAndLabel(driver, productName, productColor);
+		productListingPage.clickAddToCartButtonByProductName(driver, productName);
+		homepage = productListingPage.clickLumaLogo(driver);
 	}
 
 	@Test(description = "Verify the information message displayed when the shopping cart is empty")
@@ -110,7 +108,7 @@ public class MiniCart extends BaseTest {
 	public void Mini_Cart_06_Total_Quantity_Equals_Sum_Of_Product_Quantity() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Fitness Equipment");
-		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Sprite Foam Roller");
+		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Pursuit Lumaflex™ Tone Band");
 		productDetailsPage.sendKeysToQuantityTextbox("2");
 		productDetailsPage.clickAddToCartButton();
 		productListingPage = productDetailsPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
@@ -159,16 +157,9 @@ public class MiniCart extends BaseTest {
 		Assert.assertTrue(checkoutPage.isUserOnShippingStep());
 	}
 
-	@AfterMethod(alwaysRun = true, onlyForGroups = "clearCart")
-	public void clearCart(Method method) {
-		if (Arrays.asList(method.getAnnotation(Test.class).groups()).contains("clearCart")) {
-			try {
-				productActions.clearShoppingCart();
-			} catch (Exception e) {
-				System.err.println("Error clearing the shopping cart: " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
+	@AfterMethod(onlyForGroups = "clearCart")
+	public void clearCart() {
+		homepage.clearShoppingCart(driver);
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -177,11 +168,11 @@ public class MiniCart extends BaseTest {
 	}
 
 	private WebDriver driver;
-	private String productName, productSize, productColor;
+	private JsonNode resultNode;
+	private String category, subcategory, productName, productSize, productColor;
 	private HomepageObject homepage;
 	private ProductListingPageObject productListingPage;
 	private ProductDetailsPageObject productDetailsPage;
 	private ShoppingCartPageObject shoppingCartPage;
 	private CheckoutPageObject checkoutPage;
-	private com.magento.commons.Products productActions;
 }

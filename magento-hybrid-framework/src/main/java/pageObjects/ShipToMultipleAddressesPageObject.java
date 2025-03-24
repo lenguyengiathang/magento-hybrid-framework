@@ -3,6 +3,7 @@ package pageObjects;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import commons.GlobalConstants;
 import commons.PageGeneratorManager;
 import pageUIs.ShipToMultipleAddressesPageUI;
 
@@ -16,13 +17,25 @@ public class ShipToMultipleAddressesPageObject extends BasePage {
 	public void sendKeysToQuantityTextboxByProductName(String productName, String quantity) {
 		waitForElementVisible(driver, ShipToMultipleAddressesPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME,
 				productName);
-		sendKeysToElement(driver, ShipToMultipleAddressesPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName,
-				quantity);
+		sendKeysToElement(driver, ShipToMultipleAddressesPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, quantity,
+				productName);
 	}
 
-	public void selectItemSendToDropdownByProductName(String productName, String shippingAddress) {
+	public String getQuantityValueByProductName(String productName) {
+		waitForElementVisible(driver, ShipToMultipleAddressesPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME,
+				productName);
+		return getElementValueByJS(driver, ShipToMultipleAddressesPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME,
+				productName);
+	}
+
+	public void selectOptionSendToDropdownByProductName(String productName, String shippingAddress) {
 		selectOptionDefaultDropdown(driver, ShipToMultipleAddressesPageUI.DYNAMIC_SEND_TO_DROPDOWN_BY_PRODUCT_NAME,
 				shippingAddress, productName);
+	}
+
+	public String getSelectedOptionSendToDropdownByProductName(String productName) {
+		return getSelectedOptionDefaultDropdown(driver,
+				ShipToMultipleAddressesPageUI.DYNAMIC_SEND_TO_DROPDOWN_BY_PRODUCT_NAME, productName);
 	}
 
 	public void clickRemoveItemLinkByProductName(String productName) {
@@ -34,6 +47,7 @@ public class ShipToMultipleAddressesPageObject extends BasePage {
 	public SelectShippingMethodPageObject clickGoToShippingInformationButton() {
 		waitForElementClickable(driver, ShipToMultipleAddressesPageUI.GO_TO_SHIPPING_INFORMATION_BUTTON);
 		clickElementByJS(driver, ShipToMultipleAddressesPageUI.GO_TO_SHIPPING_INFORMATION_BUTTON);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 		return PageGeneratorManager.getSelectShippingMethodPage(driver);
 	}
 
@@ -48,9 +62,15 @@ public class ShipToMultipleAddressesPageObject extends BasePage {
 		clickElementByJS(driver, ShipToMultipleAddressesPageUI.UPDATE_QUANTITY_AND_ADDRESSES_BUTTON);
 	}
 
-	public void clickEnterANewAddressButton() {
+	public AddressPageObject clickEnterANewAddressButton() {
 		waitForElementClickable(driver, ShipToMultipleAddressesPageUI.ENTER_A_NEW_ADDRESS_BUTTON);
 		clickElementByJS(driver, ShipToMultipleAddressesPageUI.ENTER_A_NEW_ADDRESS_BUTTON);
+		return PageGeneratorManager.getAddressPage(driver);
+	}
+
+	public boolean isProductNotDisplayedInShipToMultipleAddressesPage(String productName) {
+		return isElementNotDisplayed(driver, ShipToMultipleAddressesPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME,
+				productName);
 	}
 
 }

@@ -37,11 +37,23 @@ public class ProductDetailsPageObject extends BasePage {
 	public void clickSizeButtonByLabel(String label) {
 		waitForElementClickable(driver, ProductDetailsPageUI.DYNAMIC_PRODUCT_SIZE_BUTTON_BY_LABEL, label);
 		clickElementByJS(driver, ProductDetailsPageUI.DYNAMIC_PRODUCT_SIZE_BUTTON_BY_LABEL, label);
+		sleepInSecond(1);
+	}
+
+	public String getSizeNotSelectedErrorMessage() {
+		waitForElementVisible(driver, ProductDetailsPageUI.SIZE_REQUIRED_ERROR_MESSAGE);
+		return getElementText(driver, ProductDetailsPageUI.SIZE_REQUIRED_ERROR_MESSAGE);
 	}
 
 	public void clickColorButtonByLabel(String label) {
 		waitForElementClickable(driver, ProductDetailsPageUI.DYNAMIC_PRODUCT_COLOR_BUTTON_BY_LABEL, label);
 		clickElementByJS(driver, ProductDetailsPageUI.DYNAMIC_PRODUCT_COLOR_BUTTON_BY_LABEL, label);
+		sleepInSecond(1);
+	}
+
+	public String getColorNotSelectedErrorMessage() {
+		waitForElementVisible(driver, ProductDetailsPageUI.COLOR_REQUIRED_ERROR_MESSAGE);
+		return getElementText(driver, ProductDetailsPageUI.COLOR_REQUIRED_ERROR_MESSAGE);
 	}
 
 	public void clickAddYourReviewLink() {
@@ -62,6 +74,11 @@ public class ProductDetailsPageObject extends BasePage {
 	public void sendKeysToQuantityTextbox(String quantity) {
 		waitForElementVisible(driver, ProductDetailsPageUI.PRODUCT_QUANTITY_TEXTBOX);
 		sendKeysToElement(driver, ProductDetailsPageUI.PRODUCT_QUANTITY_TEXTBOX, quantity);
+	}
+
+	public String getMaximumQuantityErrorMessage() {
+		waitForElementVisible(driver, ProductDetailsPageUI.MAXIMUM_QUANTITY_ERROR_MESSAGE);
+		return getElementText(driver, ProductDetailsPageUI.MAXIMUM_QUANTITY_ERROR_MESSAGE);
 	}
 
 	public void clickAddToCartButton() {
@@ -200,4 +217,10 @@ public class ProductDetailsPageObject extends BasePage {
 		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
+
+	public String getMaximumCartQuantityExceeded() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
 }

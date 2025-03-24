@@ -62,12 +62,9 @@ public class CheckoutPageUI {
 		public static final String SHIPPING = "css=span[data-th='Shipping']";
 		public static final String ORDER_TOTAL = "css=.grand.totals td span";
 		public static final String PEN_ICON_SHIP_TO_SECTION = "xpath=//span[text()='Ship To:']/following-sibling::button";
+		public static final String SHIPPING_ADDRESS = "css=.shipping-information-content";
 		public static final String PEN_ICON_SHIPPING_METHOD_SECTION = "xpath=//span[text()='Shipping Method:']/following-sibling::button";
 		public static final String PLACE_ORDER_BUTTON = "css=button[title='Place Order']";
 	}
 
-	public static class OrderSuccess {
-		public static final String ORDER_NUMBER = "css=.checkout-success strong";
-		public static final String CONTINUE_SHOPPING_BUTTON = "css=a.continue";
-	}
 }

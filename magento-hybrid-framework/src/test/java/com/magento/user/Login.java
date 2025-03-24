@@ -1,8 +1,5 @@
 package com.magento.user;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.ITestResult;
@@ -13,8 +10,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.magento.commons.Access;
-import com.magento.commons.Products;
 import com.magento.commons.Register;
 
 import commons.BaseTest;
@@ -23,6 +18,7 @@ import pageObjects.CheckoutPageObject;
 import pageObjects.CustomerLoginPageObject;
 import pageObjects.ForgotYourPasswordPageObject;
 import pageObjects.HomepageObject;
+import pageObjects.ProductListingPageObject;
 import utilities.FakeDataUtils;
 
 public class Login extends BaseTest {
@@ -32,23 +28,16 @@ public class Login extends BaseTest {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 
-		accessActions = new Access(driver);
-		productActions = new Products(driver);
 		data = FakeDataUtils.getDataHelper();
 		email = Register.email;
 		password = Register.password;
 	}
 
 	@BeforeMethod(alwaysRun = true, onlyForGroups = "addProductToCart")
-	public void addProductToCart(Method method) {
-		if (Arrays.asList(method.getAnnotation(Test.class).groups()).contains("addProductToCart")) {
-			try {
-				productActions.addRandomProductWithoutOptionsToCart();
-			} catch (Exception e) {
-				System.err.println("Error adding product to cart: " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
+	public void addProductToCart() {
+		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Bags");
+		productListingPage.addProductWithNoOptionsToCart(driver, "Overnight Duffle");
+		homepage = productListingPage.clickLumaLogo(driver);
 	}
 
 	@Test(description = "Verify that user is directed to 'Customer Login' page when clicking the 'Sign In' link in the header")
@@ -126,18 +115,10 @@ public class Login extends BaseTest {
 	public void logOut(ITestResult result) {
 		if (result.getMethod().getMethodName().contains("Login_03")
 				|| result.getMethod().getMethodName().contains("Login_06")) {
-			try {
-				accessActions.logOut();
-			} catch (Exception e) {
-				System.err.println("Error logging out: " + e.getMessage());
-				e.printStackTrace();
-			}
+			homepage.clickCustomerNameDropdown(driver);
+			homepage.clickSignOutDropdownLink(driver);
+			homepage.refreshCurrentPage(driver);
 		}
-	}
-
-	@AfterMethod(alwaysRun = true)
-	public void afterMethod(ITestResult result) {
-		logTestResult(result);
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -151,7 +132,6 @@ public class Login extends BaseTest {
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;
 	private ForgotYourPasswordPageObject forgotYourPasswordPage;
+	private ProductListingPageObject productListingPage;
 	private CheckoutPageObject checkoutPage;
-	private Access accessActions;
-	private Products productActions;
 }

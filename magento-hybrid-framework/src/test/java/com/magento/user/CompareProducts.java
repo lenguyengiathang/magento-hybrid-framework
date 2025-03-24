@@ -1,7 +1,5 @@
 package com.magento.user;
 
-import java.util.Random;
-
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.ITestResult;
@@ -33,42 +31,23 @@ public class CompareProducts extends BaseTest {
 
 	@BeforeMethod
 	public void addProductToComparisonList(ITestResult result) {
-		String[] groups = result.getMethod().getGroups();
-		Random random = new Random();
-
-		for (String group : groups) {
-			switch (group) {
-			case "addProductWithoutOptions":
-				productListingPage = productActions.addRandomProductWithoutOptionsToComparisonList();
-				break;
-			case "addProductWithOptions":
-				String groupChoice = random.nextBoolean() ? "Men" : "Women";
-				productListingPage = productActions.addRandomProductWithOptionsToComparisonList(groupChoice);
-				break;
-			default:
-				continue;
-			}
-			productName = Products.productName;
-			System.out.println("The @BeforeMethod executed successfully: " + productName
-					+ " is added to the comparison list successfully.");
-			break;
-		}
+		productActions.addRandomProductWithoutOptionsToComparisonList();
 	}
 
 	@Test(description = "Verify the information message displayed in the 'Compare Products' section when no product is added to the comparison list")
-	public void Info_Message_No_Product_In_Comparison_List() {
-		productListingPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Bags");
+	public void Compare_Products_01_Info_Message_No_Product_In_Comparison_List() {
+		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Bags");
 
 		Assert.assertEquals(productListingPage.getEmptyComparisonListInfoMessage(driver),
 				"You have no items to compare.");
 	}
 
 	@Test(groups = "addProductWithoutOptions", description = "Verify that the 'Compare Products ([number] items)' hyperlink is only displayed when at least one product is added to the comparison list")
-	public void Display_Of_Compare_Products_Link() {
+	public void Compare_Products_02_Display_Of_Compare_Products_Link() {
 		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
-		Assert.assertTrue(productListingPage.isCompareProductsLinkDisplayed(driver));
+		Assert.assertTrue(homepage.isCompareProductsLinkDisplayed(driver));
 
-		compareProductsPage = productListingPage.clickCompareProductsLink(driver);
+		compareProductsPage = homepage.clickCompareProductsLink(driver);
 		compareProductsPage.clickCrossIcon();
 		compareProductsPage.clickConfirmationPopupOKButton(driver);
 
@@ -77,15 +56,15 @@ public class CompareProducts extends BaseTest {
 
 	@Test(groups = { "addProductWithoutOptions",
 			"clearComparisonList" }, description = "Verify that user is directed to the 'Compare Products' page when clicking the 'Compare Products ([number] item(s))' hyperlink")
-	public void Click_Compare_Products_Link() {
-		compareProductsPage = productListingPage.clickCompareProductsLink(driver);
+	public void Compare_Products_03_Click_Compare_Products_Link() {
+		compareProductsPage = homepage.clickCompareProductsLink(driver);
 
 		Assert.assertEquals(compareProductsPage.getPageHeader(driver), "Compare Products");
 	}
 
 	@Test(groups = { "addProductWithoutOptions",
 			"clearComparisonList" }, description = "Verify that user is directed to the 'Compare Products' page when clicking the 'Compare' button in the 'Compare Products' section")
-	public void Click_Compare_Button() {
+	public void Compare_Products_04_Click_Compare_Button() {
 		compareProductsPage = productListingPage.clickCompareButton(driver);
 
 		Assert.assertEquals(compareProductsPage.getPageHeader(driver), "Compare Products");
@@ -133,25 +112,6 @@ public class CompareProducts extends BaseTest {
 	@AfterMethod(onlyForGroups = "clearComparisonList")
 	public void clearComparisonList(ITestResult result) {
 		productActions.clearComparisonList();
-	}
-
-	@AfterMethod(alwaysRun = true)
-	public void logTestResult(ITestResult result) {
-		int status = result.getStatus();
-		switch (status) {
-		case ITestResult.SUCCESS:
-			System.out.println("Test passed: " + result.getMethod().getDescription());
-			break;
-		case ITestResult.FAILURE:
-			System.out.println("Test failed: " + result.getMethod().getDescription());
-			break;
-		case ITestResult.SKIP:
-			System.out.println("Test skipped: " + result.getMethod().getDescription());
-			break;
-		default:
-			System.out.println("Unknown status: " + result.getMethod().getDescription());
-			break;
-		}
 	}
 
 	@AfterClass(alwaysRun = true)

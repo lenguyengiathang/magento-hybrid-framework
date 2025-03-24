@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.magento.commons.Login;
 import com.magento.commons.Register;
 
 import commons.BaseTest;
@@ -24,21 +25,22 @@ public class AccountInformation extends BaseTest {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 
-		data = FakeDataUtils.getDataHelper();
 		email = Register.email;
 		password = Register.password;
+		data = FakeDataUtils.getDataHelper();
 		newFirstName = data.getFirstName();
 		newLastName = data.getLastName();
 		newFullName = newFirstName + ' ' + newLastName;
 		newEmail = data.getEmailAddress();
 		newPassword = password + generateRandomNumber();
 
-		customerLoginPage = homepage.clickSignInLink();
-		homepage = customerLoginPage.logInAsRegisteredUser(email, password);
+		homepage.setCookies(driver, Login.cookies);
+		homepage.refreshCurrentPage(driver);
+
 	}
 
 	@Test(description = "Verify that user is directed to 'Account Information' page when clicking the 'Account Information' link in the left sidebar")
-	public void Click_Account_Information_Link() {
+	public void Account_Information_01_Click_Account_Information_Link() {
 		homepage.clickCustomerNameDropdown(driver);
 		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
 		myAccountPage.clickMyAccountSidebarLinkByLabel(driver, "Account Information");
@@ -47,7 +49,7 @@ public class AccountInformation extends BaseTest {
 	}
 
 	@Test(description = "Verify that user is directed to 'Account Information' page when clicking the 'Edit' link in the 'Contact Information' section")
-	public void Click_Edit_Link_In_Contact_Information_Section() {
+	public void Account_Information_02_Click_Edit_Link_In_Contact_Information_Section() {
 		homepage.clickCustomerNameDropdown(driver);
 		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
 		accountInformationPage = myAccountPage.clickEditContactInformationLink();
@@ -56,7 +58,7 @@ public class AccountInformation extends BaseTest {
 	}
 
 	@Test(description = "Verify that user can change their first and last name")
-	public void Edit_First_And_Last_Name() {
+	public void Account_Information_03_Edit_First_And_Last_Name() {
 		homepage.clickCustomerNameDropdown(driver);
 		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
 		String fullName = myAccountPage.getFullName();
@@ -71,7 +73,7 @@ public class AccountInformation extends BaseTest {
 	}
 
 	@Test(description = "Verify the header of the section for changing email and/or password")
-	public void Display_Of_Change_Email_And_Password_Section_Header() {
+	public void Account_Information_04_Display_Of_Change_Email_And_Password_Section_Header() {
 		homepage.clickCustomerNameDropdown(driver);
 		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
 		accountInformationPage = myAccountPage.clickEditContactInformationLink();
@@ -89,8 +91,8 @@ public class AccountInformation extends BaseTest {
 		Assert.assertEquals(accountInformationPage.getChangeEmailPasswordSectionHeader(), "Change Email and Password");
 	}
 
-	@Test(priority = 1, description = "Verify that user can change the email linked to their account")
-	public void Change_Email() {
+	@Test(description = "Verify that user can change the email linked to their account")
+	public void Account_Information_05_Change_Email() {
 		homepage.clickCustomerNameDropdown(driver);
 		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
 		accountInformationPage = myAccountPage.clickEditContactInformationLink();
@@ -103,8 +105,8 @@ public class AccountInformation extends BaseTest {
 		Assert.assertTrue(homepage.isWelcomeMessageDisplayed(driver));
 	}
 
-	@Test(priority = 2, description = "Verify that user can change the password linked to their account")
-	public void Change_Password() {
+	@Test(description = "Verify that user can change the password linked to their account")
+	public void Account_Information_06_Change_Password() {
 		homepage.clickCustomerNameDropdown(driver);
 		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
 		accountInformationPage = myAccountPage.clickEditContactInformationLink();

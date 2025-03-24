@@ -13,14 +13,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.magento.commons.Products;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import commons.BaseTest;
 import commons.PageGeneratorManager;
 import pageObjects.CheckoutPageObject;
 import pageObjects.CustomerLoginPageObject;
 import pageObjects.HomepageObject;
-import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
 import pageObjects.ShoppingCartPageObject;
 import utilities.CSVUtils;
@@ -33,16 +32,26 @@ public class Checkout extends BaseTest {
 	public void beforeClass(String browser) {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
-		productActions = new Products(driver);
 
 		data = FakeDataUtils.getDataHelper();
 		fileName = "login_data.json";
-		email = JsonUtils.getJsonValue(fileName, "email");
-		password = JsonUtils.getJsonValue(fileName, "password");
+		email = JsonUtils.getJsonValue(fileName, "existing_user.email");
+		password = JsonUtils.getJsonValue(fileName, "existing_user.password");
+		resultNode = JsonUtils.getRandomProductWithOptions("men_products.json");
+		category = resultNode.get("category").asText();
+		subcategory = resultNode.get("subcategory").asText();
+		productName = resultNode.get("product").get("product_name").asText();
+		productSize = resultNode.get("size").asText();
+		productColor = resultNode.get("color").asText();
 
 		customerLoginPage = homepage.clickSignInLink();
 		homepage = customerLoginPage.logInAsRegisteredUser(email, password);
-		productActions.addRandomProductWithoutOptionsToCart();
+		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Men", category,
+				subcategory);
+		productListingPage.clickSizeButtonByProductNameAndLabel(driver, productName, productSize);
+		productListingPage.clickColorButtonByProductNameAndLabel(driver, productName, productColor);
+		productListingPage.clickAddToCartButtonByProductName(driver, productName);
+		homepage = productListingPage.clickLumaLogo(driver);
 	}
 
 	@BeforeMethod(alwaysRun = true, onlyForGroups = "addressData")
@@ -53,21 +62,15 @@ public class Checkout extends BaseTest {
 
 	@BeforeMethod(alwaysRun = true)
 	public void logOut(Method method) {
-		try {
-			if (method.getName().contains("Checkout_01") || method.getName().contains("Checkout_05")) {
-				homepage.clickCustomerNameDropdown(driver);
-				homepage.clickSignOutDropdownLink(driver);
-			}
-		} catch (Exception e) {
-			System.err.println("Error logging out: " + e.getMessage());
-			e.printStackTrace();
+		if (method.getName().contains("Checkout_01") || method.getName().contains("Checkout_05")) {
+			homepage.clickCustomerNameDropdown(driver);
+			homepage.clickSignOutDropdownLink(driver);
+			homepage.refreshCurrentPage(driver);
 		}
 	}
 
 	@Test(groups = "addProductToCart", description = "Verify the elements displayed when user is not logged in and fills in the 'Email Address' field with the email linked to their account")
 	public void Checkout_01_Elements_Displayed_When_User_Is_Logged_Out_And_Fills_In_Email_Linked_To_Account() {
-		productActions.addRandomProductWithoutOptionsToCart();
-
 		homepage.clickShoppingCartIcon(driver);
 		checkoutPage = homepage.clickProceedToCheckoutButton(driver);
 		checkoutPage.sendKeysToEmailAddressTextbox(email);
@@ -116,8 +119,6 @@ public class Checkout extends BaseTest {
 
 	@Test(description = "Verify the warning message displayed when user clicks the 'Next' button without selecting any shipping option")
 	public void Checkout_05_Click_Next_Button_Without_Selecting_Shipping_Option() {
-		productActions.addRandomProductWithoutOptionsToCart();
-
 		homepage.clickShoppingCartIcon(driver);
 		checkoutPage = homepage.clickProceedToCheckoutButton(driver);
 		checkoutPage.sendKeysToEmailAddressTextbox(data.getEmailAddress());
@@ -135,57 +136,121 @@ public class Checkout extends BaseTest {
 				"The shipping method is missing. Select the shipping method and try again.");
 	}
 
+	@Test(description = "Verify that the 'Table Rate - Best Way' shipping option is only available when the shipping country is the United States")
+	public void Checkout_06_Table_Rate_Shipping_Option_Only_Available_For_United_States() {
+		homepage.clickShoppingCartIcon(driver);
+		checkoutPage = homepage.clickProceedToCheckoutButton(driver);
+		checkoutPage.selectOptionCountryDropdown("United States");
+
+		Assert.assertTrue(checkoutPage.isTableRateRadioButtonDisplayed());
+
+		checkoutPage.selectOptionCountryDropdown("Vietnam");
+
+		Assert.assertFalse(checkoutPage.isTableRateRadioButtonDisplayed());
+	}
+
+	@Test(description = "Verify that user is directed to the 'Shipping' step when clicking the 'Shipping' label")
+	public void Checkout_07_Click_Shipping_Label() {
+		homepage.clickShoppingCartIcon(driver);
+		checkoutPage = homepage.clickProceedToCheckoutButton(driver);
+		checkoutPage.selectShippingMethodRadioButtonByLabel("Fixed");
+		checkoutPage.clickNextButton();
+		checkoutPage.clickShippingStepLabel();
+
+		Assert.assertTrue(checkoutPage.isUserOnShippingStep());
+	}
+
+	@Test(description = "Verify that the billing address matches the shipping address when the 'My billing and shipping address are the same' checkbox is selected")
+	public void Checkout_08_Select_My_Billing_And_Shipping_Are_The_Same_Checkbox() {
+		homepage.clickShoppingCartIcon(driver);
+		checkoutPage = homepage.clickProceedToCheckoutButton(driver);
+		checkoutPage.selectShippingMethodRadioButtonByLabel("Fixed");
+		checkoutPage.clickNextButton();
+		checkoutPage.checkMyBillingAndShippingAddressAreTheSameCheckbox();
+		String billingAddress = checkoutPage.getBillingAddress();
+		String shippingAddress = checkoutPage.getShippingAddress();
+
+		Assert.assertEquals(billingAddress, shippingAddress);
+	}
+
+	@Test(description = "Verify that user can select a different billing address when deselecting the 'My billing and shipping address are the same' checkbox")
+	public void Checkout_09_Select_Different_Billing_Address() {
+		homepage.clickShoppingCartIcon(driver);
+		checkoutPage = homepage.clickProceedToCheckoutButton(driver);
+		checkoutPage.selectShippingMethodRadioButtonByLabel("Fixed");
+	}
+
+	@Test(description = "Verify that the 'My billing and shipping address are the same' checkbox is selected when user clicks the 'Cancel' hyperlink")
+	public void Checkout_10_My_Billing_And_Shipping_Are_The_Same_Checkbox_Is_Selected_When_Clicking_Cancel_Link() {
+
+	}
+
+	@Test(description = "Verify that user can add a new billing address")
+	public void Checkout_11_Add_New_Billing_Address() {
+
+	}
+
+	@Test(description = "Verify the display of the success message when user applies a discount code")
+	public void Checkout_12_Discount_Code_Applied_Success_Message() {
+
+	}
+
+	@Test(description = "Verify the display of the success message when user removes the discount code")
+	public void Checkout_13_Discount_Code_Removed_Success_Message() {
+
+	}
+
+	@Test(description = "Verify the display of the error message when an invalid discount code is used")
+	public void Checkout_14_Invalid_Discount_Code_Error_Message() {
+
+	}
+
+	@Test(description = "Verify that user is directed to the 'Shipping' step when clicking the pen icon in the 'Ship To' section")
+	public void Checkout_15_Click_Pen_Icon_Ship_To_Section() {
+
+	}
+
+	@Test(description = "Verify that user is directed to the 'Shipping' step when clicking the pen icon in the 'Shipping Method' section")
+	public void Checkout_16_Click_Pen_Icon_Shipping_Method_Section() {
+
+	}
+
 	@AfterMethod(alwaysRun = true, onlyForGroups = "clearCart")
 	public void clearCart(Method method) {
 		if (Arrays.asList(method.getAnnotation(Test.class).groups()).contains("clearCart")) {
-			try {
-				productActions.clearShoppingCart();
-			} catch (Exception e) {
-				System.err.println("Error clearing the shopping cart: " + e.getMessage());
-				e.printStackTrace();
-			}
+			shoppingCartPage.clearShoppingCart(driver);
+			homepage = shoppingCartPage.clickHereToContinueShoppingLink();
 		}
 	}
 
 	@AfterMethod(alwaysRun = true)
 	public void logIn(Method method) {
-		try {
-			if (method.getName().contains("Checkout_01")) {
-				homepage = checkoutPage.clickLumaLogo(driver);
-				customerLoginPage = homepage.clickSignInLink();
-				homepage = customerLoginPage.logInAsRegisteredUser(email, password);
-			}
-		} catch (Exception e) {
-			System.err.println("Error logging in: " + e.getMessage());
-			e.printStackTrace();
+		if (method.getName().contains("Checkout_01")) {
+			homepage = checkoutPage.clickLumaLogo(driver);
+			customerLoginPage = homepage.clickSignInLink();
+			homepage = customerLoginPage.logInAsRegisteredUser(email, password);
 		}
 	}
 
 	@AfterMethod(alwaysRun = true)
 	public void navigateToHomepage() {
-		try {
-			homepage = checkoutPage.clickLumaLogo(driver);
-		} catch (Exception e) {
-			System.err.println("Error clearing the shopping cart: " + e.getMessage());
-			e.printStackTrace();
-		}
+		homepage = checkoutPage.clickLumaLogo(driver);
 	}
 
 	@AfterClass(alwaysRun = true)
 	public void afterClass() {
-		productActions.clearShoppingCart();
 		closeBrowserAndDriver();
 	}
 
 	private WebDriver driver;
 	private FakeDataUtils data;
-	private String streetAddress, city, state, zipCode, phoneNumber, fileName, email, password;
+	private JsonNode resultNode;
+	private String category, subcategory, productName, productSize, productColor, streetAddress, city, state, zipCode,
+			phoneNumber, fileName, email, password;
 	private String[] randomRow;
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;
 	private ProductListingPageObject productListingPage;
-	private ProductDetailsPageObject productDetailsPage;
 	private ShoppingCartPageObject shoppingCartPage;
 	private CheckoutPageObject checkoutPage;
-	private com.magento.commons.Products productActions;
 }

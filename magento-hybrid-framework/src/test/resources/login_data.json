@@ -1,4 +1,12 @@
 {
-  "email": "testuser001@example.com",
-  "password": "TestUser001"
+  "existing_user": {
+    "email": "testuser001@example.com",
+    "password": "TestUser001",
+    "default_billing": "Thang Le\nInnovative Co\n654 Maple Ave\nFloor 2\nBuilding 7\nMiami, Florida, 33101\nUnited States\nT: 8765432109",
+    "default_shipping": "Thang Le\nTechCorp\n123 Main St\nApt 4B\nFloor 12\nNew York, New York, 10002\nUnited States\nT: 012-345-6789"
+  },
+  "new_user": {
+    "email": "newuser001@example.com",
+    "password": "NewUser001"
+  }
 }

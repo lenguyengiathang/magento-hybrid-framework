@@ -1,6 +1,7 @@
 package pageUIs;
 
 public class ShipToMultipleAddressesPageUI {
+	public static final String DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]";
 	public static final String DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/ancestor::td/following-sibling::td//input";
 	public static final String DYNAMIC_SEND_TO_DROPDOWN_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/ancestor::td/following-sibling::td//select";
 	public static final String DYNAMIC_REMOVE_ITEM_LINK_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/ancestor::td/following-sibling::td//a";

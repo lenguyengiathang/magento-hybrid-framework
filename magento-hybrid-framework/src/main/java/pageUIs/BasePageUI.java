@@ -4,6 +4,7 @@ public class BasePageUI {
 	public static class General {
 		public static final String UPLOAD_FILE = "";
 		public static final String CONFIRMATION_POPUP_OK_BUTTON = "css=.modal-footer button.action-accept";
+		public static final String LOADING_ICON = "css=.loader";
 	}
 
 	public static class Header {
@@ -24,7 +25,7 @@ public class BasePageUI {
 
 		public static class MiniCart {
 			public static final String SHOPPING_CART_ICON = "css=.showcart";
-			public static final String SHOPPING_CART_QUANTITY = "xpath=//span[text()='My Cart']/following-sibling::span[@class='counter qty']";
+			public static final String SHOPPING_CART_QUANTITY = "css=.qty>.counter-number";
 			public static final String MINI_CART_MODAL = "css=.block-minicart";
 			public static final String MINI_CART_QUANTITY = "css=.items-total>span.count";
 			public static final String MINI_CART_EMPTY_SHOPPING_CART_INFO_MESSAGE = "css=.block-content .empty";

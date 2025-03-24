@@ -3,6 +3,7 @@ package pageObjects;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import commons.GlobalConstants;
 import commons.PageGeneratorManager;
 import pageUIs.BasePageUI;
 import pageUIs.ShoppingCartPageUI;
@@ -14,9 +15,24 @@ public class ShoppingCartPageObject extends BasePage {
 		this.driver = driver;
 	}
 
+	public String getProductSizeByProductName(String productName) {
+		waitForElementVisible(driver, ShoppingCartPageUI.DYNAMIC_PRODUCT_SIZE_BY_PRODUCT_NAME, productName);
+		return getElementText(driver, ShoppingCartPageUI.DYNAMIC_PRODUCT_SIZE_BY_PRODUCT_NAME, productName);
+	}
+
+	public String getProductColorByProductName(String productName) {
+		waitForElementVisible(driver, ShoppingCartPageUI.DYNAMIC_PRODUCT_COLOR_BY_PRODUCT_NAME, productName);
+		return getElementText(driver, ShoppingCartPageUI.DYNAMIC_PRODUCT_COLOR_BY_PRODUCT_NAME, productName);
+	}
+
 	public void sendKeysToQuantityTextboxByProductName(String quantity, String productName) {
 		waitForElementVisible(driver, ShoppingCartPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
 		sendKeysToElement(driver, ShoppingCartPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, quantity, productName);
+	}
+
+	public String getQuantityValueByProductName(String productName) {
+		waitForElementVisible(driver, ShoppingCartPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
+		return getElementValueByJS(driver, ShoppingCartPageUI.DYNAMIC_QUANTITY_TEXTBOX_BY_PRODUCT_NAME, productName);
 	}
 
 	public void clickUpdateShoppingCartButton() {
@@ -59,9 +75,31 @@ public class ShoppingCartPageObject extends BasePage {
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
+	public void clickEstimateShippingAndTaxHeader() {
+		waitForElementClickable(driver, ShoppingCartPageUI.ESTIMATED_SHIPPING_AND_TAX_HEADER);
+		clickElementByJS(driver, ShoppingCartPageUI.ESTIMATED_SHIPPING_AND_TAX_HEADER);
+	}
+
+	public void selectOptionCountryDropdown(String country) {
+		waitForElementVisible(driver, ShoppingCartPageUI.COUNTRY_DROPDOWN);
+		selectOptionDefaultDropdown(driver, ShoppingCartPageUI.COUNTRY_DROPDOWN, country);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+	}
+
 	public void clickShippingMethodRadioButtonByLabel(String label) {
 		waitForElementClickable(driver, ShoppingCartPageUI.DYNAMIC_SHIPPING_METHOD_RADIO_BUTTON_BY_LABEL, label);
 		clickElementByJS(driver, ShoppingCartPageUI.DYNAMIC_SHIPPING_METHOD_RADIO_BUTTON_BY_LABEL, label);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+	}
+
+	public boolean isTableRateRadioButtonDisplayed() {
+		return isElementDisplayed(driver, ShoppingCartPageUI.DYNAMIC_SHIPPING_METHOD_RADIO_BUTTON_BY_LABEL,
+				"Table Rate");
+	}
+
+	public boolean isTableRateRadioButtonNotDisplayed() {
+		return isElementNotDisplayed(driver, ShoppingCartPageUI.DYNAMIC_SHIPPING_METHOD_RADIO_BUTTON_BY_LABEL,
+				"Table Rate");
 	}
 
 	public float getOrderSubtotal() {
@@ -71,7 +109,7 @@ public class ShoppingCartPageObject extends BasePage {
 
 	public float getOrderDiscount() {
 		waitForElementVisible(driver, ShoppingCartPageUI.ORDER_DISCOUNT);
-		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_DISCOUNT).replace("$", ""));
+		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_DISCOUNT).replace("-$", ""));
 	}
 
 	public float getOrderShipping() {
@@ -85,8 +123,8 @@ public class ShoppingCartPageObject extends BasePage {
 	}
 
 	public CheckoutPageObject clickProceedToCheckoutButton() {
-		waitForElementClickable(driver, ShoppingCartPageUI.PROCEED_TO_CHECKOUT);
-		clickElementByJS(driver, ShoppingCartPageUI.PROCEED_TO_CHECKOUT);
+		waitForElementClickable(driver, ShoppingCartPageUI.PROCEED_TO_CHECKOUT_BUTTON);
+		clickElementByJS(driver, ShoppingCartPageUI.PROCEED_TO_CHECKOUT_BUTTON);
 		return PageGeneratorManager.getCheckoutPageObject(driver);
 	}
 
@@ -109,4 +147,30 @@ public class ShoppingCartPageObject extends BasePage {
 	public boolean isSummaryLoadingIconNotDisplayed() {
 		return isElementNotDisplayed(driver, ShoppingCartPageUI.SUMMARY_LOADING_ICON);
 	}
+
+	public ProductDetailsPageObject clickPenIconByProductName(String productName) {
+		waitForElementClickable(driver, ShoppingCartPageUI.DYNAMIC_PEN_ICON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, ShoppingCartPageUI.DYNAMIC_PEN_ICON_BY_PRODUCT_NAME, productName);
+		return PageGeneratorManager.getProductDetailsPageObject(driver);
+	}
+
+	public void clickTrashcanIconByProductName(String productName) {
+		waitForElementClickable(driver, ShoppingCartPageUI.DYNAMIC_TRASHCAN_ICON_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, ShoppingCartPageUI.DYNAMIC_TRASHCAN_ICON_BY_PRODUCT_NAME, productName);
+	}
+
+	public boolean isProducDisplayedInShoppingCart(String productName) {
+		return isElementDisplayed(driver, ShoppingCartPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+	}
+
+	public boolean isProductNotDisplayedInShoppingCart(String productName) {
+		return isElementNotDisplayed(driver, ShoppingCartPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+	}
+
+	public HomepageObject clickHereToContinueShoppingLink() {
+		waitForElementClickable(driver, ShoppingCartPageUI.HERE_LINK);
+		clickElementByJS(driver, ShoppingCartPageUI.HERE_LINK);
+		return PageGeneratorManager.getHomepage(driver);
+	};
+
 }

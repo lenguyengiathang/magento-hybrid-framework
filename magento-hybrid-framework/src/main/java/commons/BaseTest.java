@@ -292,34 +292,12 @@ public class BaseTest {
 	}
 
 	protected String getTodaysDateTextual(String dateNumeric) {
-		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMMM d', 'yyyy", Locale.ENGLISH);
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
 
 		LocalDate date = LocalDate.parse(dateNumeric, inputFormatter);
 
-		int day = Integer.valueOf(getCurrentDate());
-
-		String ordinalSuffix;
-		if (day >= 11 && day <= 13) {
-			ordinalSuffix = "th";
-		} else {
-			switch (day % 10) {
-			case 1:
-				ordinalSuffix = "st";
-				break;
-			case 2:
-				ordinalSuffix = "nd";
-				break;
-			case 3:
-				ordinalSuffix = "rd";
-				break;
-			default:
-				ordinalSuffix = "th";
-			}
-		}
-		String dateTextual = date.format(outputFormatter);
-		dateTextual = day + ordinalSuffix + ", " + dateTextual.substring(dateTextual.indexOf(" ") + 1);
-		return dateTextual;
+		return date.format(outputFormatter);
 	}
 
 	public int generateRandomNumber() {

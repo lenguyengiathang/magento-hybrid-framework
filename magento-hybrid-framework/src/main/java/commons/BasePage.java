@@ -30,12 +30,16 @@ import pageObjects.MyWishListPageObject;
 import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
 import pageObjects.ShoppingCartPageObject;
+import pageUIs.AddressPageUI;
 import pageUIs.BasePageUI;
 import pageUIs.MyAccountPageUI;
 import pageUIs.ProductListingPageUI;
+import pageUIs.ShoppingCartPageUI;
+import utilities.FakeDataUtils;
 
 public class BasePage {
 
+	private FakeDataUtils data = FakeDataUtils.getDataHelper();
 	private long shortTimeout = GlobalConstants.SHORT_TIMEOUT;
 	private long longTimeout = GlobalConstants.LONG_TIMEOUT;
 
@@ -112,9 +116,7 @@ public class BasePage {
 
 		for (String id : allWindowIds) {
 			driver.switchTo().window(id);
-
 			String expectedPageTitle = driver.getTitle();
-
 			if (expectedPageTitle.equals(windowTitle)) {
 				break;
 			}
@@ -335,7 +337,14 @@ public class BasePage {
 
 	public void selectOptionDefaultDropdown(WebDriver driver, String locatorType, String optionLabel) {
 		Select select = new Select(getWebElement(driver, locatorType));
-		select.selectByVisibleText(optionLabel);
+		String trimmedLabel = optionLabel.trim();
+
+		for (WebElement option : select.getOptions()) {
+			if (option.getText().trim().equals(trimmedLabel)) {
+				option.click();
+				return;
+			}
+		}
 	}
 
 	public void selectOptionDefaultDropdown(WebDriver driver, String locatorType, String optionLabel,
@@ -468,39 +477,31 @@ public class BasePage {
 	}
 
 	public boolean isDataSortedAscending(WebDriver driver, String locator) {
-		List<String> list = new ArrayList<String>();
+		List<String> originalList = new ArrayList<>();
 		List<WebElement> elements = getWebElements(driver, locator);
 
 		for (WebElement element : elements) {
-			list.add(element.getText());
+			originalList.add(element.getText().trim());
 		}
 
-		List<String> sortedList = new ArrayList<String>();
-
-		for (String element : list) {
-			sortedList.add(element);
-		}
-
+		List<String> sortedList = new ArrayList<>(originalList);
 		Collections.sort(sortedList);
-		return list.equals(sortedList);
+
+		return originalList.equals(sortedList);
 	}
 
 	public boolean isDataSortedDescending(WebDriver driver, String locator) {
-		List<String> list = new ArrayList<String>();
+		List<String> originalList = new ArrayList<>();
 		List<WebElement> elements = getWebElements(driver, locator);
 
 		for (WebElement element : elements) {
-			list.add(element.getText());
+			originalList.add(element.getText().trim());
 		}
 
-		List<String> sortedList = new ArrayList<String>();
+		List<String> sortedList = new ArrayList<>(originalList);
+		sortedList.sort(Collections.reverseOrder());
 
-		for (String element : list) {
-			sortedList.add(element);
-		}
-
-		Collections.reverse(sortedList);
-		return list.equals(sortedList);
+		return originalList.equals(sortedList);
 	}
 
 	public void clickOutisdeElement(WebDriver driver) {
@@ -624,6 +625,10 @@ public class BasePage {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean isLoadingIconNotDisplayed(WebDriver driver) {
+		return isElementNotDisplayed(driver, BasePageUI.General.LOADING_ICON);
 	}
 
 	public HomepageObject clickLumaLogo(WebDriver driver) {
@@ -785,6 +790,11 @@ public class BasePage {
 		return PageGeneratorManager.getShoppingCartPageObject(driver);
 	}
 
+	public String getShoppingCartQuantity(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.Header.MiniCart.SHOPPING_CART_QUANTITY);
+		return getElementText(driver, BasePageUI.Header.MiniCart.SHOPPING_CART_QUANTITY);
+	}
+
 	public ProductListingPageObject clickNavigationBarDropdownMultiLevelItemLinkByLabels(WebDriver driver,
 			String dropdownLabel, String firstLevelLabel, String secondLevelLabel) {
 		waitForElementVisible(driver, BasePageUI.Header.DYNAMIC_NAVIGATION_BAR_DROPDOWN_BY_LABEL, dropdownLabel);
@@ -863,6 +873,27 @@ public class BasePage {
 		}
 	}
 
+	public void checkRecentlyOrderedCheckboxByProductName(WebDriver driver, String productName) {
+		waitForElementVisible(driver, BasePageUI.RecentlyOrderedSection.DYNAMIC_CHECKBOX_BY_PRODUCT_NAME, productName);
+		checkDefaultCheckboxRadioButton(driver, BasePageUI.RecentlyOrderedSection.DYNAMIC_CHECKBOX_BY_PRODUCT_NAME,
+				productName);
+	}
+
+	public void clickViewAllLinkRecentlyOrderedSection(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.RecentlyOrderedSection.VIEW_ALL_LINK);
+		clickElementByJS(driver, BasePageUI.RecentlyOrderedSection.VIEW_ALL_LINK);
+	}
+
+	public String getNoRecentlyOrderedProductSelectedErrorMessage(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
+	public void clickAddToCartButtonRecentlyOrderedSection(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.RecentlyOrderedSection.ADD_TO_CART_BUTTON);
+		clickElementByJS(driver, BasePageUI.RecentlyOrderedSection.ADD_TO_CART_BUTTON);
+	}
+
 	public String getEmptyWishListInfoMessage(WebDriver driver) {
 		waitForElementVisible(driver, BasePageUI.MyWishListSection.EMPTY_WISH_LIST_INFO_MESSAGE);
 		return getElementText(driver, BasePageUI.MyWishListSection.EMPTY_WISH_LIST_INFO_MESSAGE);
@@ -921,6 +952,10 @@ public class BasePage {
 		return PageGeneratorManager.getCompareProductsPage(driver);
 	}
 
+	public boolean isRecentOrdersSectionDisplayed(WebDriver driver) {
+		return isElementDisplayed(driver, MyAccountPageUI.RecentOrders.RECENT_ORDERS_HEADER);
+	}
+
 	public BasePage clickFooterLinkByLabel(WebDriver driver, String label) {
 		waitForElementClickable(driver, BasePageUI.Footer.DYNAMIC_FOOTER_LINK, label);
 		clickElementByJS(driver, BasePageUI.Footer.DYNAMIC_FOOTER_LINK, label);
@@ -950,12 +985,19 @@ public class BasePage {
 		return PageGeneratorManager.getProductDetailsPageObject(driver);
 	}
 
-	public void clickAddToCartButtonByProductName(WebDriver driver, String productName) {
+	public BasePage clickAddToCartButtonByProductName(WebDriver driver, String productName) {
+		String currentUrl = getPageUrl(driver);
 		waitForElementVisible(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		hoverOverElement(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		waitForElementClickable(driver, BasePageUI.ProductCard.DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME, productName);
 		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME, productName);
 		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+
+		if (!currentUrl.equals(getPageUrl(driver))) {
+			return PageGeneratorManager.getProductDetailsPageObject(driver);
+		} else {
+			return PageGeneratorManager.getProductListingPageObject(driver);
+		}
 	}
 
 	public void clickSizeButtonByProductNameAndLabel(WebDriver driver, String productName, String sizeLabel) {
@@ -963,6 +1005,7 @@ public class BasePage {
 				productName, sizeLabel);
 		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
 				sizeLabel);
+		sleepInSecond(2);
 	}
 
 	public void clickColorButtonByProductNameAndLabel(WebDriver driver, String productName, String colorLabel) {
@@ -970,6 +1013,7 @@ public class BasePage {
 				productName, colorLabel);
 		clickElementByJS(driver, BasePageUI.ProductCard.DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL, productName,
 				colorLabel);
+		sleepInSecond(2);
 	}
 
 	public MyWishListPageObject clickWishListIconByProductName(WebDriver driver, String productName) {
@@ -996,13 +1040,21 @@ public class BasePage {
 	}
 
 	public void addProductWithOptionsToCart(WebDriver driver, String productName, String sizeLabel, String colorLabel) {
+		scrollToElement(driver, BasePageUI.ProductCard.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
 		clickSizeButtonByProductNameAndLabel(driver, productName, sizeLabel);
+		sleepInSecond(1);
 		clickColorButtonByProductNameAndLabel(driver, productName, colorLabel);
+		sleepInSecond(1);
 		clickAddToCartButtonByProductName(driver, productName);
 	}
 
 	public void addProductWithNoOptionsToCart(WebDriver driver, String productName) {
 		clickAddToCartButtonByProductName(driver, productName);
+	}
+
+	public String getProductAddedToCartSuccessMessage(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
 	public void clickNextPageButton(WebDriver driver) {
@@ -1014,6 +1066,70 @@ public class BasePage {
 		scrollToBottom(driver);
 		waitForElementVisible(driver, ProductListingPageUI.LIMITER_DROPDOWN);
 		selectOptionDefaultDropdown(driver, ProductListingPageUI.LIMITER_DROPDOWN, productCount);
+		waitForAllElementsVisible(driver, ProductListingPageUI.PRODUCT_NAME);
+	}
+
+	public BasePage clickSaveAddressButton(WebDriver driver) {
+		String pageUrl = getPageUrl(driver);
+		scrollToBottom(driver);
+		waitForElementClickable(driver, AddressPageUI.SAVE_ADDRESS_BUTTON);
+		clickElementByJS(driver, AddressPageUI.SAVE_ADDRESS_BUTTON);
+		if (pageUrl.contains("/customer/address/edit")) {
+			return PageGeneratorManager.getAddressBookPage(driver);
+		} else if (pageUrl.contains("/multishipping/checkout_address/newShipping/")) {
+			return PageGeneratorManager.getShipToMultipleAddressesPage(driver);
+		} else if (pageUrl.contains("/multishipping/checkout_address/editShipping/")) {
+			return PageGeneratorManager.getSelectShippingMethodPage(driver);
+		} else if (pageUrl.contains("multishipping/checkout_address/editAddress")) {
+			return PageGeneratorManager.getChangeBillingAddressPage(driver);
+		} else if (pageUrl.contains("multishipping/checkout_address/newBilling")) {
+			return PageGeneratorManager.getChangeBillingAddressPage(driver);
+		} else {
+			return null;
+		}
+	}
+
+	public HomepageObject navigateToHomepage(WebDriver driver) {
+		clickLumaLogo(driver);
+		return PageGeneratorManager.getHomepage(driver);
+	}
+
+	public HomepageObject logOut(WebDriver driver) {
+		try {
+			clickCustomerNameDropdown(driver);
+			clickSignOutDropdownLink(driver);
+		} catch (Exception e) {
+			System.err.println("Error logging out: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return PageGeneratorManager.getHomepage(driver);
+	}
+
+	/**
+	 * Navigates to the shopping cart page and clears all items from the shopping
+	 * cart.
+	 *
+	 * @throws Exception if an error occurs while clearing the cart.
+	 */
+	public void clearShoppingCart(WebDriver driver) {
+		try {
+			clickLumaLogo(driver);
+			clickShoppingCartIcon(driver);
+			clickViewAndEditCartLink(driver);
+			while (true) {
+				List<WebElement> trashcanIcons = getWebElements(driver, ShoppingCartPageUI.TRASHCAN_ICON);
+				if (trashcanIcons.isEmpty()) {
+					break;
+				}
+				trashcanIcons.get(0).click();
+				waitForElementVisible(driver, BasePageUI.MainContent.PAGE_HEADER);
+			}
+			sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
+			clickLumaLogo(driver);
+		} catch (Exception e) {
+			System.err.println("Error clearing shopping cart: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 }

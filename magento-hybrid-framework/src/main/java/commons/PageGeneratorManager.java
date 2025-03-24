@@ -20,6 +20,7 @@ import pageObjects.MyOrdersPageObject;
 import pageObjects.MyProductReviewsPageObject;
 import pageObjects.MyWishListPageObject;
 import pageObjects.OrderDetailsPageObject;
+import pageObjects.OrderSuccessPageObject;
 import pageObjects.OrdersAndReturnsPageObject;
 import pageObjects.PopularSearchTermsPageObject;
 import pageObjects.ProductDetailsPageObject;
@@ -147,6 +148,10 @@ public class PageGeneratorManager {
 
 	public static OrderDetailsPageObject getOrderDetaisPage(WebDriver driver) {
 		return new OrderDetailsPageObject(driver);
+	}
+
+	public static OrderSuccessPageObject getOrderSuccessPage(WebDriver driver) {
+		return new OrderSuccessPageObject(driver);
 	}
 
 }

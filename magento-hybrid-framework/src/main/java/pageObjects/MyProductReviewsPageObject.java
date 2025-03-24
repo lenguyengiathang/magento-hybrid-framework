@@ -5,6 +5,8 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import commons.PageGeneratorManager;
+import pageUIs.BasePageUI;
 import pageUIs.MyProductReviewsPageUI;
 
 public class MyProductReviewsPageObject extends BasePage {
@@ -40,5 +42,16 @@ public class MyProductReviewsPageObject extends BasePage {
 
 	public boolean isReviewByProductNameDisplayed(String productName) {
 		return isElementDisplayed(driver, MyProductReviewsPageUI.DYNAMIC_REVIEW_ROW_BY_PRODUCT_NAME, productName);
+	}
+
+	public String getNoReviewSubmittedInfoMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
+	public ProductDetailsPageObject clickProductLinkByProductName(String productName) {
+		waitForElementClickable(driver, MyProductReviewsPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		clickElementByJS(driver, MyProductReviewsPageUI.DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME, productName);
+		return PageGeneratorManager.getProductDetailsPageObject(driver);
 	}
 }

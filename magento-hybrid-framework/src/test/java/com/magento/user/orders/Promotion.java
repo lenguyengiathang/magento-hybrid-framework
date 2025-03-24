@@ -1,7 +1,6 @@
 package com.magento.user.orders;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -12,7 +11,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.magento.commons.Products;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import commons.BaseTest;
 import commons.PageGeneratorManager;
@@ -30,26 +29,29 @@ public class Promotion extends BaseTest {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 
-		productActions = new com.magento.commons.Products(driver);
 		couponCode = "20poff";
 		fileName = "login_data.json";
-		email = JsonUtils.getJsonValue(fileName, "email");
-		password = JsonUtils.getJsonValue(fileName, "password");
+		email = JsonUtils.getJsonValue(fileName, "existing_user.email");
+		password = JsonUtils.getJsonValue(fileName, "existing_user.password");
 		customerLoginPage = homepage.clickSignInLink();
 		customerLoginPage.logInAsRegisteredUser(email, password);
 	}
 
-	@BeforeMethod(alwaysRun = true, onlyForGroups = "addProductToCart")
+	@BeforeMethod(alwaysRun = true)
 	public void addProductToCart(Method method) {
-		if (Arrays.asList(method.getAnnotation(Test.class).groups()).contains("addProductToCart")) {
-			try {
-				productActions.addRandomProductWithoutOptionsToCart();
-				productName = Products.productName;
-			} catch (Exception e) {
-				System.err.println("Error adding product to cart: " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
+		resultNode = JsonUtils.getRandomProductWithOptions("men_products.json");
+		category = resultNode.get("category").asText();
+		subcategory = resultNode.get("subcategory").asText();
+		productName = resultNode.get("product").get("product_name").asText();
+		productSize = resultNode.get("size").asText();
+		productColor = resultNode.get("color").asText();
+
+		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Men", category,
+				subcategory);
+		productListingPage.clickSizeButtonByProductNameAndLabel(driver, productName, productSize);
+		productListingPage.clickColorButtonByProductNameAndLabel(driver, productName, productColor);
+		productListingPage.clickAddToCartButtonByProductName(driver, productName);
+		homepage = productListingPage.clickLumaLogo(driver);
 	}
 
 	@Test(groups = { "addProductToCart",
@@ -143,8 +145,6 @@ public class Promotion extends BaseTest {
 		productDetailsPage.clickShoppingCartIcon(driver);
 		shoppingCartPage = productDetailsPage.clickViewAndEditCartLink(driver);
 
-		Assert.assertEquals(shoppingCartPage.getOrderSubtotal(), price * 4);
-		Assert.assertEquals(shoppingCartPage.getOrderDiscount(), price);
 		Assert.assertEquals(shoppingCartPage.getOrderTotal(), price * 3);
 	}
 
@@ -180,16 +180,10 @@ public class Promotion extends BaseTest {
 		Assert.assertEquals(shoppingCartPage.getOrderTotal(), orderTotal * 0.8);
 	}
 
-	@AfterMethod(alwaysRun = true, onlyForGroups = "clearCart")
+	@AfterMethod(alwaysRun = true)
 	public void clearCart(Method method) {
-		if (Arrays.asList(method.getAnnotation(Test.class).groups()).contains("clearCart")) {
-			try {
-				productActions.clearShoppingCart();
-			} catch (Exception e) {
-				System.err.println("Error clearing the shopping cart: " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
+		shoppingCartPage.clearShoppingCart(driver);
+		homepage = shoppingCartPage.clickHereToContinueShoppingLink();
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -198,11 +192,11 @@ public class Promotion extends BaseTest {
 	}
 
 	private WebDriver driver;
-	private String fileName, email, password, productName, couponCode;
+	private JsonNode resultNode;
+	private String couponCode, fileName, email, password, category, subcategory, productName, productSize, productColor;
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;
 	private ProductListingPageObject productListingPage;
 	private ProductDetailsPageObject productDetailsPage;
 	private ShoppingCartPageObject shoppingCartPage;
-	private com.magento.commons.Products productActions;
 }

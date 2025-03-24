@@ -3,6 +3,8 @@ package pageObjects;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import commons.PageGeneratorManager;
+import pageUIs.BasePageUI;
 import pageUIs.OrdersAndReturnsPageUI;
 
 public class OrdersAndReturnsPageObject extends BasePage {
@@ -35,5 +37,16 @@ public class OrdersAndReturnsPageObject extends BasePage {
 			waitForElementVisible(driver, OrdersAndReturnsPageUI.BILLING_ZIP_CODE_TEXTBOX);
 			sendKeysToElement(driver, OrdersAndReturnsPageUI.BILLING_ZIP_CODE_TEXTBOX, emailOrZipCode);
 		}
+	}
+
+	public OrderDetailsPageObject clickContinueButton() {
+		waitForElementClickable(driver, OrdersAndReturnsPageUI.CONTINUE_BUTTON);
+		clickElementByJS(driver, OrdersAndReturnsPageUI.CONTINUE_BUTTON);
+		return PageGeneratorManager.getOrderDetaisPage(driver);
+	}
+
+	public String getIncorrectOrderDataErrorMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 }
