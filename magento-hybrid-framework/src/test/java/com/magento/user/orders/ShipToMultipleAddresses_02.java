@@ -104,7 +104,7 @@ public class ShipToMultipleAddresses_02 extends BaseTest {
 
 	@AfterMethod(alwaysRun = true)
 	public void navigateToHomepage() {
-		homepage = shipToMultipleAddressesPage.clickLumaLogo(driver);
+		homepage.navigateToHomepage(driver);
 	}
 
 	@AfterClass(alwaysRun = true)

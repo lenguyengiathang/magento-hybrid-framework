@@ -125,9 +125,23 @@ public class ShipToMultipleAddresses_05 extends BaseTest {
 		Assert.assertEquals(selectShippingMethodPage.getPageHeader(driver), "Select Shipping Method");
 	}
 
+	@Test(description = "Verify that user is directed to the 'Ship to Multiple Addresses' page when clicking any 'Edit' hyperlink")
+	public void Ship_To_Multiple_Addresses_07_Click_Edit_Link() {
+		homepage.clickShoppingCartIcon(driver);
+		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
+		shipToMultipleAddressesPage = shoppingCartPage.clickCheckOutWithMultipleAddressesLink();
+		selectShippingMethodPage = shipToMultipleAddressesPage.clickGoToShippingInformationButton();
+		selectShippingMethodPage.selectTableRateRadioButtonByStreetAddress("123 Main St");
+		billingInformationPage = selectShippingMethodPage.clickContinueToBillingInformationButton();
+		reviewOrderPage = billingInformationPage.clickGoToReviewYourOrderButton();
+		shipToMultipleAddressesPage = reviewOrderPage.clickEditLinkByShippingAddress("123 Main St");
+
+		Assert.assertEquals(reviewOrderPage.getPageHeader(driver), "Ship to Multiple Addresses");
+	}
+
 	@AfterMethod(alwaysRun = true)
 	public void navigateToHomepage() {
-		homepage = changeBillingAddressPage.clickLumaLogo(driver);
+		homepage.navigateToHomepage(driver);
 	}
 
 	@AfterClass(alwaysRun = true)

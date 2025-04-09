@@ -2,7 +2,6 @@ package com.magento.user.orders;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -216,25 +215,18 @@ public class Checkout extends BaseTest {
 	}
 
 	@AfterMethod(alwaysRun = true, onlyForGroups = "clearCart")
-	public void clearCart(Method method) {
-		if (Arrays.asList(method.getAnnotation(Test.class).groups()).contains("clearCart")) {
-			shoppingCartPage.clearShoppingCart(driver);
-			homepage = shoppingCartPage.clickHereToContinueShoppingLink();
-		}
+	public void clearShoppingCart(Method method) {
+		homepage.clearShoppingCart(driver);
 	}
 
 	@AfterMethod(alwaysRun = true)
 	public void logIn(Method method) {
-		if (method.getName().contains("Checkout_01")) {
-			homepage = checkoutPage.clickLumaLogo(driver);
-			customerLoginPage = homepage.clickSignInLink();
-			homepage = customerLoginPage.logInAsRegisteredUser(email, password);
-		}
+
 	}
 
 	@AfterMethod(alwaysRun = true)
 	public void navigateToHomepage() {
-		homepage = checkoutPage.clickLumaLogo(driver);
+		homepage.navigateToHomepage(driver);
 	}
 
 	@AfterClass(alwaysRun = true)

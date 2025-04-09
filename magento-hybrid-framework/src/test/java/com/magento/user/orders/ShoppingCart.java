@@ -243,7 +243,7 @@ public class ShoppingCart extends BaseTest {
 	}
 
 	@AfterMethod(onlyForGroups = "clearCart")
-	public void clearCartAndNavigateToHomepage() {
+	public void clearShoppingCart() {
 		homepage.clearShoppingCart(driver);
 	}
 

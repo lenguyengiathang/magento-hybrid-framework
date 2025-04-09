@@ -350,7 +350,14 @@ public class BasePage {
 	public void selectOptionDefaultDropdown(WebDriver driver, String locatorType, String optionLabel,
 			String... dynamicValues) {
 		Select select = new Select(getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)));
-		select.selectByVisibleText(optionLabel.trim());
+
+		for (WebElement option : select.getOptions()) {
+			if (option.getText().contains(optionLabel.trim())) {
+				option.click();
+				return;
+			}
+		}
+
 	}
 
 	public String getSelectedOptionDefaultDropdown(WebDriver driver, String locatorType) {
@@ -1080,13 +1087,11 @@ public class BasePage {
 			return PageGeneratorManager.getShipToMultipleAddressesPage(driver);
 		} else if (pageUrl.contains("/multishipping/checkout_address/editShipping/")) {
 			return PageGeneratorManager.getSelectShippingMethodPage(driver);
-		} else if (pageUrl.contains("multishipping/checkout_address/editAddress")) {
+		} else if (pageUrl.contains("multishipping/checkout_address/editAddress")
+				|| pageUrl.contains("multishipping/checkout_address/newBilling")) {
 			return PageGeneratorManager.getChangeBillingAddressPage(driver);
-		} else if (pageUrl.contains("multishipping/checkout_address/newBilling")) {
-			return PageGeneratorManager.getChangeBillingAddressPage(driver);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	public HomepageObject navigateToHomepage(WebDriver driver) {
@@ -1103,6 +1108,17 @@ public class BasePage {
 			e.printStackTrace();
 		}
 		return PageGeneratorManager.getHomepage(driver);
+	}
+
+	public void addProductToCart(WebDriver driver, String category, String productName) {
+		try {
+			clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
+			clickAddToCartButtonByProductName(driver, productName);
+			clickLumaLogo(driver);
+		} catch (Exception e) {
+			System.err.println("Error clearing shopping cart: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**

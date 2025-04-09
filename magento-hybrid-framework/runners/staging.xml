@@ -24,9 +24,9 @@
 	<test name="Run tests" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.orders.ShipToMultipleAddresses_01" />
+			<class name="com.magento.user.orders.Promotion" />
 			<methods>
-			<include name="Ship_To_Multiple_Addresses_03_Select_Different_Shipping_Address_For_Each_Product" />			
+			<include name="Promotion_09_Multiple_Promotions_Applied_To_Order" />			
 			</methods>
 		</classes>
 

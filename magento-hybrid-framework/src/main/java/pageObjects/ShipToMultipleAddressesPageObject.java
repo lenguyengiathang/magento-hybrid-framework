@@ -38,10 +38,16 @@ public class ShipToMultipleAddressesPageObject extends BasePage {
 				ShipToMultipleAddressesPageUI.DYNAMIC_SEND_TO_DROPDOWN_BY_PRODUCT_NAME, productName);
 	}
 
+	public int getNumberOfSendToDropdowns(String productName) {
+		return getNumberOfElements(driver, ShipToMultipleAddressesPageUI.DYNAMIC_SEND_TO_DROPDOWN_BY_PRODUCT_NAME,
+				productName);
+	}
+
 	public void clickRemoveItemLinkByProductName(String productName) {
 		waitForElementClickable(driver, ShipToMultipleAddressesPageUI.DYNAMIC_REMOVE_ITEM_LINK_BY_PRODUCT_NAME,
 				productName);
 		clickElementByJS(driver, ShipToMultipleAddressesPageUI.DYNAMIC_REMOVE_ITEM_LINK_BY_PRODUCT_NAME, productName);
+		sleepInSecond(3);
 	}
 
 	public SelectShippingMethodPageObject clickGoToShippingInformationButton() {
@@ -60,6 +66,7 @@ public class ShipToMultipleAddressesPageObject extends BasePage {
 	public void clickUpdateQuantityAndAddressesButton() {
 		waitForElementClickable(driver, ShipToMultipleAddressesPageUI.UPDATE_QUANTITY_AND_ADDRESSES_BUTTON);
 		clickElementByJS(driver, ShipToMultipleAddressesPageUI.UPDATE_QUANTITY_AND_ADDRESSES_BUTTON);
+		sleepInSecond(3);
 	}
 
 	public AddressPageObject clickEnterANewAddressButton() {

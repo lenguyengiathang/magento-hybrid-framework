@@ -29,7 +29,6 @@ public class Promotion extends BaseTest {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
 
-		couponCode = "20poff";
 		fileName = "login_data.json";
 		email = JsonUtils.getJsonValue(fileName, "existing_user.email");
 		password = JsonUtils.getJsonValue(fileName, "existing_user.password");
@@ -37,7 +36,7 @@ public class Promotion extends BaseTest {
 		customerLoginPage.logInAsRegisteredUser(email, password);
 	}
 
-	@BeforeMethod(alwaysRun = true)
+	@BeforeMethod(alwaysRun = true, onlyForGroups = "addProductToCart")
 	public void addProductToCart(Method method) {
 		resultNode = JsonUtils.getRandomProductWithOptions("men_products.json");
 		category = resultNode.get("category").asText();
@@ -48,9 +47,7 @@ public class Promotion extends BaseTest {
 
 		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Men", category,
 				subcategory);
-		productListingPage.clickSizeButtonByProductNameAndLabel(driver, productName, productSize);
-		productListingPage.clickColorButtonByProductNameAndLabel(driver, productName, productColor);
-		productListingPage.clickAddToCartButtonByProductName(driver, productName);
+		productListingPage.addProductWithOptionsToCart(driver, productName, productSize, productColor);
 		homepage = productListingPage.clickLumaLogo(driver);
 	}
 
@@ -73,7 +70,7 @@ public class Promotion extends BaseTest {
 		homepage.clickShoppingCartIcon(driver);
 		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
 		shoppingCartPage.clickApplyDiscountCodeHeader();
-		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox(couponCode);
+		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox("20poff");
 		shoppingCartPage.clickApplyDiscountButton();
 		shoppingCartPage.refreshCurrentPage(driver);
 		Float subtotal = shoppingCartPage.getOrderSubtotal();
@@ -82,26 +79,43 @@ public class Promotion extends BaseTest {
 		Assert.assertEquals(subtotal * 0.8, total, 0.01);
 	}
 
+	@Test(groups = "clearCart", description = "Verify that the 'H20' discount code applies a 70% discount to the 'Affirm Water Bottle' product")
+	public void Promotion_03_Apply_Seventy_Percent_Discount_For_Affirm_Water_Bottle_With_Code_H20() {
+		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
+				"Fitness Equipment");
+		productListingPage.clickAddToCartButtonByProductName(driver, "Affirm Water Bottle");
+		productListingPage.clickShoppingCartIcon(driver);
+		shoppingCartPage = productListingPage.clickViewAndEditCartLink(driver);
+		shoppingCartPage.clickApplyDiscountCodeHeader();
+		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox("H20");
+		shoppingCartPage.clickApplyDiscountButton();
+		shoppingCartPage.refreshCurrentPage(driver);
+		float subtotal = shoppingCartPage.getOrderSubtotal();
+		float total = shoppingCartPage.getOrderTotal();
+
+		Assert.assertEquals(subtotal * 0.3, total, 0.01);
+	}
+
 	@Test(groups = { "addProductToCart",
 			"clearCart" }, description = "Verify the display of the success message when user applies a discount code")
-	public void Promotion_03_Discount_Code_Applied_Success_Message() {
+	public void Promotion_04_Discount_Code_Applied_Success_Message() {
 		homepage.clickShoppingCartIcon(driver);
 		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
 		shoppingCartPage.clickApplyDiscountCodeHeader();
-		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox(couponCode);
+		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox("20poff");
 		shoppingCartPage.clickApplyDiscountButton();
 
 		Assert.assertEquals(shoppingCartPage.getDiscountCodeAppliedSuccessMessage(),
-				"You used coupon code \"" + couponCode + "\".");
+				"You used coupon code \"20poff\".");
 	}
 
 	@Test(groups = { "addProductToCart",
 			"clearCart" }, description = "Verify the display of the success message when user removes a discount code")
-	public void Promotion_04_Discount_Code_Removed_Success_Message() {
+	public void Promotion_05_Discount_Code_Removed_Success_Message() {
 		homepage.clickShoppingCartIcon(driver);
 		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
 		shoppingCartPage.clickApplyDiscountCodeHeader();
-		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox(couponCode);
+		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox("20poff");
 		shoppingCartPage.clickApplyDiscountButton();
 		shoppingCartPage.clickCancelCouponButton();
 
@@ -110,7 +124,7 @@ public class Promotion extends BaseTest {
 
 	@Test(groups = { "addProductToCart",
 			"clearCart" }, description = "Verify the display of the error message when an invalid discount code is used")
-	public void Promotion_05_Invalid_Discount_Code_Error_Message() {
+	public void Promotion_06_Invalid_Discount_Code_Error_Message() {
 		homepage.clickShoppingCartIcon(driver);
 		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
 		shoppingCartPage.clickApplyDiscountCodeHeader();
@@ -121,26 +135,28 @@ public class Promotion extends BaseTest {
 				"The coupon code \"invalid\" is not valid.");
 	}
 
-	@Test(groups = "clearCart", description = "Verify that shipping is free with table rate shipping when the order total is $50 or more")
-	public void Promotion_06_Free_Shipping_For_Order_Equal_To_Or_Greater_Than_50() {
-		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Bags");
-		productListingPage.clickAddToCartButtonByProductName(driver, "Compete Track Tote");
-		shoppingCartPage = productListingPage.clickShoppingCartLinkSuccessMessage();
-		shoppingCartPage.sendKeysToQuantityTextboxByProductName("2", "Compete Track Tote");
+	@Test(groups = { "addProductToCart",
+			"clearCart" }, description = "Verify that shipping is free with table rate shipping when the order total is $50 or more")
+	public void Promotion_07_Free_Shipping_For_Order_Equal_To_Or_Greater_Than_50() {
+		homepage.clickShoppingCartIcon(driver);
+		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
+		shoppingCartPage.sendKeysToQuantityTextboxByProductName("3", productName);
 		shoppingCartPage.clickUpdateShoppingCartButton();
+		shoppingCartPage.clickEstimateShippingAndTaxHeader();
+		shoppingCartPage.clickShippingMethodRadioButtonByLabel("Table Rate");
 
-		Assert.assertEquals(shoppingCartPage.getOrderShipping(), "0.00");
+		Assert.assertEquals(shoppingCartPage.getOrderShipping(), 0.0);
 	}
 
 	@Test(groups = "clearCart", description = "Verify that user can purchase 4 tees of the same product for the price of 3")
-	public void Promotion_07_Four_Tees_For_The_Price_Of_Three() {
+	public void Promotion_08_Four_Tees_For_The_Price_Of_Three() {
 		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", "Tops",
 				"Tees");
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Desiree Fitness Tee");
 		productDetailsPage.clickSizeButtonByLabel("S");
 		productDetailsPage.clickColorButtonByLabel("Black");
 		productDetailsPage.sendKeysToQuantityTextbox("4");
-		Float price = productDetailsPage.getProductFinalPrice();
+		float price = productDetailsPage.getProductFinalPrice();
 		productDetailsPage.clickAddToCartButton();
 		productDetailsPage.clickShoppingCartIcon(driver);
 		shoppingCartPage = productDetailsPage.clickViewAndEditCartLink(driver);
@@ -149,41 +165,49 @@ public class Promotion extends BaseTest {
 	}
 
 	@Test(groups = "clearCart", description = "Verify that the order total is displayed correctly when multiple promotions are applied to the order")
-	public void Promotion_08_Multiple_Promotions_Applied_To_Order() {
+	public void Promotion_09_Multiple_Promotions_Applied_To_Order() {
 		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", "Tops",
 				"Tees");
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Desiree Fitness Tee");
 		productDetailsPage.clickSizeButtonByLabel("S");
 		productDetailsPage.clickColorButtonByLabel("Black");
 		productDetailsPage.sendKeysToQuantityTextbox("4");
-		Float price = productDetailsPage.getProductFinalPrice();
+		float womenTeePrice = productDetailsPage.getProductFinalPrice();
 		productDetailsPage.clickAddToCartButton();
 		productDetailsPage.clickShoppingCartIcon(driver);
 		shoppingCartPage = productDetailsPage.clickViewAndEditCartLink(driver);
+		shoppingCartPage.clickEstimateShippingAndTaxHeader();
+		shoppingCartPage.clickShippingMethodRadioButtonByLabel("Table Rate");
 
-		Assert.assertEquals(shoppingCartPage.getOrderSubtotal(), price * 4);
-		Assert.assertEquals(shoppingCartPage.getOrderDiscount(), price);
-		Assert.assertEquals(shoppingCartPage.getOrderTotal(), price * 3);
-		Assert.assertEquals(shoppingCartPage.getOrderShipping(), "0.00");
+		Assert.assertEquals(shoppingCartPage.getOrderSubtotal(), womenTeePrice * 4);
+		Assert.assertEquals(shoppingCartPage.getOrderDiscount(), womenTeePrice);
+		Assert.assertEquals(shoppingCartPage.getOrderTotal(), womenTeePrice * 3);
+		Assert.assertEquals(shoppingCartPage.getOrderShipping(), 0.0);
 
-		Float orderTotal = shoppingCartPage.getOrderTotal();
+		float orderTotal = shoppingCartPage.getOrderTotal();
 		shoppingCartPage.clickApplyDiscountCodeHeader();
 		shoppingCartPage.sendKeysToEnterDiscountCodeTextbox("20poff");
 		shoppingCartPage.clickApplyDiscountButton();
 
-		Assert.assertEquals(shoppingCartPage.getOrderTotal(), orderTotal * 0.8);
+		Assert.assertEquals(shoppingCartPage.getOrderTotal(), orderTotal * 0.8, 0.01);
 
-		orderTotal = shoppingCartPage.getOrderTotal();
-		shoppingCartPage.sendKeysToQuantityTextboxByProductName("10", "Desiree Fitness Tee");
-		shoppingCartPage.clickUpdateShoppingCartButton();
+		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", "Tops",
+				"Jackets");
+		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Olivia 1/4 Zip Light Jacket");
+		productDetailsPage.clickSizeButtonByLabel("XS");
+		productDetailsPage.clickColorButtonByLabel("Blue");
+		productDetailsPage.sendKeysToQuantityTextbox("2");
+		float womenJacketPrice = productDetailsPage.getProductFinalPrice();
+		productDetailsPage.clickAddToCartButton();
+		productDetailsPage.clickShoppingCartIcon(driver);
+		shoppingCartPage = productDetailsPage.clickViewAndEditCartLink(driver);
 
-		Assert.assertEquals(shoppingCartPage.getOrderTotal(), orderTotal * 0.8);
+		Assert.assertEquals(shoppingCartPage.getOrderTotal(), (orderTotal + womenJacketPrice * 2) * 0.8 * 0.8, 0.01);
 	}
 
 	@AfterMethod(alwaysRun = true)
-	public void clearCart(Method method) {
-		shoppingCartPage.clearShoppingCart(driver);
-		homepage = shoppingCartPage.clickHereToContinueShoppingLink();
+	public void clearShoppingCart(Method method) {
+		homepage.clearShoppingCart(driver);
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -193,7 +217,7 @@ public class Promotion extends BaseTest {
 
 	private WebDriver driver;
 	private JsonNode resultNode;
-	private String couponCode, fileName, email, password, category, subcategory, productName, productSize, productColor;
+	private String fileName, email, password, category, subcategory, productName, productSize, productColor;
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;
 	private ProductListingPageObject productListingPage;

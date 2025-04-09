@@ -51,4 +51,10 @@ public class ReviewOrderPageObject extends BasePage {
 		return PageGeneratorManager.getOrderSuccessPage(driver);
 	}
 
+	public ShipToMultipleAddressesPageObject clickEditLinkByShippingAddress(String string) {
+		waitForElementClickable(driver, ReviewOrderPageUI.DYNAMIC_EDIT_ITEM_LINK_BY_SHIPPING_ADDRESS);
+		clickElementByJS(driver, ReviewOrderPageUI.PLACE_ORDER_BUTTON);
+		return PageGeneratorManager.getShipToMultipleAddressesPage(driver);
+	}
+
 }

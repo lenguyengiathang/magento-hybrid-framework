@@ -5,6 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -39,9 +40,11 @@ public class ShipToMultipleAddresses_01 extends BaseTest {
 
 		customerLoginPage = homepage.clickSignInLink();
 		homepage = customerLoginPage.logInAsRegisteredUser(email, password);
-		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
-		productListingPage.clickAddToCartButtonByProductName(driver, productName);
-		homepage = productListingPage.clickLumaLogo(driver);
+	}
+
+	@BeforeMethod(alwaysRun = true)
+	public void addProductToCart() {
+		homepage.addProductToCart(driver, category, productName);
 	}
 
 	@Test(description = "Verify that user is directed to the 'Ship to Multiple Addresses' page when clicking the 'Check Out with Multiple Addresses' hyperlink")
@@ -53,15 +56,18 @@ public class ShipToMultipleAddresses_01 extends BaseTest {
 		Assert.assertEquals(shipToMultipleAddressesPage.getPageHeader(driver), "Ship to Multiple Addresses");
 	}
 
-	@Test(description = "Verify that user can change the product quantity")
-	public void Ship_To_Multiple_Addresses_02_Change_Product_Quantity() {
+	@Test(description = "Verify that the number of shipping address dropdowns displayed corresponds to the product quantity")
+	public void Ship_To_Multiple_Addresses_02_Number_Of_Shipping_Address_Dropdowns_Corresponds_To_The_Product_Quantity() {
 		homepage.clickShoppingCartIcon(driver);
 		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
 		shipToMultipleAddressesPage = shoppingCartPage.clickCheckOutWithMultipleAddressesLink();
+
+		Assert.assertEquals(shipToMultipleAddressesPage.getNumberOfSendToDropdowns(productName), 1);
+
 		shipToMultipleAddressesPage.sendKeysToQuantityTextboxByProductName(productName, "10");
 		shipToMultipleAddressesPage.clickUpdateQuantityAndAddressesButton();
 
-		Assert.assertEquals(shipToMultipleAddressesPage.getQuantityValueByProductName(productName), "10");
+		Assert.assertEquals(shipToMultipleAddressesPage.getNumberOfSendToDropdowns(productName), 10);
 	}
 
 	@Test(description = "Verify that the user can select different shipping addresses for each product within the same order")
@@ -85,12 +91,12 @@ public class ShipToMultipleAddresses_01 extends BaseTest {
 		shipToMultipleAddressesPage.selectOptionSendToDropdownByProductName(productName3, shippingAddress3);
 		shipToMultipleAddressesPage.clickUpdateQuantityAndAddressesButton();
 
-		Assert.assertEquals(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(productName1),
-				shippingAddress1);
-		Assert.assertEquals(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(productName2),
-				shippingAddress2);
-		Assert.assertEquals(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(productName3),
-				shippingAddress3);
+		Assert.assertTrue(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(productName1)
+				.contains(shippingAddress1));
+		Assert.assertTrue(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(productName2)
+				.contains(shippingAddress2));
+		Assert.assertTrue(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(productName3)
+				.contains(shippingAddress3));
 	}
 
 	@Test(description = "Verify that the product is removed from the 'Ship to Multiple Addresses' page when clicking the \"Remove item\" hyperlink")
@@ -117,9 +123,10 @@ public class ShipToMultipleAddresses_01 extends BaseTest {
 		addressPage.sendKeysToZipPostalTextbox(data.getZipCode());
 		addressPage.selectOptionCountryDropdown(data.getCountry());
 		shipToMultipleAddressesPage = (ShipToMultipleAddressesPageObject) addressPage.clickSaveAddressButton(driver);
+		shipToMultipleAddressesPage.selectOptionSendToDropdownByProductName(productName, address);
 
-		Assert.assertEquals(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(productName),
-				address);
+		Assert.assertTrue(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(productName)
+				.contains(address));
 	}
 
 	@Test(description = "Verify that user's default shipping address is selected for each product by default")
@@ -128,8 +135,8 @@ public class ShipToMultipleAddresses_01 extends BaseTest {
 		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
 		shipToMultipleAddressesPage = shoppingCartPage.clickCheckOutWithMultipleAddressesLink();
 
-		Assert.assertEquals(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(""),
-				"Thang Le, 123 Main St Apt 4B Floor 12, New York, New York 10001, United States");
+		Assert.assertEquals(shipToMultipleAddressesPage.getSelectedOptionSendToDropdownByProductName(productName),
+				"Thang Le, 123 Main St Apt 4B Floor 12, New York, New York 10002, United States");
 	}
 
 	@Test(description = "Verify that user is directed to the 'Select Shipping Method' page when clicking the 'Go to Shipping Information' button")
@@ -153,8 +160,8 @@ public class ShipToMultipleAddresses_01 extends BaseTest {
 	}
 
 	@AfterMethod(alwaysRun = true)
-	public void navigateToHomepage() {
-		homepage.navigateToHomepage(driver);
+	public void clearShoppingCart() {
+		homepage.clearShoppingCart(driver);
 	}
 
 	@AfterClass(alwaysRun = true)

@@ -1,5 +1,8 @@
 package pageObjects;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
@@ -104,7 +107,8 @@ public class ShoppingCartPageObject extends BasePage {
 
 	public float getOrderSubtotal() {
 		waitForElementVisible(driver, ShoppingCartPageUI.ORDER_SUBTOTAL);
-		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_SUBTOTAL).replace("$", ""));
+		String subTotal = getElementText(driver, ShoppingCartPageUI.ORDER_SUBTOTAL).replace(",", "").replace("$", "");
+		return Float.parseFloat(subTotal);
 	}
 
 	public float getOrderDiscount() {
@@ -119,7 +123,9 @@ public class ShoppingCartPageObject extends BasePage {
 
 	public float getOrderTotal() {
 		waitForElementVisible(driver, ShoppingCartPageUI.ORDER_TOTAL);
-		return Float.parseFloat(getElementText(driver, ShoppingCartPageUI.ORDER_TOTAL).replace("$", ""));
+		String total = getElementText(driver, ShoppingCartPageUI.ORDER_TOTAL).replace(",", "").replace("$", "");
+		BigDecimal value = new BigDecimal(total);
+		return value.setScale(2, RoundingMode.HALF_UP).floatValue();
 	}
 
 	public CheckoutPageObject clickProceedToCheckoutButton() {

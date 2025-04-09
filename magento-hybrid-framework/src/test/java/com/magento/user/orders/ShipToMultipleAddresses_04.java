@@ -35,6 +35,8 @@ public class ShipToMultipleAddresses_04 extends BaseTest {
 		fileName = "login_data.json";
 		email = JsonUtils.getJsonValue(fileName, "existing_user.email");
 		password = JsonUtils.getJsonValue(fileName, "existing_user.password");
+		defaultBillingAddress = JsonUtils.getJsonValue(fileName, "existing_user.default_billing");
+		defaultShippingAddress = JsonUtils.getJsonValue(fileName, "existing_user.default_shipping");
 		resultNode = JsonUtils.getRandomProductNoOptions("gear_products.json");
 		category = resultNode.get("category").asText();
 		productName = resultNode.get("product").get("product_name").asText();
@@ -63,6 +65,7 @@ public class ShipToMultipleAddresses_04 extends BaseTest {
 		addressPage.selectOptionStateProvinceDropdown(data.getState());
 		addressPage.sendKeysToZipPostalTextbox(data.getZipCode());
 		changeBillingAddressPage = (ChangeBillingAddressPageObject) addressPage.clickSaveAddressButton(driver);
+		System.out.println(changeBillingAddressPage);
 
 		Assert.assertTrue(changeBillingAddressPage.isBillingAddressByStreetAddressDisplayed(address));
 	}
@@ -94,13 +97,8 @@ public class ShipToMultipleAddresses_04 extends BaseTest {
 
 	}
 
-	@Test(description = "Verify that the 'Default Billing' and 'Default Shipping' labels are displayed below user's default billing and shipping address respectively")
-	public void Ship_To_Multiple_Addresses_04_Default_Billing_And_Default_Shipping_Label() {
-
-	}
-
 	@Test(description = "Verify that user is directed to the 'Billing Information' page when clicking the 'Back to Billing Information' hyperlink")
-	public void Ship_To_Multiple_Addresses_05_Click_Back_To_Billing_Information_Link() {
+	public void Ship_To_Multiple_Addresses_04_Click_Back_To_Billing_Information_Link() {
 		homepage.clickShoppingCartIcon(driver);
 		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
 		shipToMultipleAddressesPage = shoppingCartPage.clickCheckOutWithMultipleAddressesLink();
@@ -115,7 +113,7 @@ public class ShipToMultipleAddresses_04 extends BaseTest {
 
 	@AfterMethod(alwaysRun = true)
 	public void navigateToHomepage() {
-		homepage = changeBillingAddressPage.clickLumaLogo(driver);
+		homepage.navigateToHomepage(driver);
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -126,7 +124,7 @@ public class ShipToMultipleAddresses_04 extends BaseTest {
 	private WebDriver driver;
 	private JsonNode resultNode;
 	private FakeDataUtils data;
-	private String fileName, email, password, category, productName;
+	private String fileName, email, password, defaultBillingAddress, defaultShippingAddress, category, productName;
 	private HomepageObject homepage;
 	private CustomerLoginPageObject customerLoginPage;
 	private ProductListingPageObject productListingPage;
