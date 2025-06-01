@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
@@ -20,7 +18,6 @@ import commons.PageGeneratorManager;
 import pageObjects.AddressBookPageObject;
 import pageObjects.AddressPageObject;
 import pageObjects.CreateNewCustomerAccountPageObject;
-import pageObjects.CustomerLoginPageObject;
 import pageObjects.HomepageObject;
 import pageObjects.MyAccountPageObject;
 import utilities.CSVUtils;
@@ -46,6 +43,11 @@ public class AddressBook_01 extends BaseTest {
 	public String[] getRandomAddressData() throws IOException {
 		randomRow = CSVUtils.getRandomRowFromCSVFile("src/test/resources/addresses.csv");
 		return randomRow;
+	}
+
+	@BeforeMethod(alwaysRun = true, onlyForGroups = "logOut")
+	public void logOut() {
+		homepage.logOut(driver);
 	}
 
 	@Test(description = "Verify that user is directed to the 'Add New Address' page when clicking the 'Manage Addresses' hyperlink (no address has been added yet)")
@@ -78,7 +80,7 @@ public class AddressBook_01 extends BaseTest {
 		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
 		addressPage = myAccountPage.clickEditAddressLinkDefaultBillingAddressSection();
 		addressPage.completeAddressForm(randomRow);
-		addressBookPage = addressPage.clickSaveAddressButton();
+		addressBookPage = (AddressBookPageObject) addressPage.clickSaveAddressButton(driver);
 
 		Assert.assertEquals(addressBookPage.getDefaultBillingAddressFullName(), fullName);
 		Assert.assertEquals(addressBookPage.getDefaultBillingAddressCompany(), randomRow[0]);
@@ -98,13 +100,13 @@ public class AddressBook_01 extends BaseTest {
 		myAccountPage = homepage.clickMyAccountDropdownLink(driver);
 		addressPage = myAccountPage.clickEditAddressLinkDefaultBillingAddressSection();
 		addressPage.completeAddressForm(randomRow);
-		addressBookPage = addressPage.clickSaveAddressButton();
+		addressBookPage = (AddressBookPageObject) addressPage.clickSaveAddressButton(driver);
 
 		Assert.assertEquals(addressBookPage.getNoOtherAddressEntriesInfoMessage(),
 				"You have no other address entries in your address book.");
 	}
 
-	@Test(description = "Verify that the first added address is automatically set as the default billing and shipping address")
+	@Test(groups = "logOut", description = "Verify that the first added address is automatically set as the default billing and shipping address")
 	public void Address_Book_05_First_Address_Automatically_Added_As_Default_Billing_And_Shipping_Address() {
 		String firstName = data.getFirstName();
 		String lastName = data.getLastName();
@@ -121,7 +123,7 @@ public class AddressBook_01 extends BaseTest {
 		myAccountPage = createNewCustomerAccountPage.clickCreateAnAccountButton();
 		addressPage = myAccountPage.clickEditAddressLinkDefaultBillingAddressSection();
 		addressPage.completeAddressForm(randomRow);
-		addressBookPage = addressPage.clickSaveAddressButton();
+		addressBookPage = (AddressBookPageObject) addressPage.clickSaveAddressButton(driver);
 
 		Assert.assertEquals(addressBookPage.getDefaultBillingAddressFullName(), fullName);
 		Assert.assertEquals(addressBookPage.getDefaultBillingAddressCompany(), randomRow[0]);
@@ -146,15 +148,6 @@ public class AddressBook_01 extends BaseTest {
 		Assert.assertEquals(addressBookPage.getDefaultShippingAddressPhone(), randomRow[1]);
 	}
 
-	@AfterMethod(alwaysRun = true)
-	public void logOut(ITestResult result) {
-		if (result.getMethod().getMethodName().contains("Address_Book_04")) {
-			homepage.clickCustomerNameDropdown(driver);
-			homepage.clickSignOutDropdownLink(driver);
-			homepage.refreshCurrentPage(driver);
-		}
-	}
-
 	@AfterClass(alwaysRun = true)
 	public void afterClass() {
 		closeBrowserAndDriver();
@@ -166,7 +159,6 @@ public class AddressBook_01 extends BaseTest {
 	private String[] randomRow;
 	private HomepageObject homepage;
 	private CreateNewCustomerAccountPageObject createNewCustomerAccountPage;
-	private CustomerLoginPageObject customerLoginPage;
 	private MyAccountPageObject myAccountPage;
 	private AddressBookPageObject addressBookPage;
 	private AddressPageObject addressPage;

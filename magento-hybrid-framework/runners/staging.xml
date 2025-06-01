@@ -10,23 +10,25 @@
 	<parameter name="url"
 		value="https://magento.softwaretestingboard.com/" />
 
-	<test name="Run on Chrome" preserve-order="true">
-		<parameter name="browser" value="chrome" />
-	</test>
+	<!-- <test name="Run on Chrome" preserve-order="true"> -->
+	<!-- <parameter name="browser" value="chrome" /> -->
+	<!-- </test> -->
 
-<!-- 	<test name="Register new user and log in" preserve-order="true"> -->
-<!-- 		<parameter name="browser" value="chrome" /> -->
-<!-- 		<classes> -->
-<!-- 			<class name="com.magento.commons.Register" /> -->
-<!-- 		</classes> -->
-<!-- 	</test> -->
+	<!-- <test name="Register new user and log in" preserve-order="true"> -->
+	<!-- <parameter name="browser" value="chrome" /> -->
+	<!-- <classes> -->
+	<!-- <class name="com.magento.commons.Register" /> -->
+	<!-- </classes> -->
+	<!-- </test> -->
 
 	<test name="Run tests" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.magento.user.orders.Promotion" />
+			<!-- <class name="com.magento.commons.Login" /> -->
+			<class name="com.magento.user.CompareProducts" />
 			<methods>
-			<include name="Promotion_09_Multiple_Promotions_Applied_To_Order" />			
+			<include name="Compare_Products_08_Add_Product_Without_Options_To_Cart" 
+				/>
 			</methods>
 		</classes>
 

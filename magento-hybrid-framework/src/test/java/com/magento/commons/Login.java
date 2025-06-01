@@ -15,11 +15,6 @@ import pageObjects.HomepageObject;
 
 public class Login extends BaseTest {
 
-//	public Access(WebDriver driver) {
-//		this.driver = driver;
-//		basePage = BasePage.getBasePageObject();
-//	}
-
 	@Parameters("browser")
 	@BeforeTest
 	public void logInWithCookies(String browser) {

@@ -25,7 +25,7 @@ public class MyWishListPageObject extends BasePage {
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
 
-	public BasePage clickSuccessMessageHereLink() {
+	public BasePage clickHereLinkSuccessMessage() {
 		waitForElementClickable(driver, MyWishListPageUI.HERE_LINK);
 		clickElementByJS(driver, MyWishListPageUI.HERE_LINK);
 		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);

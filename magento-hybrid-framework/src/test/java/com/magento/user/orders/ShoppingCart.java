@@ -69,6 +69,16 @@ public class ShoppingCart extends BaseTest {
 	public void Shopping_Cart_03_Click_Shopping_Cart_Hyperlink_In_The_Product_Added_To_Cart_Success_Message() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
 		productListingPage.clickAddToCartButtonByProductName(driver, productName);
+		shoppingCartPage = productListingPage.clickShoppingCartLinkSuccessMessage();
+
+		Assert.assertEquals(shoppingCartPage.getPageHeader(driver), "Shopping Cart");
+	}
+
+	@Test(groups = { "getProductNoOptions",
+			"clearCart" }, description = "Verify that user is directed to the 'Shopping Cart' page when clicking the 'View and Edit Cart' hyperlink")
+	public void Shopping_Cart_04_Click_View_And_Edit_Cart_Link() {
+		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
+		productListingPage.clickAddToCartButtonByProductName(driver, productName);
 		productListingPage.clickShoppingCartIcon(driver);
 		shoppingCartPage = homepage.clickViewAndEditCartLink(driver);
 
@@ -77,7 +87,7 @@ public class ShoppingCart extends BaseTest {
 
 	@Test(groups = { "getProductNoOptions",
 			"clearCart" }, description = "Verify that user can add multiple products to the shopping cart at once using the 'Qty' field")
-	public void Shopping_Cart_04_Add_Multiple_Products_Using_Qty_Field() {
+	public void Shopping_Cart_05_Add_Multiple_Products_Using_Qty_Field() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, productName);
 		productDetailsPage.sendKeysToQuantityTextbox("5");
@@ -88,7 +98,7 @@ public class ShoppingCart extends BaseTest {
 	}
 
 	@Test(description = "Verify that the number of products next to the shopping cart icon is displayed correctly")
-	public void Shopping_Cart_05_Display_Of_Number_Of_Products_Next_To_Shopping_Cart_Icon() {
+	public void Shopping_Cart_06_Display_Of_Number_Of_Products_Next_To_Shopping_Cart_Icon() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Bags");
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Overnight Duffle");
 		productDetailsPage.sendKeysToQuantityTextbox("2");
@@ -113,7 +123,7 @@ public class ShoppingCart extends BaseTest {
 
 	@Test(groups = { "getProductWithOptions",
 			"clearCart" }, description = "Verify that user can only add a product with options to the shopping cart when its color and size options are selected")
-	public void Shopping_Cart_06_Add_Product_With_Options_To_Cart_When_Color_And_Size_Options_Are_Selected() {
+	public void Shopping_Cart_07_Add_Product_With_Options_To_Cart_When_Color_And_Size_Options_Are_Selected() {
 		productListingPage = homepage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", category,
 				subcategory);
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, productName);
@@ -137,7 +147,7 @@ public class ShoppingCart extends BaseTest {
 	}
 
 	@Test(groups = "getProductNoOptions", description = "Verify the error message displayed when user adds a product to the shopping cart with a quantity larger than 10000")
-	public void Shopping_Cart_07_Error_Message_Adding_Product_With_A_Quantity_Larger_Than_10000() {
+	public void Shopping_Cart_08_Error_Message_Adding_Product_With_A_Quantity_Larger_Than_10000() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, productName);
 		productDetailsPage.sendKeysToQuantityTextbox("15000");
@@ -148,7 +158,7 @@ public class ShoppingCart extends BaseTest {
 	}
 
 	@Test(description = "Verify the error message displayed when a user adds a product to the shopping cart with a quantity exceeding the cart's maximum limit")
-	public void Shopping_Cart_08_Error_Message_Adding_Product_With_A_Quantity_Exceeding_Cart_Maximum_Limit() {
+	public void Shopping_Cart_09_Error_Message_Adding_Product_With_A_Quantity_Exceeding_Cart_Maximum_Limit() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Watches");
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, "Luma Analog Watch");
 		productDetailsPage.sendKeysToQuantityTextbox("1000");
@@ -161,7 +171,7 @@ public class ShoppingCart extends BaseTest {
 	}
 
 	@Test(groups = "getProductNoOptions", description = "Verify the error message displayed when zero or negative values are filled in the 'Qty' field")
-	public void Shopping_Cart_09_Error_Message_Filling_In_Qty_Field_With_Zero_Or_Negative_Value() {
+	public void Shopping_Cart_10_Error_Message_Filling_In_Qty_Field_With_Zero_Or_Negative_Value() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, productName);
 		productDetailsPage.sendKeysToQuantityTextbox("0");
@@ -178,7 +188,7 @@ public class ShoppingCart extends BaseTest {
 	}
 
 	@Test(groups = "getProductNoOptions", description = "Verify the error message displayed when no value is filled in the 'Qty' field")
-	public void Shopping_Cart_10_Error_Message_No_Value_Is_Filled_In_Qty_Field() {
+	public void Shopping_Cart_11_Error_Message_No_Value_Is_Filled_In_Qty_Field() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
 		productDetailsPage = productListingPage.clickProductLinkByProductName(driver, productName);
 		productDetailsPage.sendKeysToQuantityTextbox("");
@@ -190,7 +200,7 @@ public class ShoppingCart extends BaseTest {
 
 	@Test(groups = { "getProductNoOptions",
 			"clearCart" }, description = "Verify that the 'Table Rate - Best Way' shipping option is only available when the shipping country is the United States")
-	public void Shopping_Cart_11_Table_Rate_Shipping_Method_Only_Available_To_United_States() {
+	public void Shopping_Cart_12_Table_Rate_Shipping_Method_Only_Available_To_United_States() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
 		productListingPage.clickAddToCartButtonByProductName(driver, productName);
 		productListingPage.clickShoppingCartIcon(driver);
@@ -207,7 +217,7 @@ public class ShoppingCart extends BaseTest {
 
 	@Test(groups = { "getProductNoOptions",
 			"clearCart" }, description = "Verify that user can change the product quantity")
-	public void Shopping_Cart_12_Update_Product_Quantity() {
+	public void Shopping_Cart_13_Update_Product_Quantity() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
 		productListingPage.clickAddToCartButtonByProductName(driver, productName);
 		productListingPage.clickShoppingCartIcon(driver);
@@ -220,7 +230,7 @@ public class ShoppingCart extends BaseTest {
 
 	@Test(groups = { "getProductNoOptions",
 			"clearCart" }, description = "Verify that user is directed to the product details page when clicking the pen icon")
-	public void Shopping_Cart_13_Click_Pen_Icon() {
+	public void Shopping_Cart_14_Click_Pen_Icon() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
 		productListingPage.clickAddToCartButtonByProductName(driver, productName);
 		productListingPage.clickShoppingCartIcon(driver);
@@ -232,7 +242,7 @@ public class ShoppingCart extends BaseTest {
 
 	@Test(groups = { "getProductNoOptions",
 			"clearCart" }, description = "Verify that the product is removed from the shopping cart when clicking the trashcan icon")
-	public void Shopping_Cart_14_Click_Trashcan_Icon() {
+	public void Shopping_Cart_15_Click_Trashcan_Icon() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", category);
 		productListingPage.clickAddToCartButtonByProductName(driver, productName);
 		productListingPage.clickShoppingCartIcon(driver);

@@ -1,10 +1,7 @@
 package com.magento.user;
 
-import java.lang.reflect.Method;
-
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -12,7 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.magento.commons.Products;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.magento.commons.Register;
 
 import commons.BaseTest;
@@ -26,6 +23,7 @@ import pageObjects.ProductDetailsPageObject;
 import pageObjects.ProductListingPageObject;
 import pageObjects.ShoppingCartPageObject;
 import utilities.FakeDataUtils;
+import utilities.JsonUtils;
 
 public class WishList extends BaseTest {
 	@Parameters("browser")
@@ -33,7 +31,6 @@ public class WishList extends BaseTest {
 	public void beforeClass(String browser) {
 		driver = getBrowserDriver(browser);
 		homepage = PageGeneratorManager.getHomepage(driver);
-		productActions = new Products(driver);
 
 		data = FakeDataUtils.getDataHelper();
 		email = Register.email;
@@ -44,17 +41,28 @@ public class WishList extends BaseTest {
 	}
 
 	@BeforeMethod(alwaysRun = true, onlyForGroups = "addProductToWishList")
-	public void addProductToWishList(Method method) {
-		productActions.addRandomProductWithOptionsToWishList("men_products");
+	public void addProductWithoutOptionsToWishList() {
+		gearResultNode = JsonUtils.getRandomProductNoOptions("gear_products.json");
+		gearCategory = gearResultNode.get("category").asText();
+		gearProductName = gearResultNode.get("product").get("product_name").asText();
+
 	}
 
 	@BeforeMethod
-	public void logOut(ITestResult result) {
-		if (result.getMethod().getMethodName().equals("Error_Message_Logged_Out_User_Adding_Products_To_Wish_List")) {
-			homepage.clickCustomerNameDropdown(driver);
-			homepage.clickSignOutDropdownLink(driver);
-			homepage.refreshCurrentPage(driver);
-		}
+	public void addProductWithOptionsToWishList() {
+		menResultNode = JsonUtils.getRandomProductWithOptions("men_products.json");
+		menCategory = menResultNode.get("category").asText();
+		menSubcategory = menResultNode.get("subcategory").asText();
+		menProductName = menResultNode.get("product").get("product_name").asText();
+
+		clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, group, category.getCategoryName(),
+				subcategory.getSubcategoryName());
+		basePage.clickWishListIconByProductName(driver, productName);
+	}
+
+	@BeforeMethod(groups = "logOut")
+	public void logOut() {
+		myWishListPage.logOut(driver);
 	}
 
 	@Test(description = "Verify that user is directed to the 'My Wish List' page when clicking the 'My Wish List' dropdown link")
@@ -157,14 +165,14 @@ public class WishList extends BaseTest {
 		homepage = myWishListPage.clickLumaLogo(driver);
 		homepage.scrollToBottom(driver);
 		myWishListPage = homepage.clickWishListIconByProductName(driver, "Breathe-Easy Tank");
-		homepage = (HomepageObject) myWishListPage.clickSuccessMessageHereLink();
+		homepage = (HomepageObject) myWishListPage.clickHereLinkSuccessMessage();
 
 		Assert.assertEquals(homepage.getPageHeader(driver), "Home Page");
 
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Fitness Equipment");
 		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Dual Handle Cardio Ball");
-		productListingPage = (ProductListingPageObject) myWishListPage.clickSuccessMessageHereLink();
+		productListingPage = (ProductListingPageObject) myWishListPage.clickHereLinkSuccessMessage();
 
 		Assert.assertEquals(productListingPage.getPageHeader(driver), "Fitness Equipment");
 
@@ -173,7 +181,7 @@ public class WishList extends BaseTest {
 		productListingPage.clickCompareIconByProductName(driver, "Rival Field Messenger");
 		compareProductsPage = productListingPage.clickCompareProductsLink(driver);
 		myWishListPage = compareProductsPage.clickWishListIconByProductName(driver, "Rival Field Messenger");
-		compareProductsPage = (CompareProductsPageObject) myWishListPage.clickSuccessMessageHereLink();
+		compareProductsPage = (CompareProductsPageObject) myWishListPage.clickHereLinkSuccessMessage();
 
 		Assert.assertEquals(compareProductsPage.getPageHeader(driver), "Compare Products");
 	}
@@ -285,7 +293,7 @@ public class WishList extends BaseTest {
 		productListingPage = myWishListPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Watches");
 		myWishListPage = productListingPage.clickWishListIconByProductName(driver, "Dash Digital Watch");
-		myWishListPage.clickSuccessMessageHereLink();
+		myWishListPage.clickHereLinkSuccessMessage();
 		myWishListPage.clickAddAllToCartButton();
 
 		Assert.assertEquals(myWishListPage.getAllProductsAddedToShoppingCartSuccessMessage(),
@@ -356,9 +364,8 @@ public class WishList extends BaseTest {
 	}
 
 	@AfterMethod(onlyForGroups = "clearWishList")
-	public void clearWishList(ITestResult result) {
-		productActions.clearWishList();
-		System.out.println("The @AfterMethod executed successfully: all products are removed from the wish list.");
+	public void clearWishList() {
+		myWishListPage.clearWishList(driver);
 	}
 
 	@AfterClass(alwaysRun = true)
@@ -367,7 +374,9 @@ public class WishList extends BaseTest {
 	}
 
 	private WebDriver driver;
-	private String email, password, productName;
+	private JsonNode gearResultNode, menResultNode;
+	private String email, password, productName, gearCategory, gearProductName, menCategory, menSubcategory,
+			menProductName, menProductSize, menProductColor;
 	private FakeDataUtils data;
 	private HomepageObject homepage;
 	private MyAccountPageObject myAccountPage;
@@ -377,6 +386,5 @@ public class WishList extends BaseTest {
 	private ProductListingPageObject productListingPage;
 	private ProductDetailsPageObject productDetailsPage;
 	private ShoppingCartPageObject shoppingCartPage;
-	private Products productActions;
 
 }

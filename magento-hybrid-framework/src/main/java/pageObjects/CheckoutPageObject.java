@@ -38,53 +38,59 @@ public class CheckoutPageObject extends BasePage {
 	}
 
 	public void sendKeysToFirstNameTextbox(String firstName) {
-		waitForElementVisible(driver, CheckoutPageUI.Shipping.FIRST_NAME_TEXTBOX);
-		sendKeysToElement(driver, CheckoutPageUI.Shipping.FIRST_NAME_TEXTBOX, firstName);
+		waitForElementVisible(driver, CheckoutPageUI.General.FIRST_NAME_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.General.FIRST_NAME_TEXTBOX, firstName);
 	}
 
 	public void sendKeysToLastNameTextbox(String lastName) {
-		waitForElementVisible(driver, CheckoutPageUI.Shipping.LAST_NAME_TEXTBOX);
-		sendKeysToElement(driver, CheckoutPageUI.Shipping.LAST_NAME_TEXTBOX, lastName);
+		waitForElementVisible(driver, CheckoutPageUI.General.LAST_NAME_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.General.LAST_NAME_TEXTBOX, lastName);
 	}
 
 	public void sendKeysToStreetAddressTextbox(String streetAddress) {
-		waitForElementVisible(driver, CheckoutPageUI.Shipping.STREET_ADDRESS_TEXTBOX);
-		sendKeysToElement(driver, CheckoutPageUI.Shipping.STREET_ADDRESS_TEXTBOX, streetAddress);
+		waitForElementVisible(driver, CheckoutPageUI.General.STREET_ADDRESS_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.General.STREET_ADDRESS_TEXTBOX, streetAddress);
 	}
 
 	public void sendKeysToCityTextbox(String city) {
-		waitForElementVisible(driver, CheckoutPageUI.Shipping.CITY_TEXTBOX);
-		sendKeysToElement(driver, CheckoutPageUI.Shipping.CITY_TEXTBOX, city);
+		waitForElementVisible(driver, CheckoutPageUI.General.CITY_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.General.CITY_TEXTBOX, city);
 	}
 
 	public void selectOptionStateProvinceDropdown(String stateProvince) {
-		waitForElementVisible(driver, CheckoutPageUI.Shipping.STATE_PROVINCE_DROPDOWN);
-		selectOptionDefaultDropdown(driver, CheckoutPageUI.Shipping.STATE_PROVINCE_DROPDOWN, stateProvince);
+		waitForElementVisible(driver, CheckoutPageUI.General.STATE_PROVINCE_DROPDOWN);
+		selectOptionDefaultDropdown(driver, CheckoutPageUI.General.STATE_PROVINCE_DROPDOWN, stateProvince);
 	}
 
 	public void sendKeysToZipPostalCodeTextbox(String zipPostalCode) {
-		waitForElementVisible(driver, CheckoutPageUI.Shipping.ZIP_POSTAL_CODE_TEXTBOX);
-		sendKeysToElement(driver, CheckoutPageUI.Shipping.ZIP_POSTAL_CODE_TEXTBOX, zipPostalCode);
+		waitForElementVisible(driver, CheckoutPageUI.General.ZIP_POSTAL_CODE_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.General.ZIP_POSTAL_CODE_TEXTBOX, zipPostalCode);
 	}
 
 	public void selectOptionCountryDropdown(String country) {
-		waitForElementVisible(driver, CheckoutPageUI.Shipping.COUNTRY_DROPDOWN);
-		selectOptionDefaultDropdown(driver, CheckoutPageUI.Shipping.COUNTRY_DROPDOWN, country);
+		waitForElementVisible(driver, CheckoutPageUI.General.COUNTRY_DROPDOWN);
+		selectOptionDefaultDropdown(driver, CheckoutPageUI.General.COUNTRY_DROPDOWN, country);
 	}
 
 	public void sendKeysToPhoneNumberTextbox(String phoneNumber) {
-		waitForElementVisible(driver, CheckoutPageUI.Shipping.PHONE_NUMBER_TEXTBOX);
-		sendKeysToElement(driver, CheckoutPageUI.Shipping.PHONE_NUMBER_TEXTBOX, phoneNumber);
+		waitForElementVisible(driver, CheckoutPageUI.General.PHONE_NUMBER_TEXTBOX);
+		sendKeysToElement(driver, CheckoutPageUI.General.PHONE_NUMBER_TEXTBOX, phoneNumber);
 	}
 
 	public void checkSaveInAddressBookCheckbox() {
-		waitForElementClickable(driver, CheckoutPageUI.Shipping.SAVE_IN_ADDRESS_BOOK_CHECKBOX);
-		checkDefaultCheckboxRadioButton(driver, CheckoutPageUI.Shipping.SAVE_IN_ADDRESS_BOOK_CHECKBOX);
+		waitForElementClickable(driver, CheckoutPageUI.General.SAVE_IN_ADDRESS_BOOK_CHECKBOX);
+		checkDefaultCheckboxRadioButton(driver, CheckoutPageUI.General.SAVE_IN_ADDRESS_BOOK_CHECKBOX);
+	}
+
+	public void uncheckSaveInAddressBookCheckbox() {
+		waitForElementClickable(driver, CheckoutPageUI.General.SAVE_IN_ADDRESS_BOOK_CHECKBOX);
+		uncheckDefaultCheckbox(driver, CheckoutPageUI.General.SAVE_IN_ADDRESS_BOOK_CHECKBOX);
 	}
 
 	public void clickShippingAddressPopupShipHereButton() {
 		waitForElementClickable(driver, CheckoutPageUI.Shipping.SHIPPING_ADDRESS_POPUP_SHIP_HERE_BUTTON);
 		checkDefaultCheckboxRadioButton(driver, CheckoutPageUI.Shipping.SHIPPING_ADDRESS_POPUP_SHIP_HERE_BUTTON);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	public boolean isShippingAddressDisplayed(String streetAddress) {
@@ -96,6 +102,7 @@ public class CheckoutPageObject extends BasePage {
 		scrollToBottom(driver);
 		waitForElementClickable(driver, CheckoutPageUI.Shipping.NEXT_BUTTON);
 		clickElementByJS(driver, CheckoutPageUI.Shipping.NEXT_BUTTON);
+		sleepInSecond(GlobalConstants.SHORT_TIMEOUT);
 	}
 
 	public boolean isUserOnShippingStep() {
@@ -188,6 +195,10 @@ public class CheckoutPageObject extends BasePage {
 		selectOptionDefaultDropdown(driver, CheckoutPageUI.ReviewAndPayment.BILLING_ADDRESS_DROPDOWN, streetAddress);
 	}
 
+	public String getSelectedOptionBillingAddressDropdown() {
+		return getSelectedOptionDefaultDropdown(driver, CheckoutPageUI.ReviewAndPayment.BILLING_ADDRESS_DROPDOWN);
+	}
+
 	public void clickCancelLink() {
 		waitForElementClickable(driver, CheckoutPageUI.ReviewAndPayment.CANCEL_LINK);
 		clickElementByJS(driver, CheckoutPageUI.ReviewAndPayment.CANCEL_LINK);
@@ -217,7 +228,22 @@ public class CheckoutPageObject extends BasePage {
 		clickElementByJS(driver, CheckoutPageUI.ReviewAndPayment.APPLY_DISCOUNT_BUTTON);
 	}
 
+	public void clickCancelCouponButton() {
+		waitForElementClickable(driver, CheckoutPageUI.ReviewAndPayment.CANCEL_COUPON_BUTTON);
+		clickElementByJS(driver, CheckoutPageUI.ReviewAndPayment.CANCEL_COUPON_BUTTON);
+	}
+
 	public String getDiscountCodeAppliedSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
+	public String getDiscountCodeRemovedSuccessMessage() {
+		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
+		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
+	}
+
+	public String getInvalidDiscountCodeErrorMessage() {
 		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);
 	}
@@ -293,6 +319,11 @@ public class CheckoutPageObject extends BasePage {
 
 	public boolean isForgotYourPasswordLinkDisplayed() {
 		return isElementDisplayed(driver, CheckoutPageUI.Shipping.FORGOT_YOUR_PASSWORD_LINK);
+	}
+
+	public void clickUpdateButton() {
+		waitForElementClickable(driver, CheckoutPageUI.ReviewAndPayment.UPDATE_BUTTON);
+		clickElementByJS(driver, CheckoutPageUI.ReviewAndPayment.UPDATE_BUTTON);
 	}
 
 }

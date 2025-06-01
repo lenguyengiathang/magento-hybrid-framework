@@ -44,7 +44,7 @@ public class ShipToMultipleAddresses_01 extends BaseTest {
 
 	@BeforeMethod(alwaysRun = true)
 	public void addProductToCart() {
-		homepage.addProductToCart(driver, category, productName);
+		homepage.addProductWithoutOptionsToCart(driver, category, productName);
 	}
 
 	@Test(description = "Verify that user is directed to the 'Ship to Multiple Addresses' page when clicking the 'Check Out with Multiple Addresses' hyperlink")
@@ -80,9 +80,9 @@ public class ShipToMultipleAddresses_01 extends BaseTest {
 		String shippingAddress3 = "321 Oak St";
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				"Fitness Equipment");
-		productListingPage.addProductWithNoOptionsToCart(driver, productName1);
-		productListingPage.addProductWithNoOptionsToCart(driver, productName2);
-		productListingPage.addProductWithNoOptionsToCart(driver, productName3);
+		productListingPage.addProductWithoutOptionsToCart(driver, productName1);
+		productListingPage.addProductWithoutOptionsToCart(driver, productName2);
+		productListingPage.addProductWithoutOptionsToCart(driver, productName3);
 		productListingPage.clickShoppingCartIcon(driver);
 		shoppingCartPage = productListingPage.clickViewAndEditCartLink(driver);
 		shipToMultipleAddressesPage = shoppingCartPage.clickCheckOutWithMultipleAddressesLink();

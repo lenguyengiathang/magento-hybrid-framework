@@ -2,6 +2,7 @@ package com.magento.user;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -94,10 +95,10 @@ public class ProductListing extends BaseTest {
 		Assert.assertTrue(productListingPage.isNumberOfProductsPerPageCorrect(25));
 	}
 
-//	@AfterClass(alwaysRun = true)
-//	public void afterClass() {
-//		closeBrowserAndDriver();
-//	}
+	@AfterClass(alwaysRun = true)
+	public void afterClass() {
+		closeBrowserAndDriver();
+	}
 
 	private WebDriver driver;
 	private HomepageObject homepage;

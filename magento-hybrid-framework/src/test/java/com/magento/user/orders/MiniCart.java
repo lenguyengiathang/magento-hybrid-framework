@@ -144,7 +144,7 @@ public class MiniCart extends BaseTest {
 	public void Mini_Cart_09_Click_Trashcan_Icon() {
 		homepage.clickShoppingCartIcon(driver);
 		homepage.clickTrashcanIconByProductName(driver, productName);
-		homepage.clickConfirmationPopupOKButton(driver);
+		homepage.clickOKButtonConfirmationPopup(driver);
 
 		Assert.assertTrue(homepage.isProductNotDisplayedInMiniCart(driver, productName));
 	}

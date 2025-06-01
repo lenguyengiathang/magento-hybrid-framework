@@ -52,7 +52,7 @@ public class BasePageUI {
 	}
 
 	public static class ProductCard {
-		public static final String DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]";
+		public static final String DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME = "xpath=(//a[contains(text(),'%s')])[1]";
 		public static final String DYNAMIC_RATING_BY_PRODUCT_NAME = "xpath=//a[contains(text(),'%s')]/parent::strong/following-sibling::div//div[@class='rating-result']";
 		public static final String DYNAMIC_SIZE_BUTTON_BY_PRODUCT_NAME_AND_LABEL = "xpath=//li[contains(@class,'product-item')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div/div[contains(@class,'size')]/div/div[text()='%s']";
 		public static final String DYNAMIC_COLOR_BUTTON_BY_PRODUCT_NAME_AND_LABEL = "xpath=//li[contains(@class,'product-item')]//a[contains(text(),'%s')]/parent::strong/following-sibling::div/div[contains(@class,'color')]/div/div[@option-label='%s']";
@@ -77,7 +77,7 @@ public class BasePageUI {
 
 	public static class MyWishListSection {
 		public static final String EMPTY_WISH_LIST_INFO_MESSAGE = "css=.block-wishlist .empty";
-		public static final String DYNAMIC_PRODUCT_LINK_BY_NAME = "xpath=//div[contains(@class,'block-wishlist')]//span[text()='%s']";
+		public static final String DYNAMIC_PRODUCT_LINK_BY_PRODUCT_NAME = "xpath=//div[contains(@class,'block-wishlist')]//span[text()='%s']";
 		public static final String DYNAMIC_ADD_TO_CART_BUTTON_BY_PRODUCT_NAME = "xpath=//div[contains(@class,'block-wishlist')]//span[text()='%s']/ancestor::strong/following-sibling::div//button";
 		public static final String DYNAMIC_CROSS_ICON_BY_PRODUCT_NAME = "xpath=//div[contains(@class,'block-wishlist')]//span[text()='%s']/ancestor::strong/following-sibling::div//a";
 		public static final String GO_TO_WISH_LIST_LINK = "css=a[title='Go to Wish List']";

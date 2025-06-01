@@ -16,13 +16,13 @@ public class CustomerLoginPageObject extends BasePage {
 		this.driver = driver;
 	}
 
-	@Step("Fill in the 'Email' field with the value '{0}'")
+	@Step("Fill in the 'Email' field with the value '{email}'")
 	public void sendKeysToEmailTextbox(String email) {
 		waitForElementVisible(driver, CustomerLoginPageUI.EMAIL_TEXTBOX);
 		sendKeysToElement(driver, CustomerLoginPageUI.EMAIL_TEXTBOX, email);
 	}
 
-	@Step("Fill in the 'Password' field with the value '{0}'")
+	@Step("Fill in the 'Password' field with the value '{password}'")
 	public void sendKeysToPasswordTextbox(String password) {
 		waitForElementVisible(driver, CustomerLoginPageUI.PASSWORD_TEXTBOX);
 		sendKeysToElement(driver, CustomerLoginPageUI.PASSWORD_TEXTBOX, password);
@@ -35,7 +35,7 @@ public class CustomerLoginPageObject extends BasePage {
 		return PageGeneratorManager.getMyAccountPage(driver);
 	}
 
-	@Step("Fill in the 'Email' and 'Password' fields with the values '{0}' and '{1}', then click the 'Sign In' button")
+	@Step("Fill in the 'Email' and 'Password' fields with the values '{email}' and '{password}', then click the 'Sign In' button")
 	public HomepageObject logInAsRegisteredUser(String email, String password) {
 		sendKeysToEmailTextbox(email);
 		sendKeysToPasswordTextbox(password);
@@ -50,7 +50,7 @@ public class CustomerLoginPageObject extends BasePage {
 		return PageGeneratorManager.getCreateNewCustomerAccountPage(driver);
 	}
 
-	@Step("Get login error message")
+	@Step("Get the login error message")
 	public String getLoginErrorMessage() {
 		waitForElementVisible(driver, BasePageUI.MainContent.MESSAGE);
 		return getElementText(driver, BasePageUI.MainContent.MESSAGE);

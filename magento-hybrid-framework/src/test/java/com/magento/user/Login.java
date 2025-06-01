@@ -36,7 +36,7 @@ public class Login extends BaseTest {
 	@BeforeMethod(alwaysRun = true, onlyForGroups = "addProductToCart")
 	public void addProductToCart() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear", "Bags");
-		productListingPage.addProductWithNoOptionsToCart(driver, "Overnight Duffle");
+		productListingPage.addProductWithoutOptionsToCart(driver, "Overnight Duffle");
 		homepage = productListingPage.clickLumaLogo(driver);
 	}
 
@@ -47,8 +47,8 @@ public class Login extends BaseTest {
 		Assert.assertEquals(customerLoginPage.getPageHeader(driver), "Customer Login");
 	}
 
-	@Test(description = "Verify that non-registered customer cannot log in")
-	public void Login_02_Log_In_As_Non_Registered_Customer() {
+	@Test(description = "Verify that non-registered user cannot log in")
+	public void Login_02_Log_In_As_Non_Registered_User() {
 		customerLoginPage = homepage.clickSignInLink();
 		customerLoginPage.sendKeysToEmailTextbox(data.getEmailAddress());
 		customerLoginPage.sendKeysToPasswordTextbox(data.getPassword());
@@ -58,8 +58,8 @@ public class Login extends BaseTest {
 				"The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.");
 	}
 
-	@Test(description = "Verify that registered customer can log in with valid credentials")
-	public void Login_03_Log_In_As_Registered_Customer() {
+	@Test(description = "Verify that registered user can log in with valid credentials")
+	public void Login_03_Log_In_As_Registered_User() {
 		customerLoginPage = homepage.clickSignInLink();
 		homepage = customerLoginPage.logInAsRegisteredUser(email, password);
 

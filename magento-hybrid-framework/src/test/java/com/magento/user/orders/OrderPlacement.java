@@ -58,7 +58,7 @@ public class OrderPlacement extends BaseTest {
 		gearCategory = gearResultNode.get("category").asText();
 		gearProductName = gearResultNode.get("product").get("product_name").asText();
 
-		menResultNode = JsonUtils.getRandomProductWithOptions("women_products.json");
+		menResultNode = JsonUtils.getRandomProductWithOptions("men_products.json");
 		menCategory = menResultNode.get("category").asText();
 		menSubcategory = menResultNode.get("subcategory").asText();
 		menProductName = menResultNode.get("product").get("product_name").asText();
@@ -197,7 +197,7 @@ public class OrderPlacement extends BaseTest {
 	public void Order_Placement_05_Click_Reorder_Link() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		productListingPage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", womenCategory,
 				womenSubcategory);
 		productListingPage.addProductWithOptionsToCart(driver, womenProductName, womenProductSize, womenProductColor);
@@ -219,7 +219,7 @@ public class OrderPlacement extends BaseTest {
 	public void Order_Placement_06_Add_Recently_Ordered_Products_To_Cart() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		productListingPage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Women", womenCategory,
 				womenSubcategory);
 		productListingPage.addProductWithOptionsToCart(driver, womenProductName, womenProductSize, womenProductColor);
@@ -252,7 +252,7 @@ public class OrderPlacement extends BaseTest {
 	public void Order_Placement_07_Error_Message_Adding_Recently_Ordered_Product_To_Cart() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		productListingPage.clickShoppingCartIcon(driver);
 		checkoutPage = productListingPage.clickProceedToCheckoutButton(driver);
 		checkoutPage.selectShippingMethodRadioButtonByLabel("Fixed");
@@ -270,7 +270,7 @@ public class OrderPlacement extends BaseTest {
 	public void Order_Placement_08_Automatically_Scrolled_To_Recent_Orders_Section_When_Clicking_View_All_Link_In_Recently_Ordered_Section() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		homepage.clickShoppingCartIcon(driver);
 		checkoutPage = homepage.clickProceedToCheckoutButton(driver);
 		checkoutPage.selectShippingMethodRadioButtonByLabel("Fixed");
@@ -287,7 +287,7 @@ public class OrderPlacement extends BaseTest {
 	public void Order_Placement_09_Error_Message_Invalid_Information_Filled_In_Orders_And_Returns_Form() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		homepage.clickShoppingCartIcon(driver);
 		checkoutPage = homepage.clickProceedToCheckoutButton(driver);
 		checkoutPage.selectShippingMethodRadioButtonByLabel("Fixed");
@@ -309,7 +309,7 @@ public class OrderPlacement extends BaseTest {
 	public void Order_Placement_10_Find_Order_Using_Email_Or_Zip_Code() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		productListingPage.clickShoppingCartIcon(driver);
 		checkoutPage = productListingPage.clickProceedToCheckoutButton(driver);
 		checkoutPage.selectShippingMethodRadioButtonByLabel("Fixed");
@@ -346,7 +346,7 @@ public class OrderPlacement extends BaseTest {
 
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		productListingPage.clickNavigationBarDropdownMultiLevelItemLinkByLabels(driver, "Men", menCategory,
 				menSubcategory);
 		productListingPage.addProductWithOptionsToCart(driver, menProductName, menProductSize, menProductColor);
@@ -383,7 +383,7 @@ public class OrderPlacement extends BaseTest {
 	public void Order_Placement_12_Place_Order_Without_An_Account() {
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		productListingPage.clickShoppingCartIcon(driver);
 		checkoutPage = productListingPage.clickProceedToCheckoutButton(driver);
 		checkoutPage.sendKeysToEmailAddressTextbox(data.getEmailAddress());
@@ -410,7 +410,7 @@ public class OrderPlacement extends BaseTest {
 
 		productListingPage = homepage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		productListingPage.clickShoppingCartIcon(driver);
 		checkoutPage = productListingPage.clickProceedToCheckoutButton(driver);
 		checkoutPage.sendKeysToEmailAddressTextbox(email);
@@ -455,7 +455,7 @@ public class OrderPlacement extends BaseTest {
 		myAccountPage = createNewCustomerAccountPage.clickCreateAnAccountButton();
 		productListingPage = myAccountPage.clickNavigationBarDropdownSingleLevelItemLinkByLabels(driver, "Gear",
 				gearCategory);
-		productListingPage.addProductWithNoOptionsToCart(driver, gearProductName);
+		productListingPage.addProductWithoutOptionsToCart(driver, gearProductName);
 		productListingPage.clickShoppingCartIcon(driver);
 		checkoutPage = productListingPage.clickProceedToCheckoutButton(driver);
 		checkoutPage.sendKeysToStreetAddressTextbox(data.getAddress());
